@@ -12,30 +12,33 @@
             style="text-align: center"
             :class="{ 'is-invalid': !dniValido }"
             @blur="validarDni"
-          />
+          >
         </div>
-        <div v-if="!dniValido" class="invalid-texto d-block">
+        <div
+          v-if="!dniValido" 
+          class="invalid-texto d-block"
+        >
           DNI o NIE inválido.
         </div>
         <div class="campo campo-nome">
           <label>Nome:</label>
           <input
+            id="nome"
             v-model="novoPaciente.nome"
             type="text"
             required
-            id="nome"
             @blur="capitalizarTexto('nome')"
-          />
+          >
         </div>
         <div class="campo campo-apellido">
           <label>Apellidos:</label>
           <input
-            v-model="novoPaciente.apellido"
             id="apellido"
-            @blur="capitalizarTexto('apellido')"
+            v-model="novoPaciente.apellido"
             type="text"
             required
-          />
+            @blur="capitalizarTexto('apellido')"
+          >
         </div>
       </div>
       <div class="fila">
@@ -46,32 +49,75 @@
             type="date"
             placeholder="dd/mm/yyyy"
             required
-          />
+          >
         </div>
         <div class="campo campo-correo">
           <label>Correo:</label>
-          <input v-model="novoPaciente.correo" type="email" />
+          <input
+            v-model="novoPaciente.correo"
+            type="correo"
+            :class="{ 'is-invalid': !correoValido }"
+            @blur="validarcorreo"
+          >
         </div>
         <div class="campo campo-correo">
           <label>Móvil:</label>
-          <input v-model="novoPaciente.movil" type="text" required />
+          <input
+            v-model="novoPaciente.movil"
+            type="text"
+            style="text-align: center"
+            :class="{ 'is-invalid': !movilValido }"
+            required
+            @blur="validarMovil"
+          >
         </div>
       </div>
       <div class="fila fila-centrada">
         <div class="campo campo-direccion">
           <label>Direccion:</label>
-          <input v-model="novoPaciente.direccion" type="text" required />
+          <input
+            v-model="novoPaciente.direccion"
+            type="text"
+            required
+          >
+        </div>
+        <div class="campo campo-provincia">
+          <label>Provincia</label>
+          <select id="provincia" v-model="novoPaciente.provincia" >
+            <option value="">Selecciona una provincia</option>
+            <option
+              v-for="provincia in provincias"
+              :key="provincia.id"
+              :value="provincia.id"
+            >
+              {{ provincia.nombre }}
+            </option>
+          </select>
+        </div>
+        <div class="campo campo-municipio">
+          <label>Municipio</label>
+          <select
+            id="provincia"
+            v-model="novoPaciente.municipio"
+            type="text"
+          >
+            <option
+              disabled
+              value=""
+            />
+          </select>
         </div>
       </div>
       <button
         type="submit"
         class="btn-guardar"
-        :disabled="novoPaciente.dni === '' || novoPaciente.nome === ''"
+        :disabled="novoPaciente.dni === '' || novoPaciente.nome === '' || novoPaciente.apellido === ''
+        "
       >
         Gardar
       </button>
     </form>
-    <h4>📋 Listaxe de usuarios</h4>
+    <h4>📋 Listaxe de Pacientes</h4>
     <table v-if="usuarios.length > 0">
       <thead>
         <tr>
@@ -86,29 +132,48 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(u, index) in usuarios" :key="index">
+        <tr
+          v-for="(u, index) in usuarios"
+          :key="index"
+        >
           <td>{{ index + 1 }}</td>
-          <td style="text-align: center">{{ u.dni }}</td>
+          <td style="text-align: center">
+            {{ u.dni }}
+          </td>
           <td>{{ u.nome }}</td>
           <td>{{ u.correo }}</td>
           <td>{{ u.provincia }}</td>
-          <td style="text-align: center">{{ u.activo ? "✅" : "❌" }}</td>
+          <td style="text-align: center">
+            {{ u.activo ? "✅" : "❌" }}
+          </td>
           <td>{{ u.tipoCuenta }}</td>
           <td style="text-align: center">
-            <button @click="editarUsuario(index)" title="Editar">✏️</button>
-            <button @click="eliminarUsuario(index)" title="Eliminar">🗑️</button>
+            <button
+              title="Editar"
+              @click="editarUsuario(index)"
+            >
+              ✏️
+            </button>
+            <button
+              title="Eliminar"
+              @click="eliminarUsuario(index)"
+            >
+              🗑️
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
 
-    <p v-else>Non hai usuarios cargados.</p>
+    <p v-else>
+      Non hai usuarios cargados.
+    </p>
   </div>
 </template>
 
 <script setup>
 /// Zona de declaracións
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted } from "vue"
 
 const usuarios = ref([]); //almacena la lista de usuarios e os seus cambios
 
@@ -120,9 +185,11 @@ const novoPaciente = reactive({
   movil: "",
   direccion: "",
   provincia: "",
+  municipio: ""
 });
 
 /// Zona de ciclo de vida
+const provincias = ref([])
 
 onMounted(() => {
   //sempre se cargan estos usuarios de exemplo ao iniciar o componente
@@ -130,36 +197,18 @@ onMounted(() => {
     {
       dni: "A000000C",
       nome: "Soldaduras SL",
-      correo: "soldadura@email.com",
+      correo: "soldadura@correo.com",
       provincia: "A Coruña",
       activo: true,
       tipoCuenta: "empresa",
-    },
-    {
-      dni: "0000000C",
-      nome: "María Pérez",
-      correo: "maria@email.com",
-      provincia: "Lugo",
-      activo: false,
-      tipoCuenta: "particular",
-    },
-    {
-      dni: "B1234567D",
-      nome: "Xosé López",
-      correo: "xose@email.com",
-      provincia: "Ourense",
-      activo: true,
-      tipoCuenta: "particular",
-    },
-    {
-      dni: "C9876543E",
-      nome: "Construcións Modernas",
-      correo: "construcion@email.com",
-      provincia: "Pontevedra",
-      activo: true,
-      tipoCuenta: "empresa",
-    },
-  ];
+    }
+  ],
+  provincias.value = [
+    { id: 1, nombre: 'A Coruña' },
+    { id: 2, nombre: 'Lugo' },
+    { id: 3, nombre: 'Ourense' },
+    { id: 4, nombre: 'Pontevedra' }
+  ]
 });
 
 /// Zona de métodos ou funcións bbdd
@@ -170,7 +219,7 @@ function gardarUsuario() {
 }
 
 function eliminarUsuario(index) {
-  usuarios.value.splice(index, 1); //elimina o usuario da lista
+  usuarios.value.splice(index, 1) //elimina o usuario da lista
 }
 
 function editarUsuario(index) {
@@ -186,24 +235,24 @@ const dniValido = ref(true); // Por defecto es válido y no muestra error al ini
 
 // Función para validar DNI y NIE
 const validarDniNie = (valor) => {
-  const letras = "TRWAGMYFPDXBNJZSQVHLCKE";
-  const dniRegex = /^[0-9]{8}[A-Z]$/;
-  const nieRegex = /^[XYZ][0-9]{7}[A-Z]$/;
+  const letras = "TRWAGMYFPDXBNJZSQVHLCKE"
+  const dniRegex = /^[0-9]{8}[A-Z]$/
+  const nieRegex = /^[XYZ][0-9]{7}[A-Z]$/
 
-  valor = valor.toUpperCase();
+  valor = valor.toUpperCase()
 
   if (dniRegex.test(valor)) {
     const numero = parseInt(valor.slice(0, 8), 10);
-    const letra = valor.charAt(8);
+    const letra = valor.charAt(8)
     return letra === letras[numero % 23]; //sale con true si es válido
   } else if (nieRegex.test(valor)) {
-    const nie = valor.replace("X", "0").replace("Y", "1").replace("Z", "2");
-    const numero = parseInt(nie.slice(0, 8), 10);
-    const letra = valor.charAt(8);
+    const nie = valor.replace("X", "0").replace("Y", "1").replace("Z", "2")
+    const numero = parseInt(nie.slice(0, 8), 10)
+    const letra = valor.charAt(8)
     return letra === letras[numero % 23]; //sale con true si es válido
   }
-  novoPaciente.dni = "";
-  return false;
+  novoPaciente.dni = ""
+  return false
 };
 
 // Validar al salir del campo
@@ -213,19 +262,56 @@ const validarDni = () => {
   // Actualiza el estado de validez
 };
 
-// capitalizar nombre y apelidos
-
 // Función única: capitaliza y asigna en el mismo paso
 const capitalizarTexto = (campo) => {
-  const texto = novoPaciente[campo] ?? "";
+  const texto = novoPaciente[campo] ?? ""
   novoPaciente[campo] = texto
     .toLowerCase()
     .split(" ")
     .map((palabra) => {
-      if (!palabra) return "";
+      if (!palabra) return ""
       return palabra.charAt(0).toLocaleUpperCase() + palabra.slice(1);
     })
-    .join(" ");
+    .join(" ")
+};
+
+// validar mail
+
+const correoValido = ref(true);
+
+const validarcorreo = () => {
+  const correo = novoPaciente.correo.trim();
+
+  const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+  if (!regex.test(correo)) {
+    correoValido.value = false;
+    novoPaciente.correo = "";
+  } else {
+    correoValido.value = true;
+  }
+};
+
+// validar movil
+
+const movilValido = ref(true);
+const movilRegex = /^[67]\d{8}$/;
+const validarMovil = () => {
+  const movil = novoPaciente.movil.trim();
+
+  if (movil === "") {
+    movilValido.value = true; // Vacío = válido (opcional)
+    return true;
+  }
+
+  if (movil.charAt(0) === "6" || movil.charAt(0) === "7") {
+    movilValido.value = movilRegex.test(movil);
+    return movilValido.value;
+  } else {
+    movilValido.value = false;
+    novoPaciente.movil = "";
+    return false;
+  }
 };
 </script>
 
@@ -263,7 +349,7 @@ form {
   display: flex;
   align-items: center;
   /* label e input en la misma línea */
-  gap: 0.5rem;
+  gap: 0.3rem;
   border-radius: 0px;
 }
 
@@ -290,7 +376,11 @@ form {
   /* ocupa más espacio */
   border-radius: 0px;
 }
-
+.campo-provincia {
+  flex: 1;
+  /* ocupa más espacio */
+  border-radius: 0px;
+}
 .campo-correo {
   flex: 2;
   /* ocupa más espacio */
@@ -302,11 +392,16 @@ form {
   padding: 0.6rem;
   border: 1px solid #ddd;
   border-radius: 0px;
-  width: 100%;
+  width: 60%;
 }
 
 .campo-provincia {
-  flex: 1;
+  flex: 3;
+  /* ocupa menos espacio */
+  border-radius: 0px;
+}
+.campo-municipio {
+  flex: 3;
   /* ocupa menos espacio */
   border-radius: 0px;
 }
