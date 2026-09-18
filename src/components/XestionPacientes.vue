@@ -10,8 +10,8 @@
             type="text"
             required
             style="text-align: center"
-            @blur="validarDni"
             :class="{ 'is-invalid': !dniValido }"
+            @blur="validarDni"
           />
         </div>
         <div v-if="!dniValido" class="invalid-texto d-block">
@@ -19,17 +19,34 @@
         </div>
         <div class="campo campo-nome">
           <label>Nome:</label>
-          <input v-model="novoPaciente.nome" type="text" required id="nome"  @blur="capitalizarTexto('nome')"/>
+          <input
+            v-model="novoPaciente.nome"
+            type="text"
+            required
+            id="nome"
+            @blur="capitalizarTexto('nome')"
+          />
         </div>
         <div class="campo campo-apellido">
           <label>Apellidos:</label>
-          <input v-model="novoPaciente.apellido" id="apellido" @blur="capitalizarTexto('apellido')" type="text" required />
+          <input
+            v-model="novoPaciente.apellido"
+            id="apellido"
+            @blur="capitalizarTexto('apellido')"
+            type="text"
+            required
+          />
         </div>
       </div>
       <div class="fila">
         <div class="campo campo-fecha">
           <label>Fecha Nacimiento:</label>
-          <input v-model="novoPaciente.nacimiento" type="date" placeholder="dd/mm/yyyy" required />
+          <input
+            v-model="novoPaciente.nacimiento"
+            type="date"
+            placeholder="dd/mm/yyyy"
+            required
+          />
         </div>
         <div class="campo campo-correo">
           <label>Correo:</label>
@@ -98,13 +115,11 @@ const usuarios = ref([]); //almacena la lista de usuarios e os seus cambios
 const novoPaciente = reactive({
   dni: "",
   nome: "",
-  apellido:"",
+  apellido: "",
   correo: "",
   movil: "",
-  direccion: "",  
+  direccion: "",
   provincia: "",
-  activo: false,
-  tipoCuenta: "",
 });
 
 /// Zona de ciclo de vida
@@ -150,17 +165,17 @@ onMounted(() => {
 /// Zona de métodos ou funcións bbdd
 
 function gardarUsuario() {
-  usuarios.value.push({ ...novoPaciente }) //engade o novo usuario á lista (copia do obxecto)
+  usuarios.value.push({ ...novoPaciente }); //engade o novo usuario á lista (copia do obxecto)
   //Object.assign(novoPaciente, { dni: "", nome: "", correo: "", provincia: "", activo: false, tipoCuenta: "" }) //reinicia o formulario
 }
 
 function eliminarUsuario(index) {
-  usuarios.value.splice(index, 1) //elimina o usuario da lista
+  usuarios.value.splice(index, 1); //elimina o usuario da lista
 }
 
 function editarUsuario(index) {
-  const usuario = usuarios.value[index] //carga os datos do usuario elixido no formulario
-  Object.assign(novoPaciente, usuario) // carga os datos do usuario no formulario recorda v-model do formulario é novoPaciente
+  const usuario = usuarios.value[index]; //carga os datos do usuario elixido no formulario
+  Object.assign(novoPaciente, usuario); // carga os datos do usuario no formulario recorda v-model do formulario é novoPaciente
 }
 
 //  =====================================================
@@ -171,23 +186,23 @@ const dniValido = ref(true); // Por defecto es válido y no muestra error al ini
 
 // Función para validar DNI y NIE
 const validarDniNie = (valor) => {
-  const letras = "TRWAGMYFPDXBNJZSQVHLCKE"
-  const dniRegex = /^[0-9]{8}[A-Z]$/
-  const nieRegex = /^[XYZ][0-9]{7}[A-Z]$/
+  const letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+  const dniRegex = /^[0-9]{8}[A-Z]$/;
+  const nieRegex = /^[XYZ][0-9]{7}[A-Z]$/;
 
   valor = valor.toUpperCase();
 
   if (dniRegex.test(valor)) {
-    const numero = parseInt(valor.slice(0, 8), 10)
-    const letra = valor.charAt(8)
+    const numero = parseInt(valor.slice(0, 8), 10);
+    const letra = valor.charAt(8);
     return letra === letras[numero % 23]; //sale con true si es válido
   } else if (nieRegex.test(valor)) {
-    const nie = valor.replace("X", "0").replace("Y", "1").replace("Z", "2")
-    const numero = parseInt(nie.slice(0, 8), 10)
-    const letra = valor.charAt(8)
-    return letra === letras[numero % 23] //sale con true si es válido
+    const nie = valor.replace("X", "0").replace("Y", "1").replace("Z", "2");
+    const numero = parseInt(nie.slice(0, 8), 10);
+    const letra = valor.charAt(8);
+    return letra === letras[numero % 23]; //sale con true si es válido
   }
-  novoPaciente.dni = ""
+  novoPaciente.dni = "";
   return false;
 };
 
@@ -275,6 +290,7 @@ form {
   /* ocupa más espacio */
   border-radius: 0px;
 }
+
 .campo-correo {
   flex: 2;
   /* ocupa más espacio */
@@ -372,7 +388,7 @@ h4 {
 .is-invalid {
   border-color: #f28b82 !important;
   background-color: #ffe6e6;
- }
+}
 
 .invalid-texto {
   display: block;
