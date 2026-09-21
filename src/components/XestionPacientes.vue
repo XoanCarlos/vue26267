@@ -476,7 +476,7 @@ th {
 h4 {
   margin-bottom: 1rem;
   font-weight: 600;
-  background-color: #1bb191;
+  background-color: #1ec9a4;
   color: white;
 }
 

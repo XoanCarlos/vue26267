@@ -1,36 +1,47 @@
 <template>
   <div id="app">
-    <!-- Aquí se carga el componente principal DE MOMENTO-->
-    <XestionPacientes />
+    <NavBar />
+    <!-- Aquí se carga el router -->
+         <router-view />
+    <FooTer />
   </div>
 </template>
 
 <script setup>
-import XestionPacientes from './components/XestionPacientes.vue'
+import NavBar from './components/NavBar.vue'
+import FooTer from './components/FooTer.vue'
+
 </script>
 
 <style>
-/* 👇 Estilos globales mínimos */
-:global(body) {
-  margin: 0;               /* quita el margen por defecto del body */
-  background: #f6f6f6;     /* color de fondo general */
+body {
+  margin: 0;
+
+  background: #f6f6f6;
 }
 
 #app {
   max-width: 80vw;
-  margin: 0 auto;          /* centra horizontalmente */
-  padding-top: 1rem;       /* 🔹 margen superior pequeño */
-  padding-bottom: 1rem;    /* 🔹 espacio para el futuro footer */
-  min-height: 100vh;       /* ocupa toda la altura de la pantalla */
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start; /* el contenido empieza arriba */
-}
-/* Cuando la pantalla es menor a 768px */
-@media (max-width: 768px) {
-  .container {
-    flex-direction: column;
-  }
+  height: 100vw;
+  margin: 0 auto;
+  padding-top: 1rem;
+  padding-bottom: 60px;
 }
 
+/* Footer fijo abajo */
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 47vw;
+  width: 47vw;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Pantallas pequeñas */
+@media (max-width: 768px) {
+  #app {
+    max-width: 95vw;
+  }
+}
 </style>
