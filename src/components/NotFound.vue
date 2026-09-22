@@ -1,4 +1,5 @@
 <template>
+    <br/>
     <h2 class="error-page">A páxina que buscas non se atopa</h2>
     <br/>
     <div id="img">
@@ -9,6 +10,8 @@
 <script setup></script>
 <style scoped>
 .error-page {
+    margin-top: 5%;
+    margin-bottom: 5%;
     text-align: center;
 }
 

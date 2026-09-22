@@ -5,115 +5,66 @@
       <div class="fila">
         <div class="campo campo-dni">
           <label>DNI/CIF:</label>
-          <input
-            v-model="novoPaciente.dni"
-            type="text"
-            required
-            style="text-align: center"
-            :class="{ 'is-invalid': !dniValido }"
-            @blur="validarDni"
-          >
+          <input v-model="novoPaciente.dni" type="text" required style="text-align: center"
+            :class="{ 'is-invalid': !dniValido }" @blur="validarDni">
         </div>
-        <div
-          v-if="!dniValido" 
-          class="invalid-texto d-block"
-        >
+        <div v-if="!dniValido" class="invalid-texto d-block">
           DNI o NIE inválido.
         </div>
         <div class="campo campo-nome">
           <label>Nome:</label>
-          <input
-            id="nome"
-            v-model="novoPaciente.nome"
-            type="text"
-            required
-            @blur="capitalizarTexto('nome')"
-          >
+          <input id="nome" v-model="novoPaciente.nome" type="text" required @blur="capitalizarTexto('nome')">
         </div>
         <div class="campo campo-apellido">
           <label>Apellidos:</label>
-          <input
-            id="apellido"
-            v-model="novoPaciente.apellido"
-            type="text"
-            required
-            @blur="capitalizarTexto('apellido')"
-          >
+          <input id="apellido" v-model="novoPaciente.apellido" type="text" required
+            @blur="capitalizarTexto('apellido')">
         </div>
       </div>
       <div class="fila">
         <div class="campo campo-fecha">
           <label>Fecha Nacimiento:</label>
-          <input
-            v-model="novoPaciente.nacimiento"
-            type="date"
-            placeholder="dd/mm/yyyy"
-            required
-          >
+          <input v-model="novoPaciente.nacimiento" type="date" placeholder="dd/mm/yyyy" required>
         </div>
         <div class="campo campo-correo">
           <label>Correo:</label>
-          <input
-            v-model="novoPaciente.correo"
-            type="correo"
-            :class="{ 'is-invalid': !correoValido }"
-            @blur="validarcorreo"
-          >
+          <input v-model="novoPaciente.correo" type="correo" :class="{ 'is-invalid': !correoValido }"
+            @blur="validarcorreo">
         </div>
         <div class="campo campo-correo">
           <label>Móvil:</label>
-          <input
-            v-model="novoPaciente.movil"
-            type="text"
-            style="text-align: center"
-            :class="{ 'is-invalid': !movilValido }"
-            required
-            @blur="validarMovil"
-          >
+          <input v-model="novoPaciente.movil" type="text" style="text-align: center"
+            :class="{ 'is-invalid': !movilValido }" required @blur="validarMovil">
         </div>
       </div>
       <div class="fila fila-centrada">
         <div class="campo campo-direccion">
           <label>Direccion:</label>
-          <input
-            v-model="novoPaciente.direccion"
-            type="text"
-            required
-          >
+          <input v-model="novoPaciente.direccion" type="text" required>
         </div>
         <div class="campo campo-provincia">
           <label>Provincia</label>
-          <select id="provincia" v-model="novoPaciente.provincia" >
+          <select id="provincia" v-model="novoPaciente.provincia" @change="cargarMunicipios">
             <option value="">Selecciona una provincia</option>
-            <option
-              v-for="provincia in provincias"
-              :key="provincia.id"
-              :value="provincia.id"
-            >
-              {{ provincia.nombre }}
+
+            <option v-for="provincia in provincias" :key="provincia.id" :value="provincia.id">
+              {{ provincia.nm }}
             </option>
           </select>
         </div>
         <div class="campo campo-municipio">
           <label>Municipio</label>
-          <select
-            id="provincia"
-            v-model="novoPaciente.municipio"
-            type="text"
-          >
-            <option
-              disabled
-              value=""
-            />
+          <select id="municipio" v-model="novoPaciente.municipio">
+            <option value="">Selecciona un municipio</option>
+
+            <option v-for="municipio in municipios" :key="municipio.id" :value="municipio.id">
+              {{ municipio.nm }}
+            </option>
           </select>
         </div>
       </div>
-      <button
-        type="submit"
-        class="btn-guardar"
-        :disabled="novoPaciente.dni === '' || novoPaciente.nome === '' || novoPaciente.apellido === ''
-        "
-      >
+      <button type="submit" class="btn-guardar" :disabled="novoPaciente.dni === '' || novoPaciente.nome === '' || novoPaciente.apellido === ''
+        ">
         Gardar
       </button>
     </form>
@@ -132,10 +83,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr
-          v-for="(u, index) in usuarios"
-          :key="index"
-        >
+        <tr v-for="(u, index) in usuarios" :key="index">
           <td>{{ index + 1 }}</td>
           <td style="text-align: center">
             {{ u.dni }}
@@ -148,16 +96,10 @@
           </td>
           <td>{{ u.tipoCuenta }}</td>
           <td style="text-align: center">
-            <button
-              title="Editar"
-              @click="editarUsuario(index)"
-            >
+            <button title="Editar" @click="editarUsuario(index)">
               ✏️
             </button>
-            <button
-              title="Eliminar"
-              @click="eliminarUsuario(index)"
-            >
+            <button title="Eliminar" @click="eliminarUsuario(index)">
               🗑️
             </button>
           </td>
@@ -174,6 +116,10 @@
 <script setup>
 /// Zona de declaracións
 import { ref, reactive, onMounted } from "vue"
+import { obtenerMunicipios, obtenerProvincias } from "../api/municipios";
+
+const provincias = ref([])
+const municipios = ref([])
 
 const usuarios = ref([]); //almacena la lista de usuarios e os seus cambios
 
@@ -188,10 +134,10 @@ const novoPaciente = reactive({
   municipio: ""
 });
 
-/// Zona de ciclo de vida
-const provincias = ref([])
+// metemo async porque estabmos haciendoo
+// operacione asíncronas con await
 
-onMounted(() => {
+onMounted(async () => {
   //sempre se cargan estos usuarios de exemplo ao iniciar o componente
   usuarios.value = [
     {
@@ -202,16 +148,24 @@ onMounted(() => {
       activo: true,
       tipoCuenta: "empresa",
     }
-  ],
-  provincias.value = [
-    { id: 1, nombre: 'A Coruña' },
-    { id: 2, nombre: 'Lugo' },
-    { id: 3, nombre: 'Ourense' },
-    { id: 4, nombre: 'Pontevedra' }
   ]
+
+  provincias.value = await obtenerProvincias()
 });
 
 /// Zona de métodos ou funcións bbdd
+
+async function cargarMunicipios() {
+
+  // Si no hay provincia seleccionada, vaciamos los municipios
+  if (novoPaciente.provincia === "") {
+    municipios.value = []
+    return
+  }
+
+  // Obtenemos los municipios de la provincia seleccionada
+  municipios.value = await obtenerMunicipios(novoPaciente.provincia)
+}
 
 function gardarUsuario() {
   usuarios.value.push({ ...novoPaciente }); //engade o novo usuario á lista (copia do obxecto)
@@ -376,11 +330,13 @@ form {
   /* ocupa más espacio */
   border-radius: 0px;
 }
+
 .campo-provincia {
   flex: 1;
   /* ocupa más espacio */
   border-radius: 0px;
 }
+
 .campo-correo {
   flex: 2;
   /* ocupa más espacio */
@@ -400,6 +356,7 @@ form {
   /* ocupa menos espacio */
   border-radius: 0px;
 }
+
 .campo-municipio {
   flex: 3;
   /* ocupa menos espacio */
