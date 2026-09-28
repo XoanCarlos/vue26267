@@ -1,11 +1,22 @@
 import express from "express";
 import fs from "fs";
 import cors from "cors"; //evita bloqueos entre servidores
+import "dotenv/config";
+import { MongoClient } from "mongodb";  //importa módulo de conexion a mongodb
 
 // Creamos la aplicación Express
 const app = express();
 app.use(cors());
-const PORT = 3000;
+
+//USA EL PUERTO definido en la variables de entorno y si no coge el 3000
+const PORT = process.env.PORT || 3000;
+
+//URL conexion con mongodb
+
+const MONGO_URI = process.env.MONGO_URI;
+
+//CREAMOS EL CLIENTE MONGODB o LA CADENA DE CONEXION
+const client = new MongoClient(MONGO_URI);
 
 // Ruta de la API para obtener provincias y municipios
 app.get("/api/municipios", (req, res) => {
@@ -22,6 +33,18 @@ app.get("/api/municipios", (req, res) => {
 });
 
 // Ponemos el servidor a escuchar en el puerto 3000
-app.listen(PORT, () => {
-  console.log(`Servidor funcionando en http://localhost:${PORT}`);
-});
+
+async function iniciaServer(){
+    try{
+      //conectamos con mongodb
+      await client.connect();
+      console.log("Conectado a MongoDB");
+      app.listen(PORT, () => {
+      console.log(`Servidor funcionando en http://localhost:${PORT}`);
+        });
+    } catch(error){
+      console.error("error de conexion", error)
+    }
+  }
+
+iniciaServer();
