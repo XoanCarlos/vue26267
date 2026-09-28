@@ -1,4 +1,4 @@
-// modelo articulo
+// modelo paciente
 
 import mongoose from "mongoose";
 
