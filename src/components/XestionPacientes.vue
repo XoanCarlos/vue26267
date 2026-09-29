@@ -72,7 +72,7 @@
       <div class="fila fila-centrada">
         <div class="campo campo-direccion">
           <label>Direccion:</label>
-          <input v-model="novoPaciente.dirpac" type="text" required />
+          <input v-model="novoPaciente.dirpac" type="text" />
         </div>
         <div class="campo campo-provincia">
           <label>Provincia</label>
@@ -123,7 +123,7 @@
     <table v-if="pacientes.length > 0">
       <thead>
         <tr>
-          <th>#</th>
+          <th>ID</th>
           <th>DNI/CIF</th>
           <th>Nome</th>
           <th>Correo</th>
@@ -175,8 +175,7 @@ const novoPaciente = reactive({
   munipac: ""
 });
 
-
-// metemo async porque estabmos haciendo
+// usamos async porque estamos haciendo
 // operacione asíncronas con await
 
 onMounted(async () => {

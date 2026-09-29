@@ -4,20 +4,21 @@ import cors from "cors"; //evita bloqueos entre servidores
 import "dotenv/config";
 import mongoose from "mongoose";
 
+import pacientesRutas from './rutas/pacientes.rutas.js'; 
+//importa el modelo de paciente y las funciones de la api de pacientes
 
-import pacientesRutas from './rutas/pacientes.rutas.js'; //importa el modelo de paciente
+
 // Creamos la aplicación Express
 const app = express();
 app.use(cors());
 app.use(express.json()); //para que pueda leer json
-app.use('/api/pacientes', pacientesRutas); //usa el modelo de paciente
+app.use('/api/pacientes', pacientesRutas); //usa el modelo de paciente y funciones
 //USA EL PUERTO definido en la variables de entorno y si no coge el 3000
 const PORT = process.env.PORT || 3000;
 
 //URL conexion con mongodb
 
 const MONGO_URI = process.env.MONGO_URI;
-
 
 // Ruta de la API para obtener provincias y municipios
 app.get("/api/municipios", (req, res) => {
