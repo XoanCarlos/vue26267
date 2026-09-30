@@ -86,7 +86,7 @@
             <option
               v-for="provincia in provincias"
               :key="provincia.id"
-              :value="provincia.id"
+              :value="provincia.nm"
             >
               {{ provincia.nm }}
             </option>
@@ -100,7 +100,7 @@
             <option
               v-for="municipio in municipios"
               :key="municipio.id"
-              :value="municipio.id"
+              :value="municipio.nm"
             >
               {{ municipio.nm }}
             </option>
@@ -125,6 +125,7 @@
         <tr>
           <th>ID</th>
           <th>DNI/CIF</th>
+          <th>Apelidos</th>
           <th>Nome</th>
           <th>Correo</th>
           <th>Provincia</th>
@@ -133,10 +134,9 @@
       </thead>
       <tbody>
         <tr v-for="(u, index) in pacientes" :key="index">
-          <td>{{ index + 1 }}</td>
-          <td style="text-align: center">
-            {{ u.dnipac }}
-          </td>
+          <td style="text-align: center">{{ index + 1 }}</td>
+          <td style="text-align: center"> {{ u.dnipac }} </td>
+          <td>{{ u.apelpac }}</td>
           <td>{{ u.nomepac }}</td>
           <td>{{ u.mailpac }}</td>
           <td>{{ u.propac }}</td>
@@ -192,28 +192,19 @@ async function cargarMunicipios() {
     return;
   }
 
+  const provincia = provincias.value.find(
+    p => p.nm === novoPaciente.propac
+  );
+
   // Obtenemos los municipios de la provincia seleccionada
-  municipios.value = await obtenerMunicipios(novoPaciente.propac);
-  
+  municipios.value = await obtenerMunicipios(provincia.id); 
 }
 
 async function guardarPaciente() {
   try {
-        //tomar el nombre del municipio seleccionado y asignarlo a novoPaciente.munipac
-        //y de la provincia seleccionado y asignarlo a novoPaciente.propac
-        const provincia = provincias.value.find(
-            p => p.id === novoPaciente.propac
-          );
-
-          const municipio = municipios.value.find(
-            m => m.id === novoPaciente.munipac
-          );
-
-        novoPaciente.propac = provincia.nm;
-        novoPaciente.munipac = municipio.nm;
-
     		const pacienteGuardado = await savePaciente(novoPaciente);
     		pacientes.value.push(pacienteGuardado);
+        
     		console.log("Paciente gardado correctamente");
         getPacientes(); // Actualiza la lista de pacientes después de guardar
   } catch (error) {

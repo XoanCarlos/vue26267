@@ -7,14 +7,14 @@ const router = express.Router();
 // Obtener todos
 router.get("/", async (req, res) => {
     try {
-        const pacientes = await Paciente.find();
+        const pacientes = await Paciente.find();  //es el select de sql
 
         res.json(pacientes);
 
     } catch (error) {
 
         res.status(500).json({
-            mensaje: "Error al obtener pacientes"
+            mensaje: ("Error al obtener pacientes", error)
         });
     }
 });
@@ -38,7 +38,7 @@ router.get("/:dni", async (req, res) => {
     } catch (error) {
 
         res.status(500).json({
-            mensaje: "Error al obtener el paciente"
+            mensaje: ("Error al obtener el paciente", error)
         });
     }
 });
@@ -48,7 +48,6 @@ router.get("/:dni", async (req, res) => {
 router.post("/", async (req, res) => {
     try {
 
-        console.log("Datos recibidos:", req.body);
         const paciente = new Paciente(req.body);
 
         const nuevoPaciente = await paciente.save();
@@ -85,7 +84,7 @@ router.put("/:dni", async (req, res) => {
     } catch (error) {
 
         res.status(500).json({
-            mensaje: "Error al modificar el paciente"
+            mensaje: ("Error al modificar el paciente", error)
         });
     }
 });
@@ -111,7 +110,7 @@ router.delete("/:dni", async (req, res) => {
     } catch (error) {
 
         res.status(500).json({
-            mensaje: "Error al eliminar el paciente"
+            mensaje: "Error al eliminar el paciente", error)
         });
     }
 });
