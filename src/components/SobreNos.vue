@@ -1,5 +1,5 @@
 <template>
-    <h2>Acerda de</h2>
+    <h2>Acerca de</h2>
 </template>
 
 <script setup></script>

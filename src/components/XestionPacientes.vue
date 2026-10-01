@@ -14,6 +14,7 @@
             @blur="validarDni"
           />
         </div>
+          <button >🔎</button>
         <div v-if="!dniValido" class="invalid-texto d-block">
           DNI o NIE inválido.
         </div>
@@ -141,8 +142,8 @@
           <td>{{ u.mailpac }}</td>
           <td>{{ u.propac }}</td>
           <td style="text-align: center">
-            <button title="Editar" @click="editarUsuario(index)">✏️</button>
-            <button title="Eliminar" @click="eliminarUsuario(index)">🗑️</button>
+            <button style="margin-right: 5px;" title="Editar" @click="editarUsuario(index)">✏️</button>
+            <button title="Eliminar" @click="eliminarPaciente(index)">🗑️</button>
           </td>
         </tr>
       </tbody>
@@ -153,11 +154,12 @@
 </template>
 
 <script setup>
-/// Zona de declaracións
+/// Zona de importaciones
 import { ref, reactive, onMounted } from "vue";
 import { obtenerMunicipios, obtenerProvincias } from "../api/municipios.js";
-import { getPacientes, savePaciente } from "../api/pacientes.js";
+import { getPacientes, savePaciente, deletePaciente } from "../api/pacientes.js";
 
+// Zona de variables reactivas y referencias
 const provincias = ref([]);
 const municipios = ref([]);
 
@@ -212,9 +214,15 @@ async function guardarPaciente() {
   }
 }
 
-
-function eliminarUsuario(index) {
-  pacientes.value.splice(index, 1); //elimina o paciente da lista
+async function eliminarPaciente(index) {
+  try {
+    await deletePaciente(pacientes.value[index].dnipac);
+    pacientes.value.splice(index, 1); // Elimina el paciente de la lista local   
+    console.log("Paciente eliminado correctamente");
+    getPacientes(); // Actualiza la lista de pacientes después de eliminar
+  } catch (error) {
+    console.error("Error ao eliminar paciente:", error);
+  } 
 }
 
 function editarUsuario(index) {
@@ -222,8 +230,7 @@ function editarUsuario(index) {
   Object.assign(novoPaciente, paciente); // carga os datos do paciente no formulario recorda v-model do formulario é novoPaciente
 }
 
-//  =====================================================
-// funciones auxiliares
+//  ============== FUNCIONES AUXILIARES =====================
 
 // Estado de validez del DNI/NIE si la estructura de datos es más compleja se usa reactive
 const dniValido = ref(true); // Por defecto es válido y no muestra error al iniciar
@@ -315,7 +322,7 @@ const validarMovil = () => {
   width: 100%;
   /* opcional para que no crezca demasiado en pantallas muy grandes */
   background: white;
-  padding: 2rem;
+  padding: 1rem;
   overflow: visible;
   border-radius: 2px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -327,7 +334,7 @@ form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .fila {

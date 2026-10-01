@@ -1,9 +1,10 @@
 <template>
   <div id="app">
     <NavBar />
-    <!-- Aquí se carga el router -->
-         <router-view />
-    <FooTer />
+    <main class="contenido">
+      <router-view /> <!-- Aquí se carga el router -->    
+    </main>
+         <FooTer />
   </div>
 </template>
 
@@ -16,26 +17,38 @@ import FooTer from './components/FooTer.vue'
 <style>
 body {
   margin: 0;
-
   background: #f6f6f6;
 }
 
 #app {
   max-width: 80vw;
-  height: 100vw;
   margin: 0 auto;
-  padding-top: 1rem;
+  min-height: calc(100vh - 120px); /* Altura mínima para que el contenido no se superponga con el footer */
+}
+
+.contenido{
+  padding-top: 7vh;
   padding-bottom: 60px;
+}
+
+/* Navbar fijo arriba */
+nav {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80vw;
+  z-index: 1000;
 }
 
 /* Footer fijo abajo */
 footer {
   position: fixed;
   bottom: 0;
-  width: 47vw;
-  width: 47vw;
   left: 50%;
   transform: translateX(-50%);
+  width: 80vw;
+  z-index: 1000;
 }
 
 /* Pantallas pequeñas */

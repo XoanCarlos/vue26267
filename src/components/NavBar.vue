@@ -1,5 +1,6 @@
 <template>
   <nav class="navbar">
+    <link rel="icon" type="image/svg+xml" href="../assets/img/favicon.png" />
     <div class="logo">Sanidad Teis</div>
 
     <!-- NUEVO -->
@@ -53,7 +54,10 @@ const isOpen = ref(false) // actívase cuando fago click
 /* NUEVO */
 .hamburger {
   display: none;
-  background: none;
+  margin-right: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.3rem;
+  background: #1ca285;
   border: none;
   color: white;
   font-size: 1.5rem;
@@ -63,15 +67,17 @@ const isOpen = ref(false) // actívase cuando fago click
 @media (max-width: 768px) {
   .hamburger {
     display: block;
+    margin-right: 1rem;
   }
 
   .menu {
     display: none;
     position: absolute;
-    top: 50px;
+    margin-right: 3rem;
+    top: 20px;
     right: 0;
     flex-direction: column;
-    background: #1b4965;
+    background: #1ca285;
     padding: 1rem;
   }
 
