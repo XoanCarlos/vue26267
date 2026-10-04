@@ -12,7 +12,8 @@ const PacienteSchema = new mongoose.Schema(
     movilpac: { type: String, required: true},
     dirpac: { type: String, required: false},
     propac: { type: String, required: true},
-    munipac: { type: String, required: true}
+    munipac: { type: String, required: true},
+    lopdpac: { type: Boolean, required: true},
     },
 
     {

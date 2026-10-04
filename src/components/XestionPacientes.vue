@@ -14,7 +14,7 @@
             @blur="validarDni"
           />
         </div>
-          <button >🔎</button>
+        <button>🔎</button>
         <div v-if="!dniValido" class="invalid-texto d-block">
           DNI o NIE inválido.
         </div>
@@ -108,13 +108,29 @@
           </select>
         </div>
       </div>
+
+      <div class="campo-condicions">
+        <label>
+          <input v-model="novoPaciente.lopdpac" type="checkbox" />Aceptar a
+          <!-- Como usasr vue-router desde el componente usando $router -->
+          <a
+            :href="$router.resolve({ name: 'PoliticaPrivacidad' }).href"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            política de privacidad e confidencialidade.
+          </a>
+        </label>
+      </div>
+
       <button
         type="submit"
         class="btn-guardar"
         :disabled="
           novoPaciente.dnipac === '' ||
           novoPaciente.nomepac === '' ||
-          novoPaciente.apelpac === ''
+          novoPaciente.apelpac === '' ||
+          !novoPaciente.lopdpac
         "
       >
         Gardar
@@ -136,14 +152,22 @@
       <tbody>
         <tr v-for="(u, index) in pacientes" :key="index">
           <td style="text-align: center">{{ index + 1 }}</td>
-          <td style="text-align: center"> {{ u.dnipac }} </td>
+          <td style="text-align: center">{{ u.dnipac }}</td>
           <td>{{ u.apelpac }}</td>
           <td>{{ u.nomepac }}</td>
           <td>{{ u.mailpac }}</td>
           <td>{{ u.propac }}</td>
           <td style="text-align: center">
-            <button style="margin-right: 5px;" title="Editar" @click="editarUsuario(index)">✏️</button>
-            <button title="Eliminar" @click="eliminarPaciente(index)">🗑️</button>
+            <button
+              style="margin-right: 5px"
+              title="Editar"
+              @click="editarUsuario(index)"
+            >
+              ✏️
+            </button>
+            <button title="Eliminar" @click="eliminarPaciente(index)">
+              🗑️
+            </button>
           </td>
         </tr>
       </tbody>
@@ -157,13 +181,19 @@
 /// Zona de importaciones
 import { ref, reactive, onMounted } from "vue";
 import { obtenerMunicipios, obtenerProvincias } from "../api/municipios.js";
-import { getPacientes, savePaciente, deletePaciente } from "../api/pacientes.js";
+import {
+  getPacientes,
+  savePaciente,
+  deletePaciente,
+  modifyPaciente,
+} from "../api/pacientes.js";
 
 // Zona de variables reactivas y referencias
 const provincias = ref([]);
 const municipios = ref([]);
 
 const pacientes = ref([]); //almacena la lista de pacientes e os seus cambios
+const editando = ref(false); // Indica si estamos editando un paciente existente
 
 const novoPaciente = reactive({
   dnipac: "",
@@ -174,15 +204,16 @@ const novoPaciente = reactive({
   movilpac: "",
   dirpac: "",
   propac: "",
-  munipac: ""
+  munipac: "",
+  lopdpac: false, // Nuevo campo para la aceptación de la LOPD
 });
 
 // usamos async porque estamos haciendo
 // operacione asíncronas con await
 
 onMounted(async () => {
-    provincias.value = await obtenerProvincias();
-    pacientes.value = await getPacientes();
+  provincias.value = await obtenerProvincias();
+  pacientes.value = await getPacientes();
 });
 
 /// Zona de métodos ou funcións bbdd
@@ -194,21 +225,40 @@ async function cargarMunicipios() {
     return;
   }
 
-  const provincia = provincias.value.find(
-    p => p.nm === novoPaciente.propac
-  );
+  const provincia = provincias.value.find((p) => p.nm === novoPaciente.propac);
 
   // Obtenemos los municipios de la provincia seleccionada
-  municipios.value = await obtenerMunicipios(provincia.id); 
+  municipios.value = await obtenerMunicipios(provincia.id);
 }
 
 async function guardarPaciente() {
   try {
-    		const pacienteGuardado = await savePaciente(novoPaciente);
-    		pacientes.value.push(pacienteGuardado);
-        
-    		console.log("Paciente gardado correctamente");
-        getPacientes(); // Actualiza la lista de pacientes después de guardar
+    if (editando.value) {
+      // Modificar paciente existente
+      const pacienteModificado = await modifyPaciente(
+        novoPaciente.dnipac,
+        novoPaciente
+      );
+
+      const index = pacientes.value.findIndex(
+        (p) => p.dnipac === novoPaciente.dnipac
+      );
+
+      if (index !== -1) {
+        pacientes.value[index] = pacienteModificado;
+      }
+
+      console.log("Paciente modificado correctamente");
+    } else {
+      // Crear paciente nuevo
+      const pacienteGuardado = await savePaciente(novoPaciente);
+      pacientes.value.push(pacienteGuardado);
+
+      console.log("Paciente gardado correctamente");
+    }
+
+    editando.value = false;
+
   } catch (error) {
     console.error("Error ao gardar paciente:", error);
   }
@@ -217,17 +267,23 @@ async function guardarPaciente() {
 async function eliminarPaciente(index) {
   try {
     await deletePaciente(pacientes.value[index].dnipac);
-    pacientes.value.splice(index, 1); // Elimina el paciente de la lista local   
+    pacientes.value.splice(index, 1); // Elimina el paciente de la lista local
     console.log("Paciente eliminado correctamente");
     getPacientes(); // Actualiza la lista de pacientes después de eliminar
   } catch (error) {
     console.error("Error ao eliminar paciente:", error);
-  } 
+  }
 }
 
-function editarUsuario(index) {
+async function editarUsuario(index) {
   const paciente = pacientes.value[index]; //carga os datos do paciente elixido no formulario
   Object.assign(novoPaciente, paciente); // carga os datos do paciente no formulario recorda v-model do formulario é novoPaciente
+  //evitar que se cargue el _id de mongoDB en el formulario    o bien esta forma
+  delete novoPaciente._id;
+  editando.value = true;
+  // Cargar los municipios de la provincia del paciente
+  await cargarMunicipios();
+
 }
 
 //  ============== FUNCIONES AUXILIARES =====================
@@ -299,7 +355,7 @@ const validarcorreo = () => {
 const movilValido = ref(true);
 const movilRegex = /^[67]\d{8}$/;
 const validarMovil = () => {
-  const movil = novoPaciente.movilpac.trim();
+const movil = novoPaciente.movilpac.trim();
 
   if (movil === "") {
     movilValido.value = true; // Vacío = válido (opcional)
@@ -438,7 +494,17 @@ form {
   margin: 0 auto;
   display: block;
 }
+.btn-guardar:disabled {
+  background-color: #e0e0e0;
+  color: #999;
+  border-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
 
+.btn-guardar:disabled:hover {
+  background-color: #e0e0e0;
+}
 .btn-guardar:hover {
   background-color: #c8eacf;
   border-radius: 0px;
