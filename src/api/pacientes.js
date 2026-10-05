@@ -21,7 +21,7 @@ export async function getPacientes() {
 }
 
 // Obtener un paciente por DNI
-export async function getPacientePorDNI(dni) {
+export async function getPacienteByDni(dni) {
     const res = await axios.get(`${API_URL}/pacientes/${dni}`);
     return res.data;
 } 

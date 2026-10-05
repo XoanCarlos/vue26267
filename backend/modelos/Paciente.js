@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 
 const PacienteSchema = new mongoose.Schema(
     {
-    dnipac: { type: String, required: true},
+    dnipac: { type: String, required: true, unique: true},
     nomepac: { type: String, required: true},
     apelpac: { type: String, required: true},
     nacipac: { type: String, required: false},

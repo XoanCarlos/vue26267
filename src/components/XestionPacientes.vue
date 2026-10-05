@@ -14,7 +14,8 @@
             @blur="validarDni"
           />
         </div>
-        <!-- <button>🔎</button> -->
+        <button type="button" @click="buscarPaciente" style="font-size: 20px;" >🔎</button>
+        <button type="button" @click="limpiaForm" style="font-size: 20px;">🧹</button>
         <div v-if="!dniValido" class="invalid-texto d-block">
           DNI o NIE inválido.
         </div>
@@ -112,7 +113,7 @@
       <div class="campo-condicions">
         <label>
           <input v-model="novoPaciente.lopdpac" type="checkbox" />Aceptar a
-          <!-- Como usar vue-router desde el componente usando $router -->
+          <!-- Como usasr vue-router desde el componente usando $router -->
           <a
             :href="$router.resolve({ name: 'PoliticaPrivacidad' }).href"
             target="_blank"
@@ -130,7 +131,6 @@
           novoPaciente.dnipac === '' ||
           novoPaciente.nomepac === '' ||
           novoPaciente.apelpac === '' ||
-          novoPaciente.movilpac === '' ||
           !novoPaciente.lopdpac
         "
       >
@@ -151,13 +151,13 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(paciente, index) in pacientes" :key="index">
+        <tr v-for="(u, index) in pacientes" :key="index">
           <td style="text-align: center">{{ index + 1 }}</td>
-          <td style="text-align: center">{{ paciente.dnipac }}</td>
-          <td>{{ paciente.apelpac }}</td>
-          <td>{{ paciente.nomepac }}</td>
-          <td>{{ paciente.mailpac }}</td>
-          <td>{{ paciente.propac }}</td>
+          <td style="text-align: center">{{ u.dnipac }}</td>
+          <td>{{ u.apelpac }}</td>
+          <td>{{ u.nomepac }}</td>
+          <td>{{ u.mailpac }}</td>
+          <td>{{ u.propac }}</td>
           <td style="text-align: center">
             <button
               style="margin-right: 5px"
@@ -187,6 +187,7 @@ import {
   savePaciente,
   deletePaciente,
   modifyPaciente,
+  getPacienteByDni, // Importa la función para buscar paciente por DNI
 } from "../api/pacientes.js";
 
 // Zona de variables reactivas y referencias
@@ -195,6 +196,7 @@ const municipios = ref([]);
 
 const pacientes = ref([]); //almacena la lista de pacientes e os seus cambios
 const editando = ref(false); // Indica si estamos editando un paciente existente
+
 
 const novoPaciente = reactive({
   dnipac: "",
@@ -233,8 +235,11 @@ async function cargarMunicipios() {
 }
 
 async function guardarPaciente() {
+
   try {
-    if (editando.value) { // Modifica paciente existente
+
+    if (editando.value) {
+      // Modificar paciente existente
       const pacienteModificado = await modifyPaciente(
         novoPaciente.dnipac,
         novoPaciente
@@ -247,22 +252,19 @@ async function guardarPaciente() {
       if (index !== -1) {
         pacientes.value[index] = pacienteModificado;
       }
-
       console.log("Paciente modificado correctamente");
-    } else {  // Crea paciente nuevo
-      const pacienteGuardado = await savePaciente(novoPaciente);
-      pacientes.value.push(pacienteGuardado);
-
+    } else {
+      // Guardar nuevo paciente
+      await savePaciente(novoPaciente);    
       console.log("Paciente gardado correctamente");
     }
 
-    editando.value = false; // Reiniciamos el estado de edición
+    editando.value = false;
 
   } catch (error) {
     console.error("Error ao gardar paciente:", error);
   }
-  pacientes.value = await getPacientes(); 
-  // Actualiza la lista de pacientes después de guardar
+  pacientes.value = await getPacientes(); // Actualiza la lista de pacientes después de guardar
 }
 
 async function eliminarPaciente(index) {
@@ -274,6 +276,7 @@ async function eliminarPaciente(index) {
   } catch (error) {
     console.error("Error ao eliminar paciente:", error);
   }
+  pacientes.value = await getPacientes(); // Actualiza la lista de pacientes después de eliminar
 }
 
 async function editarUsuario(index) {
@@ -284,9 +287,51 @@ async function editarUsuario(index) {
   editando.value = true;
   // Cargar los municipios de la provincia del paciente
   await cargarMunicipios();
+
+}
+
+async function buscarPaciente() {
+  try {
+    const dni = novoPaciente.dnipac.trim();
+
+    if (!dni) {
+      console.log("Introduce un DNI");
+      return;
+    }
+
+    const paciente = await getPacienteByDni(dni);
+
+    Object.assign(novoPaciente, paciente);
+    await cargarMunicipios(); // Cargar los municipios de la provincia del paciente
+
+    console.log("Paciente encontrado:", paciente);
+
+  } catch (error) {
+    if (error.response?.status === 404) {
+      console.log("Paciente no encontrado");
+    } else {
+      console.error("Error al buscar paciente:", error);
+    }
+  }
 }
 
 //  ============== FUNCIONES AUXILIARES =====================
+
+// limpiar formulario
+
+const limpiaForm = () => {
+  Object.keys(novoPaciente).forEach((key) => {
+    if (typeof novoPaciente[key] === "boolean") {
+      novoPaciente[key] = false; // Reinicia los booleanos a false
+    } else {
+      novoPaciente[key] = ""; // Reinicia los demás campos a cadena vacía
+    }
+  });
+  editando.value = false; // Reinicia el estado de edición
+  dniValido.value = true; // Reinicia la validez del DNI/NIE
+  correoValido.value = true; // Reinicia la validez del correo
+  movilValido.value = true; // Reinicia la validez del móvil
+};
 
 // Estado de validez del DNI/NIE si la estructura de datos es más compleja se usa reactive
 const dniValido = ref(true); // Por defecto es válido y no muestra error al iniciar
@@ -334,6 +379,7 @@ const capitalizarTexto = (campo) => {
 };
 
 // validar mail
+
 const correoValido = ref(true);
 
 const validarcorreo = () => {
@@ -502,9 +548,8 @@ form {
 }
 
 .btn-guardar:disabled:hover {
-  background-color: #f1f1f1;
+  background-color: #e0e0e0;
 }
-
 .btn-guardar:hover {
   background-color: #c8eacf;
   border-radius: 0px;

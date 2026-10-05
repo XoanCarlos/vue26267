@@ -1,7 +1,10 @@
 <template>
   <nav class="navbar">
-    <link rel="icon" type="image/svg+xml" href="../assets/img/favicon.png" />
-    <div class="logo">Sanidad Teis</div>
+    <div class="logo">
+      <img :src="logo" alt="Sanidad Teis" style="width: 30px; height: 30px; margin-right: 0.5rem;"  />
+      <span>Sanidad Teis</span>
+    </div>
+
 
     <!-- NUEVO -->
     <button class="hamburger" @click="isOpen = !isOpen">☰</button>
@@ -18,6 +21,7 @@
 <script setup>
 import { ref } from "vue" // será boolean
 const isOpen = ref(false) // actívase cuando fago click
+import logo from "../assets/img/favicon2.png"
 </script>
 
 <style scoped>
