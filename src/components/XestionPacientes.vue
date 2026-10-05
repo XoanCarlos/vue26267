@@ -14,7 +14,7 @@
             @blur="validarDni"
           />
         </div>
-        <button>🔎</button>
+        <!-- <button>🔎</button> -->
         <div v-if="!dniValido" class="invalid-texto d-block">
           DNI o NIE inválido.
         </div>
@@ -112,7 +112,7 @@
       <div class="campo-condicions">
         <label>
           <input v-model="novoPaciente.lopdpac" type="checkbox" />Aceptar a
-          <!-- Como usasr vue-router desde el componente usando $router -->
+          <!-- Como usar vue-router desde el componente usando $router -->
           <a
             :href="$router.resolve({ name: 'PoliticaPrivacidad' }).href"
             target="_blank"
@@ -130,6 +130,7 @@
           novoPaciente.dnipac === '' ||
           novoPaciente.nomepac === '' ||
           novoPaciente.apelpac === '' ||
+          novoPaciente.movilpac === '' ||
           !novoPaciente.lopdpac
         "
       >
@@ -150,13 +151,13 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(u, index) in pacientes" :key="index">
+        <tr v-for="(paciente, index) in pacientes" :key="index">
           <td style="text-align: center">{{ index + 1 }}</td>
-          <td style="text-align: center">{{ u.dnipac }}</td>
-          <td>{{ u.apelpac }}</td>
-          <td>{{ u.nomepac }}</td>
-          <td>{{ u.mailpac }}</td>
-          <td>{{ u.propac }}</td>
+          <td style="text-align: center">{{ paciente.dnipac }}</td>
+          <td>{{ paciente.apelpac }}</td>
+          <td>{{ paciente.nomepac }}</td>
+          <td>{{ paciente.mailpac }}</td>
+          <td>{{ paciente.propac }}</td>
           <td style="text-align: center">
             <button
               style="margin-right: 5px"
@@ -233,8 +234,7 @@ async function cargarMunicipios() {
 
 async function guardarPaciente() {
   try {
-    if (editando.value) {
-      // Modificar paciente existente
+    if (editando.value) { // Modifica paciente existente
       const pacienteModificado = await modifyPaciente(
         novoPaciente.dnipac,
         novoPaciente
@@ -249,19 +249,20 @@ async function guardarPaciente() {
       }
 
       console.log("Paciente modificado correctamente");
-    } else {
-      // Crear paciente nuevo
+    } else {  // Crea paciente nuevo
       const pacienteGuardado = await savePaciente(novoPaciente);
       pacientes.value.push(pacienteGuardado);
 
       console.log("Paciente gardado correctamente");
     }
 
-    editando.value = false;
+    editando.value = false; // Reiniciamos el estado de edición
 
   } catch (error) {
     console.error("Error ao gardar paciente:", error);
   }
+  pacientes.value = await getPacientes(); 
+  // Actualiza la lista de pacientes después de guardar
 }
 
 async function eliminarPaciente(index) {
@@ -283,7 +284,6 @@ async function editarUsuario(index) {
   editando.value = true;
   // Cargar los municipios de la provincia del paciente
   await cargarMunicipios();
-
 }
 
 //  ============== FUNCIONES AUXILIARES =====================
@@ -334,7 +334,6 @@ const capitalizarTexto = (campo) => {
 };
 
 // validar mail
-
 const correoValido = ref(true);
 
 const validarcorreo = () => {
@@ -503,8 +502,9 @@ form {
 }
 
 .btn-guardar:disabled:hover {
-  background-color: #e0e0e0;
+  background-color: #f1f1f1;
 }
+
 .btn-guardar:hover {
   background-color: #c8eacf;
   border-radius: 0px;

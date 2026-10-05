@@ -63,8 +63,7 @@ router.post("/", async (req, res) => {
     }
 });
 
-
-// Modificar
+// Modificar paciente
 router.put("/:dni", async (req, res) => {
     try {
         const paciente = await Paciente.findOneAndUpdate(

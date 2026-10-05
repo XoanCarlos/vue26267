@@ -13,7 +13,7 @@ const routes =[
     { path: '/xestion-pacientes', name: XestionPacientes, component: XestionPacientes },
     { path: '/sobrenos', name: SobreNos, component: SobreNos },
     { path: '/avisolegal', name: AvisoLegal, component: AvisoLegal },
-    { path: "/politica-privacidad", name: "PoliticaPrivacidad", component: PoliticaPrivacidad },
+    { path: '/politica-privacidad', name: 'PoliticaPrivacidad', component: PoliticaPrivacidad },
     { path: '/:pathMatch(.*)*', name:NotFound, component: NotFound }
 ]
 
