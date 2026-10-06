@@ -47,10 +47,11 @@ router.post("/", async (req, res) => {
 
     if (pacienteExistente) {
       return res.status(409).json({
-        mensaje: "Ya existe un paciente con ese DNI",  //salida de error 409 Conflict
+        mensaje: "Ya existe un paciente con ese DNI",  //salida de error 409 conflicto
       });
     }
-   
+
+    // si no existe, se crea un nuevo paciente   
     const paciente = new Paciente(req.body);
 
     const nuevoPaciente = await paciente.save();

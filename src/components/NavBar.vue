@@ -5,7 +5,6 @@
       <span>Sanidad Teis</span>
     </div>
 
-
     <!-- NUEVO -->
     <button class="hamburger" @click="isOpen = !isOpen">☰</button>
 
@@ -13,6 +12,7 @@
     <ul :class="['menu', { open: isOpen }]">
       <li><RouterLink to="/">Inicio</RouterLink></li>
       <li><RouterLink to="/xestion-pacientes">Pacientes</RouterLink></li>
+      <li><RouterLink to="/xestion-doctores">Doctores</RouterLink></li>
       <li><RouterLink to="/sobrenos">Sobre nós</RouterLink></li>
     </ul>
   </nav>
@@ -29,7 +29,7 @@ import logo from "../assets/img/favicon2.png"
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.1rem 6rem;
+  padding: 0.1rem 3rem;
   background: #1ca285;
   color: white;
 }

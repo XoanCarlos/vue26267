@@ -35,7 +35,7 @@ export default [
       // Permitimos console.log durante el desarrollo
       'no-console': 'off',
 
-      // Permitimos nombres de componentes como Home.vue o Login.vue
+      // Permitimos nms de componentes como Home.vue o Login.vue
       'vue/multi-word-component-names': 'off',
 
       // Variables del template de Vue que no se utilizan

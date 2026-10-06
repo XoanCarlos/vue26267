@@ -4,7 +4,8 @@ import cors from "cors"; //evita bloqueos entre servidores
 import "dotenv/config";
 import mongoose from "mongoose";
 
-import pacientesRutas from './rutas/pacientes.rutas.js'; 
+import pacientesRutas from './rutas/pacientes.rutas.js';
+import doctoresRutas from './rutas/doctores.rutas.js'; //importa el modelo de doctor y las funciones de la api de doctores 
 //importa el modelo de paciente y las funciones de la api de pacientes
 
 
@@ -13,6 +14,7 @@ const app = express();
 app.use(cors());
 app.use(express.json()); //para que pueda leer json
 app.use('/api/pacientes', pacientesRutas); //usa el modelo de paciente y funciones
+app.use('/api/doctores', doctoresRutas); //usa el modelo de doctor y funciones
 //USA EL PUERTO definido en la variables de entorno y si no coge el 3000
 const PORT = process.env.PORT || 3000;
 
@@ -32,6 +34,21 @@ app.get("/api/municipios", (req, res) => {
   // Enviamos los datos como respuesta al cliente
   res.json(datosJson);
 });
+
+// Ruta de la API para obtener especialidades
+app.get("/api/especialidades", (req, res) => {
+  
+  // Leemos el fichero JSON
+  const datos = fs.readFileSync("./backend/data/especialidades.json", "utf8");
+
+  // Convertimos el texto JSON en un objeto JavaScript
+  const datosJson = JSON.parse(datos);
+
+  // Enviamos los datos como respuesta al cliente web
+  res.json(datosJson);
+});
+
+
 
 // Ponemos el servidor a escuchar en el puerto 3000
 

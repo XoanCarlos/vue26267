@@ -15,7 +15,7 @@
           />
         </div>
         <button type="button" @click="buscarPaciente" style="font-size: 20px;" >🔎</button>
-        <button type="button" @click="limpiaForm" style="font-size: 20px;">🧹</button>
+        <button type="button" @click="limpiaFormpac" style="font-size: 20px;">🧹</button>
         <div v-if="!dniValido" class="invalid-texto d-block">
           DNI o NIE inválido.
         </div>
@@ -319,7 +319,7 @@ async function buscarPaciente() {
 
 // limpiar formulario
 
-const limpiaForm = () => {
+const limpiaFormpac = () => {
   Object.keys(novoPaciente).forEach((key) => {
     if (typeof novoPaciente[key] === "boolean") {
       novoPaciente[key] = false; // Reinicia los booleanos a false

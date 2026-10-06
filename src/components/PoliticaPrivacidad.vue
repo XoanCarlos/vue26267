@@ -18,7 +18,7 @@
 
     <p>
       Para la gestión del paciente pueden solicitarse datos identificativos y de
-      contacto, como nombre, apellidos, DNI/NIE, fecha de nacimiento, teléfono,
+      contacto, como nm, apellidos, DNI/NIE, fecha de nacimiento, teléfono,
       correo electrónico y datos de domicilio.
     </p>
 

@@ -14,7 +14,7 @@
   background: #1ca285;
   color: white;
   text-align: center;
-  padding: 0.2rem 6rem;
+  padding: 0.2rem 3rem;
   margin-top: 3rem;
   font-size: 0.9rem;
 }
