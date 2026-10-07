@@ -20,9 +20,9 @@ export async function getDoctores() {
     return res.data;
 }
 
-// Obtener un doctor por ID
-export async function getDoctorById(id) {
-    const res = await axios.get(`${API_URL}/doctores/${id}`);
+// Obtener doctores por especialidad
+export async function getDoctorByEspecialidad(especialidad) {
+    const res = await axios.get(`${API_URL}/doctores/${especialidad}`);
     return res.data;
 } 
 

@@ -16,23 +16,17 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Obtener uno
-router.get("/:id", async (req, res) => {
+// Obtener doctores por especialidad
+router.get("/:especialidad", async (req, res) => {
   try {
-    const doctor = await Doctor.findOne({
-      iddoc: req.params.id,
+    const doctores = await Doctor.find({
+      especialidad: req.params.especialidad,
     });
 
-    if (!doctor) {
-      return res.status(404).json({
-        mensaje: "Doctor no encontrado",
-      });
-    }
-
-    res.json(doctor);
+    res.json(doctores);
   } catch (error) {
     res.status(500).json({
-      mensaje: ("Error al obtener el doctor", error),
+      mensaje: ("Error al obtener doctores", error),
     });
   }
 });

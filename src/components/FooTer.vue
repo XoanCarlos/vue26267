@@ -1,7 +1,8 @@
 <template>
   <footer class="footer-content footer">
     <ul class="link-aviso">
-     <router-link to="/avisolegal" style="color: white;" >Aviso Legal</router-link>
+     <router-link to="/avisolegal" 
+     style="color: white;" >Aviso Legal</router-link>
     </ul>
      <p>© {{ new Date().getFullYear() }} Sanidad Teis — Desenvolvido en Vue 3</p>
   </footer>

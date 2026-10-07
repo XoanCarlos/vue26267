@@ -59,7 +59,7 @@
             @blur="validarcorreo"
           />
         </div>
-        <div class="campo campo-correo">
+        <div class="campo campo-movil">
           <label>Móvil:</label>
           <input
             v-model="novoPaciente.movilpac"
