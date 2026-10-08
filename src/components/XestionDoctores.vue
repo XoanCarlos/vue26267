@@ -7,7 +7,7 @@
           <label>ID :</label>
           <input v-model="novoDoctor.iddoc" type="text" disabled />
         </div>
-        <button type="button" @click="limpiaFormdoc" style="font-size: 20px; margin-righ: 1.5rem">
+        <button type="button" @click="limpiaFormdoc" style="font-size: 20px;width: 36px; height: 36px;">
           🧹
         </button>
         <div class="campo campo-nome">
@@ -30,6 +30,17 @@
             @blur="capitalizarTexto('apeldoc')"
           />
         </div>
+        <div class="campo campo-colegiado">
+            <label>Colegiado: </label>
+            <label>
+              <input type="radio" value="Si" v-model="novoDoctor.coledoc" />
+              Si
+            </label>
+            <label>
+              <input type="radio" value="No" v-model="novoDoctor.coledoc" />
+              No
+            </label>
+          </div>
       </div>
       <div class="fila">
         <div class="campo campo-correo">
@@ -69,17 +80,7 @@
         </div>
         </div>
         <div class="fila">
-          <div class="campo-colegiado">
-            <label>Colegiado: </label>
-            <label>
-              <input type="radio" value="Si" v-model="novoDoctor.coledoc" />
-              Si
-            </label>
-            <label>
-              <input type="radio" value="No" v-model="novoDoctor.coledoc" />
-              No
-            </label>
-          </div>
+          
         </div>
     
       <button
@@ -261,7 +262,7 @@ form {
 
 .fila {
   display: flex;
-  gap: 1rem;
+  gap: 0.7rem;
   width: 100%;
 }
 
@@ -273,61 +274,65 @@ form {
   display: flex;
   align-items: center;
   /* label e input en la misma línea */
-  gap: 0.3rem;
-  border-radius: 0px;
+  gap: 0.1rem;
+  border-radius: 12px;
 }
 
 .campo-id {
-  flex: 3;
-  margin-right: 2rem;
-  /* ocupa menos espacio */
-  border-radius: 0px;
-}
-.campo-colegiado {
   flex: 1;
   /* ocupa menos espacio */
-  border-radius: 0px;
+  border-radius: 12px;
+}
+.campo-colegiado {
+  display: flex;
+  /* ocupa menos espacio */
+  border-radius: 12px;
+}
+.campo-colegiado label {
+  min-width: auto;
+  margin-right: 2px;
 }
 .campo-nome {
-  flex: 3;
+  flex: 1;
   /* ocupa más espacio */
-  border-radius: 0px;
+  border-radius: 12px;
 }
 
 .campo-apellido {
-  flex: 4;
+  flex: 2;
   /* ocupa más espacio */
-  border-radius: 0px;
+  border-radius: 12px;
 }
 
 .campo-especialidad {
-  flex: 3;
+  flex: 2;
   /* ocupa más espacio */
-  border-radius: 0px;
+  border-radius: 12px;
 }
 
 .campo-correo {
   flex: 2;
   /* ocupa más espacio */
-  border-radius: 0px;
+  border-radius: 12px;
 }
 .campo-movil {
   flex: 1;
   /* ocupa más espacio */
-  border-radius: 0px;
+  border-radius: 12px;
 }
 .campo select {
-  flex: 3;
+  flex: 2;
   padding: 0.6rem;
   border: 1px solid #ddd;
-  border-radius: 0px;
+  border-radius: 12px;
   width: 60%;
 }
 
 .campo label {
-  min-width: 80px;
+  min-width: 60px;
+  margin-right: 0.2rem;
   /* ancho fijo para alinear */
-  font-weight: 500;
+  font-weight: 400;
   font: bold;
 }
 
@@ -336,7 +341,7 @@ form {
   /* ocupa todo el espacio restante */
   padding: 0.5rem;
   border: 1px solid #ddd;
-  border-radius: 0px;
+  border-radius: 12px;
   box-sizing: border-box;
 }
 
@@ -346,7 +351,7 @@ form {
   border: 3;
   border-color: #1bb191;
   padding: 0.4rem 1.5rem;
-  border-radius: 0px;
+  border-radius: 12px;
   cursor: pointer;
   margin: 0 auto;
   display: block;
@@ -364,7 +369,7 @@ form {
 }
 .btn-guardar:hover {
   background-color: #c8eacf;
-  border-radius: 0px;
+  border-radius: 12px;
 }
 
 .button {
@@ -429,7 +434,7 @@ h4 {
   .fila {
     flex-direction: column;
     /* apila los campos verticalmente en móviles */
-    gap: 0.5rem;
+    gap: 0.4rem;
     /* opcional: un pequeño espacio entre ellos */
   }
 }

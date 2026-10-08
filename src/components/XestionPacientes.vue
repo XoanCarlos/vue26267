@@ -453,63 +453,63 @@ form {
   align-items: center;
   /* label e input en la misma línea */
   gap: 0.3rem;
-  border-radius: 0px;
+  border-radius: 12px;
 }
 
 .campo-dni {
   flex: 1;
   /* ocupa menos espacio */
-  border-radius: 0px;
+  border-radius: 12px;
 }
 
 .campo-nome {
   flex: 4;
   /* ocupa más espacio */
-  border-radius: 0px;
+  border-radius: 12px;
 }
 
 .campo-apellido {
   flex: 4;
   /* ocupa más espacio */
-  border-radius: 0px;
+  border-radius: 12px;
 }
 
 .campo-direccion {
   flex: 4;
   /* ocupa más espacio */
-  border-radius: 0px;
+  border-radius: 12px;
 }
 
 .campo-provincia {
   flex: 1;
   /* ocupa más espacio */
-  border-radius: 0px;
+  border-radius: 12px;
 }
 
 .campo-correo {
   flex: 2;
   /* ocupa más espacio */
-  border-radius: 0px;
+  border-radius: 12px;
 }
 
 .campo select {
   flex: 1;
   padding: 0.6rem;
   border: 1px solid #ddd;
-  border-radius: 0px;
+  border-radius: 12px;
   width: 60%;
 }
 
 .campo-provincia {
   flex: 3;
   /* ocupa menos espacio */
-  border-radius: 0px;
+  border-radius: 12px;
 }
 
 .campo-municipio {
   flex: 3;
   /* ocupa menos espacio */
-  border-radius: 0px;
+  border-radius: 12px;
 }
 
 .campo label {
@@ -524,7 +524,7 @@ form {
   /* ocupa todo el espacio restante */
   padding: 0.5rem;
   border: 1px solid #ddd;
-  border-radius: 0px;
+  border-radius: 12px;
   box-sizing: border-box;
 }
 
@@ -534,7 +534,7 @@ form {
   border: 3;
   border-color: #1bb191;
   padding: 0.4rem 1.5rem;
-  border-radius: 0px;
+  border-radius: 12px;
   cursor: pointer;
   margin: 0 auto;
   display: block;
@@ -552,7 +552,7 @@ form {
 }
 .btn-guardar:hover {
   background-color: #c8eacf;
-  border-radius: 0px;
+  border-radius: 12px;
 }
 
 .button {
