@@ -190,6 +190,12 @@ import {
   getPacienteByDni, // Importa la función para buscar paciente por DNI
 } from "../api/pacientes.js";
 
+import {
+    alertaExito,
+    alertaError,
+    alertaConfirmacion
+} from '../utils/alertas.js'
+
 // Zona de variables reactivas y referencias
 const provincias = ref([]);
 const municipios = ref([]);
@@ -257,6 +263,7 @@ async function guardarPaciente() {
       // Guardar nuevo paciente
       await savePaciente(novoPaciente);    
       console.log("Paciente gardado correctamente");
+      alertaExito('El paciente se ha guardado correctamente')
     }
 
     editando.value = false;
