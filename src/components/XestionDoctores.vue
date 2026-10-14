@@ -5,7 +5,7 @@
       <div class="fila">
         <div class="campo campo-id">
           <label>ID :</label>
-          <input v-model="novoDoctor.iddoc" type="text" disabled />
+          <input v-model="novoDoctor._id" type="text" disabled /> 
         </div>
         <button type="button" @click="limpiaFormdoc" style="font-size: 20px;width: 36px; height: 36px;">
           🧹
@@ -33,11 +33,11 @@
         <div class="campo campo-colegiado">
             <label>Colegiado: </label>
             <label>
-              <input type="radio" value="Si" v-model="novoDoctor.coledoc" />
+              <input type="radio" value="true" v-model="novoDoctor.coledoc" />
               Si
             </label>
             <label>
-              <input type="radio" value="No" v-model="novoDoctor.coledoc" />
+              <input type="radio" value="false" v-model="novoDoctor.coledoc" />
               No
             </label>
           </div>
@@ -112,7 +112,7 @@
       <tbody>
         <tr v-for="(u, index) in doctores" :key="index">
           <td style="text-align: center">{{ index + 1 }}</td>
-          <td style="text-align: center">{{ u.iddoc }}</td>
+          <td style="text-align: center; width: 0.5%; white-space: nowrap;">{{ u._id }}</td>
           <td>{{ u.apeldoc }}</td>
           <td>{{ u.nomedoc }}</td>
           <td>{{ u.movildoc }}</td>
@@ -131,7 +131,7 @@
       </tbody>
     </table>
 
-    <p v-else>Non hai pacientes cargados.</p>
+    <p v-else>Non hai doctores cargados.</p>
   </div>
 </template>
 
@@ -153,7 +153,7 @@ const especialidades = ref([]);
 const editando = ref(false);
 
 const novoDoctor = reactive({
-  iddoc: "",
+  //iddoc: "",
   nomedoc: "",
   apeldoc: "",
   maildoc: "",
@@ -165,11 +165,44 @@ const novoDoctor = reactive({
 // usamos async porque hacemos await asíncrono
 onMounted(async () => {
   // Cargar doctores y especialidades al montar el componente
-  //doctores.value = await cargarDoctores()
+  doctores.value = await getDoctores()
   especialidades.value = await obtenerEspecialidades();
 });
 
 // ========== FUNCIONES PRINCIPALES BBDD ============
+async function guardarDoctor() {
+
+  try {
+
+    if (editando.value) {
+      // Modificar doctor existente
+      const doctorModificado = await modifyDoctor(
+        novoDoctor._id,
+        novoDoctor
+      );
+
+      const index = doctores.value.findIndex(
+        (p) => p._id === novoDoctor._id
+      );
+
+      if (index !== -1) {
+        doctores.value[index] = doctorModificado;
+      }
+      console.log("Doctor modificado correctamente");
+    } else {
+      // Guardar nuevo doctor
+      await saveDoctor(novoDoctor);    
+      console.log("Doctor gardado correctamente");
+    }
+
+    editando.value = false;
+
+  } catch (error) {
+    console.error("Error ao gardar doctor:", error);
+  }
+  doctores.value = await getDoctores(); // Actualiza la lista de doctores después de guardar
+}
+
 
 /// ========== FUNCIONES AUXILIARES  ============
 

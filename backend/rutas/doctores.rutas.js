@@ -7,6 +7,7 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   try {
     const doctores = await Doctor.find(); //es el select de sql
+    console.log("Doctores obtenidos:", doctores);
 
     res.json(doctores);
   } catch (error) {
@@ -36,7 +37,7 @@ router.post("/", async (req, res) => {
   try {
     // Verificar si ya existe un doctor con el mismo ID para no permitir duplicados
     const doctorExistente = await Doctor.findOne({
-      iddoc: req.body.iddoc,
+      _id: req.body.id,
     });
 
     if (doctorExistente) {
@@ -67,7 +68,7 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     const doctor = await Doctor.findOneAndUpdate(
-      { iddoc: req.params.id },
+      { _id: req.params.id },
       req.body,
       { new: true },
     );
@@ -90,7 +91,7 @@ router.put("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   try {
     const doctor = await Doctor.findOneAndDelete({
-      iddoc: req.params.id,
+      _id: req.params.id,
     });
 
     if (!doctor) {

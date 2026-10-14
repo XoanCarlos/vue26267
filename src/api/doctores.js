@@ -27,13 +27,13 @@ export async function getDoctorByEspecialidad(especialidad) {
 } 
 
 // Actualizar doctor
-export async function modifyDoctor(id, doctor) {
-    const res = await axios.put(`${API_URL}/doctores/${id}`, doctor);
+export async function modifyDoctor(_id, doctor) {
+    const res = await axios.put(`${API_URL}/doctores/${_id}`, doctor);
     return res.data;
 }   
 
 // Eliminar doctor
-export async function deleteDoctor(id) {
-    const res = await axios.delete(`${API_URL}/doctores/${id}`);
+export async function deleteDoctor(_id) {
+    const res = await axios.delete(`${API_URL}/doctores/${_id}`);
     return res.data;
 }
