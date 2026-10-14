@@ -1,4 +1,6 @@
 
+// GUARDAR EN CARPETA src/utils/alertas.js
+
 import Swal from 'sweetalert2'
 
 // Alerta de éxito
