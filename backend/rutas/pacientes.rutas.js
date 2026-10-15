@@ -1,5 +1,6 @@
 import express from "express";
 import Paciente from "../modelos/Paciente.js";
+import { alertaExito, alertaError } from "../../src/utils/alertas.js";
 
 const router = express.Router();
 
@@ -60,9 +61,10 @@ router.post("/", async (req, res) => {
 
   } catch (error) {
     console.error("ERROR AL CREAR PACIENTE:", error);
+    alertaError('Error al crear el paciente. Contacte con el administrador')
 
     res.status(500).json({
-      mensaje: "Error al crear el paciente",
+      mensaje: "Error al crear el paciente",  
     });
   }
 });

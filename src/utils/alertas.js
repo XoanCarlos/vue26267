@@ -34,14 +34,14 @@ export const alertaInfo = (mensaje, titulo = 'Información') => {
 }
 
 // Confirmación de una acción
-export const alertaConfirmacion = (mensaje, titulo = '¿Estás seguro?') => {
+export const alertaConfirmacion = (mensaje, titulo = 'Atención') => {
     return Swal.fire({
         icon: 'question',
         title: titulo,
         text: mensaje,
         showCancelButton: true,
-        confirmButtonText: 'Sí, continuar',
+        confirmButtonText: 'Aceptar',
         cancelButtonText: 'Cancelar',
-        reverseButtons: true
+        reverseButtons: false
     })
 }

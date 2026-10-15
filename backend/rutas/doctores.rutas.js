@@ -63,7 +63,6 @@ router.post("/", async (req, res) => {
 });
 
 
-
 // Modificar doctor
 router.put("/:id", async (req, res) => {
   try {

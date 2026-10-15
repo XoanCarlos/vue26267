@@ -123,7 +123,7 @@
           </a>
         </label>
       </div>
-
+      <div class="fila">
       <button
         type="submit"
         class="btn-guardar"
@@ -134,8 +134,22 @@
           !novoPaciente.lopdpac
         "
       >
-        Gardar
+        Gardar  
       </button>
+         <button
+        type="submit"
+        class="btn-guardar"
+        @click="eliminarPaciente(novoPaciente.dnipac)"
+        :disabled="
+          novoPaciente.dnipac === '' ||
+          novoPaciente.nomepac === '' ||
+          novoPaciente.apelpac === '' ||
+          !novoPaciente.lopdpac
+        "
+      >
+        Eliminar
+      </button>
+    </div>
     </form>
     <h4>📋 Listaxe de Pacientes</h4>
     <table v-if="pacientes.length > 0">
@@ -243,43 +257,57 @@ async function cargarMunicipios() {
 async function guardarPaciente() {
 
   try {
-
     if (editando.value) {
       // Modificar paciente existente
+     const respuesta = await alertaConfirmacion("Esta seguro modificar paciente?")
+     if (respuesta.isConfirmed) {
       const pacienteModificado = await modifyPaciente(
-        novoPaciente.dnipac,
-        novoPaciente
-      );
+        novoPaciente.dnipac, novoPaciente );
 
-      const index = pacientes.value.findIndex(
-        (p) => p.dnipac === novoPaciente.dnipac
-      );
-
+       const index = pacientes.value.findIndex(
+        (p) => p.dnipac === novoPaciente.dnipac);
       if (index !== -1) {
         pacientes.value[index] = pacienteModificado;
       }
-      console.log("Paciente modificado correctamente");
-    } else {
-      // Guardar nuevo paciente
-      await savePaciente(novoPaciente);    
-      console.log("Paciente gardado correctamente");
-      alertaExito('El paciente se ha guardado correctamente')
-    }
-
+      alertaExito('El paciente modificado correctamente')
+     } else {
+        return; // Salir de la función si el usuario cancela
+     }
+    } else {   // Guardar nuevo paciente
+      const respuesta = await alertaConfirmacion("Esta seguro crear paciente?")
+      if (respuesta.isConfirmed) {      
+          await savePaciente(novoPaciente)   
+          alertaExito('El paciente se ha guardado correctamente')   
+       } else {
+        return; // Salir de la función si el usuario cancela
+      }
     editando.value = false;
-
+    getPacientes(); // Actualiza la lista de pacientes después de guardar
+    }
   } catch (error) {
     console.error("Error ao gardar paciente:", error);
+    alertaError('Error al guardar el paciente. Contacte con el administrador')
   }
   pacientes.value = await getPacientes(); // Actualiza la lista de pacientes después de guardar
 }
 
 async function eliminarPaciente(index) {
   try {
+    const confirmacion = await alertaConfirmacion(
+      "¿Estás seguro eliminar el paciente?");
+    if (confirmacion.isConfirmed) {
+      await deletePaciente(pacientes.value[index].dnipac);
+      pacientes.value.splice(index, 1); // Elimina el paciente de la lista local
+      getPacientes(); // Actualiza la lista de pacientes después de eliminar
+      alertaExito('El paciente se ha eliminado correctamente')
+    } else {
+      return; // Salir de la función si el usuario cancela
+    }
     await deletePaciente(pacientes.value[index].dnipac);
     pacientes.value.splice(index, 1); // Elimina el paciente de la lista local
     console.log("Paciente eliminado correctamente");
     getPacientes(); // Actualiza la lista de pacientes después de eliminar
+    alertaExito('El paciente se ha eliminado correctamente')
   } catch (error) {
     console.error("Error ao eliminar paciente:", error);
   }
@@ -310,7 +338,7 @@ async function buscarPaciente() {
 
     Object.assign(novoPaciente, paciente);
     await cargarMunicipios(); // Cargar los municipios de la provincia del paciente
-
+    editando.value = true; // Cambiar el estado a edición
     console.log("Paciente encontrado:", paciente);
 
   } catch (error) {
