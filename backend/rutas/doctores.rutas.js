@@ -21,7 +21,7 @@ router.get("/", async (req, res) => {
 router.get("/:especialidad", async (req, res) => {
   try {
     const doctores = await Doctor.find({
-      especialidad: req.params.especialidad,
+      espedoc: req.params.especialidad,
     });
 
     res.json(doctores);

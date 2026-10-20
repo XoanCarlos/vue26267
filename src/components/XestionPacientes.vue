@@ -285,7 +285,6 @@ async function guardarPaciente() {
     getPacientes(); // Actualiza la lista de pacientes después de guardar
     }
   } catch (error) {
-    console.error("Error ao gardar paciente:", error);
     alertaError('Error al guardar el paciente. Contacte con el administrador')
   }
   pacientes.value = await getPacientes(); // Actualiza la lista de pacientes después de guardar

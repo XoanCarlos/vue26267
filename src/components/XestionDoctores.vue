@@ -1,6 +1,6 @@
 <template>
   <div class="xestion-doctores">
-    <h4>👨‍⚕️👩‍⚕️ Xestión de Doctores</h4>
+    <h4>👨‍⚕️ Xestión de Doctores 👩‍⚕️</h4>
     <form @submit.prevent="guardarDoctor">
       <div class="fila">
         <div class="campo campo-id">
@@ -78,10 +78,13 @@
             </option>
           </select>
         </div>
-        </div>
-        <div class="fila">
-          
-        </div>
+        <button
+          type="button"
+          @click="buscarDoctoresPorEspecialidad(novoDoctor.espedoc)"
+          style="font-size: 20px;width: 36px; height: 36px;"
+          >🔍</button>
+      </div>
+
     
       <button
         type="submit"
@@ -96,7 +99,12 @@
         Gardar
       </button>
     </form>
-    <h4>📋 Listaxe de Doctores</h4>
+    <h4>📋 Listaxe de Doctores 
+        <button
+          type="button"
+          @click="recargarDoctores()"
+          style="width: 28px; height: 28px; padding: 2px; margin: 0 auto;"
+          > ⟳ </button></h4>
     <table v-if="doctores.length > 0">
       <thead>
         <tr>
@@ -131,7 +139,7 @@
       </tbody>
     </table>
 
-    <p v-else>Non hai doctores cargados.</p>
+    <p v-else>Non hai doctores cargadoso o falla conexión BBDD.</p>
   </div>
 </template>
 
@@ -146,6 +154,7 @@ import {
   deleteDoctor,
   modifyDoctor,
 } from "../api/doctores.js";
+import { alertaExito, alertaInfo } from "../utils/alertas.js";
 
 // Definición de variables reactivas
 const doctores = ref([]);
@@ -171,9 +180,7 @@ onMounted(async () => {
 
 // ========== FUNCIONES PRINCIPALES BBDD ============
 async function guardarDoctor() {
-
   try {
-
     if (editando.value) {
       // Modificar doctor existente
       const doctorModificado = await modifyDoctor(
@@ -188,11 +195,11 @@ async function guardarDoctor() {
       if (index !== -1) {
         doctores.value[index] = doctorModificado;
       }
-      console.log("Doctor modificado correctamente");
+      alertaExito('Datos Doctor modificados')
     } else {
       // Guardar nuevo doctor
       await saveDoctor(novoDoctor);    
-      console.log("Doctor gardado correctamente");
+     alertaExito('Datos doctor guardados')
     }
 
     editando.value = false;
@@ -200,9 +207,45 @@ async function guardarDoctor() {
   } catch (error) {
     console.error("Error ao gardar doctor:", error);
   }
+  limpiaFormdoc(); // Limpiar el formulario después de guardar
   doctores.value = await getDoctores(); // Actualiza la lista de doctores después de guardar
 }
 
+function editarDoctor(index) {
+  const doctor = doctores.value[index];
+  Object.assign(novoDoctor, doctor);
+  editando.value = true;
+}
+
+async function eliminarDoctor(index) {
+  const doctor = doctores.value[index];
+  try {
+    await deleteDoctor(doctor._id);
+    doctores.value.splice(index, 1); // Eliminar de la lista local
+    alertaInfo('Datos doctor eliminados')
+  } catch (error) {
+    console.error("Error ao eliminar doctor:", error);
+  }
+}
+
+async function buscarDoctoresPorEspecialidad(especialidad) {
+  try {
+    if (!especialidad) {
+      doctores.value = await getDoctores();
+      return;
+    }
+    doctores.value = await getDoctorByEspecialidad(especialidad);
+  } catch (error) {
+    console.error("Error ao buscar doctores por especialidad:", error);
+  }
+}
+async function recargarDoctores() {
+  try {
+    doctores.value = await getDoctores();
+  } catch (error) {
+    console.error("Error ao recargar doctores:", error);
+  }
+} 
 
 /// ========== FUNCIONES AUXILIARES  ============
 
@@ -312,7 +355,7 @@ form {
 }
 
 .campo-id {
-  flex: 1;
+  flex: 2;
   /* ocupa menos espacio */
   border-radius: 12px;
 }
@@ -354,7 +397,7 @@ form {
   border-radius: 12px;
 }
 .campo select {
-  flex: 2;
+  flex: 1;
   padding: 0.6rem;
   border: 1px solid #ddd;
   border-radius: 12px;

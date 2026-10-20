@@ -13,6 +13,7 @@
       <li><RouterLink to="/">Inicio</RouterLink></li>
       <li><RouterLink to="/xestion-pacientes">Pacientes</RouterLink></li>
       <li><RouterLink to="/xestion-doctores">Doctores</RouterLink></li>
+      <li><RouterLink to="/xestion-citas">Citas</RouterLink></li>
       <li><RouterLink to="/sobrenos">Sobre nós</RouterLink></li>
     </ul>
   </nav>
@@ -29,11 +30,18 @@ import logo from "../assets/img/favicon2.png"
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.1rem 3rem;
+  padding: 0.1rem 10rem;
   background: #1ca285;
   color: white;
 }
-
+.navbar ul {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+}
 .logo {
   font-weight: bold;
   font-size: 1rem;

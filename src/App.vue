@@ -48,6 +48,7 @@ footer {
   left: 50%;
   transform: translateX(-50%);
   width: 80vw;
+  height: 20px;
   z-index: 1000;
 }
 
