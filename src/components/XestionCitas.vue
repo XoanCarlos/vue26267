@@ -204,7 +204,6 @@
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
-import XestionDoctores from "./XestionDoctores.vue";
 
 import {
   // getCitas,

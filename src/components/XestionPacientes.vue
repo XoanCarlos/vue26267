@@ -123,7 +123,7 @@
           </a>
         </label>
       </div>
-      <div class="fila">
+      <div class="fila-botones">
       <button
         type="submit"
         class="btn-guardar"
@@ -502,6 +502,13 @@ form {
   /* ocupa más espacio */
   border-radius: 12px;
 }
+.fila-botones {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
 
 .campo-apellido {
   flex: 4;
@@ -566,14 +573,14 @@ form {
 .btn-guardar {
   background-color: #f0f3f7;
   color: black;
-  border: 3;
-  border-color: #1bb191;
+  border: 3px solid #1bb191;
   padding: 0.4rem 1.5rem;
   border-radius: 12px;
   cursor: pointer;
-  margin: 0 auto;
-  display: block;
+  margin: 0; /* Eliminamos el margin: 0 auto */
+  display: inline-block;
 }
+
 .btn-guardar:disabled {
   background-color: #e0e0e0;
   color: #999;
