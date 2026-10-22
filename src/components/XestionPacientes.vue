@@ -176,7 +176,7 @@
             <button
               style="margin-right: 5px"
               title="Editar"
-              @click="editarUsuario(index)"
+              @click="editarPaciente(index)"
             >
               ✏️
             </button>
@@ -187,8 +187,9 @@
         </tr>
       </tbody>
     </table>
-
+    
     <p v-else>Non hai pacientes cargados.</p>
+   
   </div>
 </template>
 
@@ -209,6 +210,8 @@ import {
     alertaError,
     alertaConfirmacion
 } from '../utils/alertas.js'
+
+
 
 // Zona de variables reactivas y referencias
 const provincias = ref([]);
@@ -313,16 +316,14 @@ async function eliminarPaciente(index) {
   pacientes.value = await getPacientes(); // Actualiza la lista de pacientes después de eliminar
 }
 
-async function editarUsuario(index) {
-  const paciente = pacientes.value[index]; //carga os datos do paciente elixido no formulario
-  Object.assign(novoPaciente, paciente); // carga os datos do paciente no formulario recorda v-model do formulario é novoPaciente
-  //evitar que se cargue el _id de mongoDB en el formulario    o bien esta forma
-  delete novoPaciente._id;
-  editando.value = true;
-  // Cargar los municipios de la provincia del paciente
-  await cargarMunicipios();
+function editarPaciente(index) {
+  const paciente = pacientes.value[index];
 
+  Object.assign(novoPaciente, paciente);
+  editando.value = true;
+  cargarMunicipios();
 }
+
 
 async function buscarPaciente() {
   try {

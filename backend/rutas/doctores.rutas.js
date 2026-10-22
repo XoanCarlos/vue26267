@@ -7,8 +7,7 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   try {
     const doctores = await Doctor.find(); //es el select de sql
-    console.log("Doctores obtenidos:", doctores);
-
+    
     res.json(doctores);
   } catch (error) {
     res.status(500).json({
