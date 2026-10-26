@@ -151,7 +151,14 @@
       </button>
     </div>
     </form>
-    <h4>📋 Listaxe de Pacientes</h4>
+    <h4>📋 Listaxe de Pacientes
+        <button type="button" 
+        style="width: 28px; height: 28px; padding: 2px; margin-left: 5px;" 
+      @click="exportarPacientes"
+        :disabled="pacientes.length === 0">
+        🖨️
+      </button>
+    </h4>
     <table v-if="pacientes.length > 0">
       <thead>
         <tr>
@@ -211,7 +218,7 @@ import {
     alertaConfirmacion
 } from '../utils/alertas.js'
 
-
+import { generarPDF } from "../utils/pdf.js";
 
 // Zona de variables reactivas y referencias
 const provincias = ref([]);
@@ -450,6 +457,19 @@ const movil = novoPaciente.movilpac.trim();
     novoPaciente.movilpac = "";
     return false;
   }
+};
+const exportarPacientes = () => {
+generarPDF(
+"Listado de pacientes",
+["DNI", "Apellidos", "Nombre", "Móvil"],
+pacientes.value.map(p => [
+p.dnipac,
+p.apelpac,
+p.nomepac,
+p.movilpac
+]),
+"listado_pacientes.pdf"
+);
 };
 </script>
 

@@ -5,63 +5,41 @@
       <div class="fila">
         <div class="campo campo-id">
           <label>ID :</label>
-          <input v-model="novoDoctor._id" type="text" disabled /> 
+          <input v-model="novoDoctor._id" type="text" disabled />
         </div>
         <button type="button" @click="limpiaFormdoc" style="font-size: 20px;width: 36px; height: 36px;">
           🧹
         </button>
         <div class="campo campo-nome">
           <label>Nome:</label>
-          <input
-            id="nome"
-            v-model="novoDoctor.nomedoc"
-            type="text"
-            required
-            @blur="capitalizarTexto('nomedoc')"
-          />
+          <input id="nome" v-model="novoDoctor.nomedoc" type="text" required @blur="capitalizarTexto('nomedoc')" />
         </div>
         <div class="campo campo-apellido">
           <label>Apellidos:</label>
-          <input
-            id="apellido"
-            v-model="novoDoctor.apeldoc"
-            type="text"
-            required
-            @blur="capitalizarTexto('apeldoc')"
-          />
+          <input id="apellido" v-model="novoDoctor.apeldoc" type="text" required @blur="capitalizarTexto('apeldoc')" />
         </div>
         <div class="campo campo-colegiado">
-            <label>Colegiado: </label>
-            <label>
-              <input type="radio" value="true" v-model="novoDoctor.coledoc" />
-              Si
-            </label>
-            <label>
-              <input type="radio" value="false" v-model="novoDoctor.coledoc" />
-              No
-            </label>
-          </div>
+          <label>Colegiado: </label>
+          <label>
+            <input type="radio" value="true" v-model="novoDoctor.coledoc" />
+            Si
+          </label>
+          <label>
+            <input type="radio" value="false" v-model="novoDoctor.coledoc" />
+            No
+          </label>
+        </div>
       </div>
       <div class="fila">
         <div class="campo campo-correo">
           <label>Correo:</label>
-          <input
-            v-model="novoDoctor.maildoc"
-            type="email"
-            :class="{ 'is-invalid': !correoValido }"
-            @blur="validarcorreo"
-          />
+          <input v-model="novoDoctor.maildoc" type="email" :class="{ 'is-invalid': !correoValido }"
+            @blur="validarcorreo" />
         </div>
         <div class="campo campo-movil">
           <label>Móvil:</label>
-          <input
-            v-model="novoDoctor.movildoc"
-            type="text"
-            style="text-align: center"
-            :class="{ 'is-invalid': !movilValido }"
-            required
-            @blur="validarMovil"
-          />
+          <input v-model="novoDoctor.movildoc" type="text" style="text-align: center"
+            :class="{ 'is-invalid': !movilValido }" required @blur="validarMovil" />
         </div>
 
         <div class="campo campo-especialidad">
@@ -69,42 +47,34 @@
           <select id="provincia" v-model="novoDoctor.espedoc">
             <option value="">Selecciona una Especialidad</option>
 
-            <option
-              v-for="especialidad in especialidades"
-              :key="especialidad.id"
-              :value="especialidad.nm"
-            >
+            <option v-for="especialidad in especialidades" :key="especialidad.id" :value="especialidad.nm">
               {{ especialidad.nm }}
             </option>
           </select>
         </div>
-        <button
-          type="button"
-          @click="buscarDoctoresPorEspecialidad(novoDoctor.espedoc)"
-          style="font-size: 20px;width: 36px; height: 36px;"
-          >🔍</button>
+        <button type="button" @click="buscarDoctoresPorEspecialidad(novoDoctor.espedoc)"
+          style="font-size: 20px;width: 36px; height: 36px;">🔍</button>
       </div>
 
-    
-      <button
-        type="submit"
-        class="btn-guardar"
-        :disabled="
-          novoDoctor.nomedoc === '' ||
-          novoDoctor.apeldoc === '' ||
-          novoDoctor.movildoc === '' ||
-          novoDoctor.espedoc === ''
-        "
-      >
+
+      <button type="submit" class="btn-guardar" :disabled="novoDoctor.nomedoc === '' ||
+        novoDoctor.apeldoc === '' ||
+        novoDoctor.movildoc === '' ||
+        novoDoctor.espedoc === ''
+        ">
         Gardar
       </button>
     </form>
-    <h4>📋 Listaxe de Doctores 
-        <button
-          type="button"
-          @click="recargarDoctores()"
-          style="width: 28px; height: 28px; padding: 2px; margin: 0 auto;"
-          > ⟳ </button></h4>
+    <h4>📋 Listaxe de Doctores
+      <button type="button" @click="recargarDoctores()"
+        style="width: 28px; height: 28px; padding: 2px; margin-left: 10px;"> ⟳ </button>
+      <button type="button" 
+        style="width: 28px; height: 28px; padding: 2px; margin-left: 5px;" 
+      @click="exportarDoctores"
+        :disabled="doctores.length === 0">
+        🖨️
+      </button>
+    </h4>
     <table v-if="doctores.length > 0">
       <thead>
         <tr>
@@ -126,11 +96,7 @@
           <td>{{ u.movildoc }}</td>
           <td style="text-align: center">{{ u.espedoc }}</td>
           <td style="text-align: center">
-            <button
-              style="margin-right: 5px"
-              title="Editar"
-              @click="editarDoctor(index)"
-            >
+            <button style="margin-right: 5px" title="Editar" @click="editarDoctor(index)">
               ✏️
             </button>
             <button title="Eliminar" @click="eliminarDoctor(index)">🗑️</button>
@@ -155,6 +121,7 @@ import {
   modifyDoctor,
 } from "../api/doctores.js";
 import { alertaExito, alertaInfo } from "../utils/alertas.js";
+import { generarPDF } from "../utils/pdf.js";
 
 // Definición de variables reactivas
 const doctores = ref([]);
@@ -198,8 +165,8 @@ async function guardarDoctor() {
       alertaExito('Datos Doctor modificados')
     } else {
       // Guardar nuevo doctor
-      await saveDoctor(novoDoctor);    
-     alertaExito('Datos doctor guardados')
+      await saveDoctor(novoDoctor);
+      alertaExito('Datos doctor guardados')
     }
 
     editando.value = false;
@@ -245,7 +212,8 @@ async function recargarDoctores() {
   } catch (error) {
     console.error("Error ao recargar doctores:", error);
   }
-} 
+
+}
 
 /// ========== FUNCIONES AUXILIARES  ============
 
@@ -270,7 +238,7 @@ const correoValido = ref(true);
 const validarcorreo = () => {
   const correo = novoDoctor.maildoc.trim();
 
-  const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   if (!regex.test(correo)) {
     correoValido.value = false;
@@ -313,6 +281,21 @@ const limpiaFormdoc = () => {
   editando.value = false; // Reinicia el estado de edición
   correoValido.value = true; // Reinicia la validez del correo
   movilValido.value = true; // Reinicia la validez del móvil
+};
+
+const exportarDoctores = () => {
+  generarPDF(
+    "Listado de doctores",
+    ["ID", "Apellidos", "Nombre", "Móvil", "Especialidad"],
+    doctores.value.map(d => [
+      d._id,
+      d.apeldoc,
+      d.nomedoc,
+      d.movildoc,
+      d.espedoc
+    ]),
+    "listado_doctores.pdf"
+  );
 };
 </script>
 
@@ -359,15 +342,18 @@ form {
   /* ocupa menos espacio */
   border-radius: 12px;
 }
+
 .campo-colegiado {
   display: flex;
   /* ocupa menos espacio */
   border-radius: 12px;
 }
+
 .campo-colegiado label {
   min-width: auto;
   margin-right: 2px;
 }
+
 .campo-nome {
   flex: 1;
   /* ocupa más espacio */
@@ -391,11 +377,13 @@ form {
   /* ocupa más espacio */
   border-radius: 12px;
 }
+
 .campo-movil {
   flex: 1;
   /* ocupa más espacio */
   border-radius: 12px;
 }
+
 .campo select {
   flex: 1;
   padding: 0.6rem;
@@ -432,6 +420,7 @@ form {
   margin: 0 auto;
   display: block;
 }
+
 .btn-guardar:disabled {
   background-color: #e0e0e0;
   color: #999;
@@ -443,6 +432,7 @@ form {
 .btn-guardar:disabled:hover {
   background-color: #e0e0e0;
 }
+
 .btn-guardar:hover {
   background-color: #c8eacf;
   border-radius: 12px;
