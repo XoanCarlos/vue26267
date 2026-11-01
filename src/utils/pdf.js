@@ -20,7 +20,10 @@ export const generarPDF = (titulo, cabeceras, filas, nombreArchivo) => {
             cellPadding: 3
         },
         headStyles: {
-            fillColor: [30, 201, 164]
+            fillColor: [30, 201, 164],
+            textColor: [255, 255, 255],
+            fontStyle: 'bold',
+            halign: 'center'
         }
     });
     doc.save(nombreArchivo);
