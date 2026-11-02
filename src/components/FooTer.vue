@@ -18,6 +18,10 @@
   padding: 0.2rem 3rem;
   margin-top: 3rem;
   font-size: 0.9rem;
+  
+  /* ── ESTAS DOS LÍNEAS ARREGLAN EL ANCHO ── */
+  width: 100%;
+  box-sizing: border-box; 
 }
 
 .link-aviso {
@@ -33,5 +37,4 @@
   align-items: center;      /* alinea verticalmente na mesma liña */
   gap: 5rem;                /* espazo entre o texto e o enlace */
 }
-
 </style>

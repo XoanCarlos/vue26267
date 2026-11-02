@@ -4,58 +4,59 @@
     <main class="contenido">
       <router-view /> <!-- Aquí se carga el router -->    
     </main>
-         <FooTer />
+    <FooTer />
   </div>
 </template>
 
 <script setup>
 import NavBar from './components/NavBar.vue'
 import FooTer from './components/FooTer.vue'
-
 </script>
 
 <style>
-body {
-  margin: 0;
-  background: #f6f6f6;
-}
-
-#app {
-  max-width: 80vw;
-  margin: 0 auto;
-  min-height: calc(100vh - 120px); /* Altura mínima para que el contenido no se superponga con el footer */
-}
-
-.contenido{
-  padding-top: 7vh;
-  padding-bottom: 60px;
-}
-
-/* Navbar fijo arriba */
-nav {
-  position: fixed;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80vw;
+/* NAVBAR FIJA ARRIBA */
+nav, .navbar {
+  position: fixed !important;
+  top: 0 !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 80vw !important;
+  max-width: 80vw !important;
   z-index: 1000;
+  box-sizing: border-box !important;
 }
 
-/* Footer fijo abajo */
-footer {
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80vw;
-  height: 20px;
+/* FOOTER FIJO ABAJO (Aplicando la misma lógica exacta) */
+footer, .footer, .footer-content {
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 80vw !important;
+  max-width: 80vw !important;
+  height: 40px !important; /* Definimos un alto fijo claro */
   z-index: 1000;
+  box-sizing: border-box !important;
+  margin: 0 !important; /* Eliminamos cualquier margen que lo encoja */
 }
 
-/* Pantallas pequeñas */
+/* CONTENIDO CENTRAL */
+.contenido {
+  padding-top: 10vh;
+  padding-bottom: 60px; /* Margen inferior para que el contenido no se oculte tras el footer */
+}
+
+/* PANTALLAS PEQUEÑAS (Móviles) */
 @media (max-width: 768px) {
   #app {
     max-width: 95vw;
   }
+  
+  /* Forzamos a ambos a medir el 95% simétrico en móviles */
+  nav, .navbar, footer, .footer, .footer-content {
+    width: 95vw !important;
+    max-width: 95vw !important;
+  }
 }
+
 </style>

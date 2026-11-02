@@ -1,4 +1,3 @@
-```vue
 <template>
   <div class="xestion-citas">
     <h4>📅 Xestión de Citas 🩺</h4>
@@ -9,6 +8,7 @@
       <!-- Primeira fila: ID, data e limpar -->
       <div class="fila">
         <div class="campo campo-id">
+          
           <input
             v-model="novaCita._id"
             type="text"
@@ -19,9 +19,11 @@
         </div>
 
         <div class="campo campo-fecha">
+          <label style="margin-left: 5px;">Fecha: </label>
           <input
             v-model="novaCita.fecha"
             type="date"
+       
             required
             aria-label="Data da cita"
           />
@@ -66,11 +68,12 @@
 
       <!-- Terceira fila: hora, motivo e estado -->
       <div class="fila">
-        <label style="margin-left: 10px;">Hora Cita: </label>
+        <label style="margin-left: 10px;">Hora: </label>
         <div class="campo campo-hora">
           <input
             v-model="novaCita.hora"
             type="time"
+            style="justify-content: center; "
             required
             aria-label="Hora da cita"
           />
@@ -376,26 +379,32 @@ form {
 
 /* Distribución dos campos */
 .campo-id {
-  flex: 0 1 180px;
+  flex: 0 1 150px;
+  align-items: center;
 }
 
 .campo-paciente,
 .campo-doctor {
   flex: 1 1 150px;
+  text-align: center;
 }
 
 .campo-fecha {
-  flex: 0 0 190px;
-  max-width: 190px;
+  flex: 0 0 250px;
+  max-width: 300px;
+
 }
 
 .campo-fecha input {
   min-width: 0;
-  width: 100%;
+  width: 80%;
+  align-items: center;
+  text-align: center;
 }
 
 .campo-hora {
   flex: 0 1 150px;
+  text-align: center;
 }
 
 .campo-motivo {

@@ -20,77 +20,92 @@
 </template>
 
 <script setup>
-import { ref } from "vue" // será boolean
-const isOpen = ref(false) // actívase cuando fago click
+import { ref } from "vue" 
+const isOpen = ref(false) 
 import logo from "../assets/img/favicon2.png"
 </script>
 
 <style scoped>
 .navbar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 0.1rem 10rem;
+  padding: 0.5rem 3rem; 
   background: #1ca285;
   color: white;
+  width: 100%;
+  box-sizing: border-box;
+  position: relative; /* CLAVE: Permite centrar el menú de forma matemática respecto a toda la barra */
+  height: 50px; /* Definimos un alto fijo para estabilizar el diseño */
 }
-.navbar ul {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  list-style: none;
-  margin: 0 auto;
-  padding: 0;
-}
+
 .logo {
   font-weight: bold;
   font-size: 1rem;
+  display: flex;
+  align-items: center;
+  z-index: 10; /* Asegura que el logo se vea por encima */
 }
 
+/* EL MENÚ QUEDA MATEMÁTICAMENTE CENTRADO EN LA BARRA */
 .menu {
   display: flex;
-  gap: 0.8rem;
+  gap: 2rem;
   list-style: none;
+  margin: 0;
+  padding: 0;
+  
+  /* Rompe el flex-between y fuerza el centrado absoluto exacto */
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .menu a {
   color: white;
   text-decoration: none;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .menu a.router-link-active {
   border-bottom: 0.2rem solid #ffe66d;
 }
 
-/* NUEVO */
+/* BOTÓN HAMBURGUESA */
 .hamburger {
   display: none;
-  margin-right: 1rem;
   padding: 0.5rem 1rem;
   border-radius: 0.3rem;
   background: #1ca285;
   border: none;
   color: white;
   font-size: 1.5rem;
+  cursor: pointer;
+  position: absolute;
+  right: 2rem; /* Lo anclamos a la derecha */
+  z-index: 10;
 }
 
-/* NUEVO (responsive) */
+/* DISEÑO RESPONSIVE (MÓVILES) */
 @media (max-width: 768px) {
   .hamburger {
     display: block;
-    margin-right: 1rem;
   }
 
   .menu {
     display: none;
     position: absolute;
-    margin-right: 3rem;
-    top: 20px;
+    top: 100%; 
+    left: 0;
     right: 0;
+    transform: none; /* Desactivamos el centrado de escritorio en móvil */
     flex-direction: column;
     background: #1ca285;
-    padding: 1rem;
+    padding: 1rem 3rem; 
+    width: 100%; 
+    box-sizing: border-box;
+    z-index: 1001;
+    gap: 1rem;
   }
 
   .menu.open {

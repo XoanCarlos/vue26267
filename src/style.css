@@ -1,3 +1,9 @@
+/* 1. AGREGA ESTAS TRES LÍNEAS AQUÍ ARRIBA DEL TODO */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 2. TU CÓDIGO ACTUAL SE QUEDA JUSTO DEBAJO */
 :root {
   --text: #6b6375;
   --text-h: #08060d;
@@ -214,6 +220,14 @@ code {
     border-right: none;
     border-bottom: 1px solid var(--border);
   }
+}
+
+/* Añade esto obligatoriamente para resetear el navegador */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #f6f6f6;
 }
 
 #next-steps ul {
