@@ -1,6 +1,6 @@
 <template>
   <div class="xestion-citas">
-    <h4>📅 Xestión de Citas 🩺</h4>
+    <h4 class="fila-centrada">📅 Xestión de Citas 🩺</h4>
 
     <!-- Formulario para crear ou modificar unha cita -->
     <form @submit.prevent="guardarCita">
@@ -360,6 +360,10 @@ form {
   flex-direction: column;
   gap: 0.8rem;
   margin-bottom: 1.5rem;
+}
+
+.fila-centrada {
+  justify-content: center;
 }
 
 .fila {

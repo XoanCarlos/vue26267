@@ -148,16 +148,17 @@
         "
       >
         Eliminar
+      </button>   <button type="button" 
+        title="Imprimir Listado Pacientes"
+        style="width: 36x; height: 36px; padding: 2px; margin-left: 5px;" 
+      @click="exportarPacientes" 
+        :disabled="pacientes.length === 0">
+        <img src="../assets/img/impresora.png" style="width: 28px; height: 28px;">
       </button>
     </div>
     </form>
     <h4>📋 Listaxe de Pacientes
-        <button type="button" 
-        style="width: 28px; height: 28px; padding: 2px; margin-left: 5px;" 
-      @click="exportarPacientes"
-        :disabled="pacientes.length === 0">
-        🖨️
-      </button>
+      
     </h4>
     <table v-if="pacientes.length > 0">
       <thead>
@@ -295,7 +296,7 @@ async function guardarPaciente() {
     getPacientes(); // Actualiza la lista de pacientes después de guardar
     }
   } catch (error) {
-    alertaError('Error al guardar el paciente. Contacte con el administrador')
+    alertaError('Error al guardar el paciente. Contacte con el administrador', error)
   }
   pacientes.value = await getPacientes(); // Actualiza la lista de pacientes después de guardar
 }

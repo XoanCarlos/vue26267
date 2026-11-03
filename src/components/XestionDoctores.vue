@@ -55,7 +55,7 @@
         <button type="button" @click="buscarDoctoresPorEspecialidad(novoDoctor.espedoc)"
           style="font-size: 20px;width: 36px; height: 36px;">🔍</button>
       </div>
-
+         <div class="fila-botones">
 
       <button type="submit" class="btn-guardar" :disabled="novoDoctor.nomedoc === '' ||
         novoDoctor.apeldoc === '' ||
@@ -64,16 +64,21 @@
         ">
         Gardar
       </button>
-    </form>
-    <h4>📋 Listaxe de Doctores
-      <button type="button" @click="recargarDoctores()"
-        style="width: 28px; height: 28px; padding: 2px; margin-left: 10px;"> ⟳ </button>
+       
       <button type="button" 
-        style="width: 28px; height: 28px; padding: 2px; margin-left: 5px;" 
+        style="width: 32px; height: 32px; padding: 2px; margin-left: 5px;" 
       @click="exportarDoctores"
         :disabled="doctores.length === 0">
-        🖨️
+        <img src="../assets/img/impresora.png" style="width: 26px; height: 26px;">        
       </button>
+          <button type="button" @click="recargarDoctores()"
+        style="width: 32px; height: 32px; padding: 2px; margin-right: 10px;"> 
+            <img src="../assets/img/recargar.png" style="width: 26px; height: 26px;">  
+      </button>
+      </div>
+    </form>
+    <h4>📋 Listaxe de Doctores
+ 
     </h4>
     <table v-if="doctores.length > 0">
       <thead>
@@ -359,6 +364,13 @@ form {
   /* ocupa más espacio */
   border-radius: 12px;
 }
+.fila-botones {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
 
 .campo-apellido {
   flex: 2;
@@ -412,13 +424,12 @@ form {
 .btn-guardar {
   background-color: #f0f3f7;
   color: black;
-  border: 3;
-  border-color: #1bb191;
+  border: 3px solid #1bb191;
   padding: 0.4rem 1.5rem;
   border-radius: 12px;
   cursor: pointer;
-  margin: 0 auto;
-  display: block;
+  margin: 0; /* Eliminamos el margin: 0 auto */
+  display: inline-block;
 }
 
 .btn-guardar:disabled {
