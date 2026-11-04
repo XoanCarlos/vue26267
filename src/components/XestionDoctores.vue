@@ -1,116 +1,228 @@
 <template>
-  <div class="xestion-doctores">
-    <h4>👨‍⚕️ Xestión de Doctores 👩‍⚕️</h4>
-    <form @submit.prevent="guardarDoctor">
-      <div class="fila">
-        <div class="campo campo-id">
-          <label>ID :</label>
-          <input v-model="novoDoctor._id" type="text" disabled />
+  <div class="w-full bg-white p-4 rounded shadow-md box-border text-gray-800">
+    <h4 class="text-lg font-semibold bg-[#1ec9a4] text-white py-2 px-4 rounded mb-4 text-center">
+      👨‍⚕️ Xestión de Doctores 👩‍⚕️
+    </h4>
+
+    <form @submit.prevent="guardarDoctor" class="w-full flex flex-col gap-3.5 mb-6">
+      <!-- Fila 1 -->
+      <div class="flex flex-col md:flex-row gap-2.5 w-full items-stretch md:items-center">
+        <div class="flex items-center gap-1 md:flex-1">
+          <label class="w-20 shrink-0 text-sm font-semibold text-gray-700">ID :</label>
+          <input
+            v-model="novoDoctor._id"
+            type="text"
+            disabled
+            class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl bg-gray-100 text-gray-500 cursor-not-allowed box-border"
+          />
         </div>
-        <button type="button" @click="limpiaFormdoc" style="font-size: 20px;width: 36px; height: 36px;">
+
+        <button
+          type="button"
+          @click="limpiaFormdoc"
+          class="w-9 h-9 flex items-center justify-center text-lg border border-gray-300 rounded-xl bg-gray-50 hover:bg-gray-100 cursor-pointer transition-colors shrink-0 self-center md:self-auto"
+          title="Limpar formulario"
+        >
           🧹
         </button>
-        <div class="campo campo-nome">
-          <label>Nome:</label>
-          <input id="nome" v-model="novoDoctor.nomedoc" type="text" required @blur="capitalizarTexto('nomedoc')" />
+
+        <div class="flex items-center gap-1 md:flex-2">
+          <label for="nome" class="min-w-[60px] text-sm font-semibold text-gray-700">Nome:</label>
+          <input
+            id="nome"
+            v-model="novoDoctor.nomedoc"
+            type="text"
+            required
+            @blur="capitalizarTexto('nomedoc')"
+            class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
+          />
         </div>
-        <div class="campo campo-apellido">
-          <label>Apellidos:</label>
-          <input id="apellido" v-model="novoDoctor.apeldoc" type="text" required @blur="capitalizarTexto('apeldoc')" />
+
+        <div class="flex items-center gap-1 md:flex-2">
+          <label for="apellido" class="min-w-[60px] text-sm font-semibold text-gray-700">Apellidos:</label>
+          <input
+            id="apellido"
+            v-model="novoDoctor.apeldoc"
+            type="text"
+            required
+            @blur="capitalizarTexto('apeldoc')"
+            class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
+          />
         </div>
-        <div class="campo campo-colegiado">
-          <label>Colegiado: </label>
-          <label>
-            <input type="radio" value="true" v-model="novoDoctor.coledoc" />
+
+        <div class="flex items-center gap-2 text-sm font-semibold text-gray-700 shrink-0">
+          <span>Colegiado:</span>
+          <label class="flex items-center gap-1 cursor-pointer font-normal">
+            <input type="radio" value="true" v-model="novoDoctor.coledoc" class="accent-[#1ca285] cursor-pointer" />
             Si
           </label>
-          <label>
-            <input type="radio" value="false" v-model="novoDoctor.coledoc" />
+          <label class="flex items-center gap-1 cursor-pointer font-normal">
+            <input type="radio" value="false" v-model="novoDoctor.coledoc" class="accent-[#1ca285] cursor-pointer" />
             No
           </label>
         </div>
       </div>
-      <div class="fila">
-        <div class="campo campo-correo">
-          <label>Correo:</label>
-          <input v-model="novoDoctor.maildoc" type="email" :class="{ 'is-invalid': !correoValido }"
-            @blur="validarcorreo" />
-        </div>
-        <div class="campo campo-movil">
-          <label>Móvil:</label>
-          <input v-model="novoDoctor.movildoc" type="text" style="text-align: center"
-            :class="{ 'is-invalid': !movilValido }" required @blur="validarMovil" />
+
+      <!-- Fila 2 -->
+      <div class="flex flex-col md:flex-row gap-2.5 w-full items-stretch md:items-center">
+        <div class="flex items-center gap-1 md:flex-2">
+          <label class="w-20 shrink-0 text-sm font-semibold text-gray-700">Correo:</label>
+          <input
+            v-model="novoDoctor.maildoc"
+            type="email"
+            :class="[
+              'flex-1 px-3 py-2 text-sm border rounded-xl focus:outline-none box-border transition-all',
+              !correoValido
+                ? 'border-red-400 bg-red-50 ring-2 ring-red-200'
+                : 'border-gray-300 focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent'
+            ]"
+            @blur="validarcorreo"
+          />
         </div>
 
-        <div class="campo campo-especialidad">
-          <label>Especialidad: </label>
-          <select id="provincia" v-model="novoDoctor.espedoc">
+        <div class="flex items-center gap-1 md:flex-1">
+          <label class="min-w-[60px] text-sm font-semibold text-gray-700">Móvil:</label>
+          <input
+            v-model="novoDoctor.movildoc"
+            type="text"
+            required
+            @blur="validarMovil"
+            :class="[
+              'flex-1 px-3 py-2 text-sm text-center border rounded-xl focus:outline-none box-border transition-all',
+              !movilValido
+                ? 'border-red-400 bg-red-50 ring-2 ring-red-200'
+                : 'border-gray-300 focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent'
+            ]"
+          />
+        </div>
+
+        <div class="flex items-center gap-1 md:flex-2">
+          <label for="especialidad" class="min-w-[60px] text-sm font-semibold text-gray-700">Especialidad:</label>
+          <select
+            id="especialidad"
+            v-model="novoDoctor.espedoc"
+            class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
+          >
             <option value="">Selecciona una Especialidad</option>
-
-            <option v-for="especialidad in especialidades" :key="especialidad.id" :value="especialidad.nm">
+            <option
+              v-for="especialidad in especialidades"
+              :key="especialidad.id"
+              :value="especialidad.nm"
+            >
               {{ especialidad.nm }}
             </option>
           </select>
         </div>
-        <button type="button" @click="buscarDoctoresPorEspecialidad(novoDoctor.espedoc)"
-          style="font-size: 20px;width: 36px; height: 36px;">🔍</button>
-      </div>
-         <div class="fila-botones">
 
-      <button type="submit" class="btn-guardar" :disabled="novoDoctor.nomedoc === '' ||
-        novoDoctor.apeldoc === '' ||
-        novoDoctor.movildoc === '' ||
-        novoDoctor.espedoc === ''
-        ">
-        Gardar
-      </button>
-       
-      <button type="button" 
-        style="width: 32px; height: 32px; padding: 2px; margin-left: 5px;" 
-      @click="exportarDoctores"
-        :disabled="doctores.length === 0">
-        <img src="../assets/img/impresora.png" style="width: 26px; height: 26px;">        
-      </button>
-          <button type="button" @click="recargarDoctores()"
-        style="width: 32px; height: 32px; padding: 2px; margin-right: 10px;"> 
-            <img src="../assets/img/recargar.png" style="width: 26px; height: 26px;">  
-      </button>
+        <button
+          type="button"
+          @click="buscarDoctoresPorEspecialidad(novoDoctor.espedoc)"
+          class="w-9 h-9 flex items-center justify-center text-lg border border-gray-300 rounded-xl bg-gray-50 hover:bg-gray-100 cursor-pointer transition-colors shrink-0 self-center md:self-auto"
+          title="Buscar por especialidad"
+        >
+          🔍
+        </button>
+      </div>
+
+      <!-- Fila de Botóns -->
+      <div class="flex justify-center items-center gap-2.5 w-full my-1">
+        <button
+          type="submit"
+          class="px-6 py-1.5 rounded-xl font-medium border-2 border-[#1bb191] bg-[#f0f3f7] hover:bg-[#c8eacf] transition-colors cursor-pointer disabled:bg-gray-200 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:opacity-70"
+          :disabled="
+            novoDoctor.nomedoc === '' ||
+            novoDoctor.apeldoc === '' ||
+            novoDoctor.movildoc === '' ||
+            novoDoctor.espedoc === ''
+          "
+        >
+          Gardar
+        </button>
+
+        <button
+          type="button"
+          @click="exportarDoctores"
+          :disabled="doctores.length === 0"
+          class="w-9 h-9 p-1 flex items-center justify-center border border-gray-300 rounded-xl bg-gray-50 hover:bg-gray-100 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          title="Exportar a PDF"
+        >
+          <img
+            src="../assets/img/impresora.png"
+            class="w-6 h-6 object-contain"
+            alt="Imprimir"
+          />
+        </button>
+
+        <button
+          type="button"
+          @click="recargarDoctores()"
+          class="w-9 h-9 p-1 flex items-center justify-center border border-gray-300 rounded-xl bg-gray-50 hover:bg-gray-100 cursor-pointer transition-colors"
+          title="Recargar listado"
+        >
+          <img
+            src="../assets/img/recargar.png"
+            class="w-6 h-6 object-contain"
+            alt="Recargar"
+          />
+        </button>
       </div>
     </form>
-    <h4>📋 Listaxe de Doctores
- 
-    </h4>
-    <table v-if="doctores.length > 0">
-      <thead>
-        <tr>
-          <th style="text-align: center">ID</th>
-          <th style="text-align: center">Código</th>
-          <th style="text-align: center">Apelidos</th>
-          <th style="text-align: center">Nome</th>
-          <th style="text-align: center">Movil</th>
-          <th style="text-align: center">Especialidad</th>
-          <th style="text-align: center">Accións</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(u, index) in doctores" :key="index">
-          <td style="text-align: center">{{ index + 1 }}</td>
-          <td style="text-align: center; width: 0.5%; white-space: nowrap;">{{ u._id }}</td>
-          <td>{{ u.apeldoc }}</td>
-          <td>{{ u.nomedoc }}</td>
-          <td>{{ u.movildoc }}</td>
-          <td style="text-align: center">{{ u.espedoc }}</td>
-          <td style="text-align: center">
-            <button style="margin-right: 5px" title="Editar" @click="editarDoctor(index)">
-              ✏️
-            </button>
-            <button title="Eliminar" @click="eliminarDoctor(index)">🗑️</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
 
-    <p v-else>Non hai doctores cargadoso o falla conexión BBDD.</p>
+    <h4 class="text-lg font-semibold bg-[#1ec9a4] text-white py-2 px-4 rounded mb-4 text-center">
+      📋 Listaxe de Doctores
+    </h4>
+
+    <div v-if="doctores.length > 0" class="overflow-x-auto w-full">
+      <table class="w-full border-collapse border border-gray-200 text-xs md:text-sm">
+        <thead>
+          <tr class="bg-gray-50 text-gray-700">
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">ID</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">Código</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">Apelidos</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">Nome</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">Movil</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">Especialidad</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">Accións</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="(u, index) in doctores"
+            :key="index"
+            class="hover:bg-gray-50 transition-colors"
+          >
+            <td class="border border-gray-200 p-2.5 text-center">{{ index + 1 }}</td>
+            <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap text-xs text-gray-500 font-mono">
+              {{ u._id }}
+            </td>
+            <td class="border border-gray-200 p-2.5 text-left">{{ u.apeldoc }}</td>
+            <td class="border border-gray-200 p-2.5 text-left">{{ u.nomedoc }}</td>
+            <td class="border border-gray-200 p-2.5 text-center">{{ u.movildoc }}</td>
+            <td class="border border-gray-200 p-2.5 text-center">{{ u.espedoc }}</td>
+            <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap">
+              <button
+                class="mr-1.5 px-2 py-1 border border-gray-300 rounded bg-white hover:bg-[#e8f8f3] cursor-pointer transition-colors text-sm"
+                title="Editar"
+                @click="editarDoctor(index)"
+              >
+                ✏️
+              </button>
+              <button
+                class="px-2 py-1 border border-gray-300 rounded bg-white hover:bg-red-50 cursor-pointer transition-colors text-sm"
+                title="Eliminar"
+                @click="eliminarDoctor(index)"
+              >
+                🗑️
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p v-else class="text-gray-500 text-center py-4">
+      Non hai doctores cargados ou falla conexión BBDD.
+    </p>
   </div>
 </template>
 
@@ -134,7 +246,6 @@ const especialidades = ref([]);
 const editando = ref(false);
 
 const novoDoctor = reactive({
-  //iddoc: "",
   nomedoc: "",
   apeldoc: "",
   maildoc: "",
@@ -143,10 +254,8 @@ const novoDoctor = reactive({
   espedoc: "",
 });
 
-// usamos async porque hacemos await asíncrono
 onMounted(async () => {
-  // Cargar doctores y especialidades al montar el componente
-  doctores.value = await getDoctores()
+  doctores.value = await getDoctores();
   especialidades.value = await obtenerEspecialidades();
 });
 
@@ -154,33 +263,24 @@ onMounted(async () => {
 async function guardarDoctor() {
   try {
     if (editando.value) {
-      // Modificar doctor existente
-      const doctorModificado = await modifyDoctor(
-        novoDoctor._id,
-        novoDoctor
-      );
-
-      const index = doctores.value.findIndex(
-        (p) => p._id === novoDoctor._id
-      );
+      const doctorModificado = await modifyDoctor(novoDoctor._id, novoDoctor);
+      const index = doctores.value.findIndex((p) => p._id === novoDoctor._id);
 
       if (index !== -1) {
         doctores.value[index] = doctorModificado;
       }
-      alertaExito('Datos Doctor modificados')
+      alertaExito("Datos Doctor modificados");
     } else {
-      // Guardar nuevo doctor
       await saveDoctor(novoDoctor);
-      alertaExito('Datos doctor guardados')
+      alertaExito("Datos doctor guardados");
     }
 
     editando.value = false;
-
   } catch (error) {
     console.error("Error ao gardar doctor:", error);
   }
-  limpiaFormdoc(); // Limpiar el formulario después de guardar
-  doctores.value = await getDoctores(); // Actualiza la lista de doctores después de guardar
+  limpiaFormdoc();
+  doctores.value = await getDoctores();
 }
 
 function editarDoctor(index) {
@@ -193,8 +293,8 @@ async function eliminarDoctor(index) {
   const doctor = doctores.value[index];
   try {
     await deleteDoctor(doctor._id);
-    doctores.value.splice(index, 1); // Eliminar de la lista local
-    alertaInfo('Datos doctor eliminados')
+    doctores.value.splice(index, 1);
+    alertaInfo("Datos doctor eliminados");
   } catch (error) {
     console.error("Error ao eliminar doctor:", error);
   }
@@ -211,19 +311,16 @@ async function buscarDoctoresPorEspecialidad(especialidad) {
     console.error("Error ao buscar doctores por especialidad:", error);
   }
 }
+
 async function recargarDoctores() {
   try {
     doctores.value = await getDoctores();
   } catch (error) {
     console.error("Error ao recargar doctores:", error);
   }
-
 }
 
-/// ========== FUNCIONES AUXILIARES  ============
-
-// Función única: capitaliza y asigna en el mismo paso
-
+/// ========== FUNCIONES AUXILIARES ============
 const capitalizarTexto = (campo) => {
   const texto = novoDoctor[campo] ?? "";
   novoDoctor[campo] = texto
@@ -236,14 +333,11 @@ const capitalizarTexto = (campo) => {
     .join(" ");
 };
 
-// validar mail
-
 const correoValido = ref(true);
 
 const validarcorreo = () => {
   const correo = novoDoctor.maildoc.trim();
-
-const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   if (!regex.test(correo)) {
     correoValido.value = false;
@@ -253,15 +347,13 @@ const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   }
 };
 
-// validar movil
-
 const movilValido = ref(true);
 const movilRegex = /^[67]\d{8}$/;
 const validarMovil = () => {
   const movil = novoDoctor.movildoc.trim();
 
   if (movil === "") {
-    movilValido.value = true; // Vacío = válido (opcional)
+    movilValido.value = true;
     return true;
   }
 
@@ -278,241 +370,28 @@ const validarMovil = () => {
 const limpiaFormdoc = () => {
   Object.keys(novoDoctor).forEach((key) => {
     if (typeof novoDoctor[key] === "boolean") {
-      novoDoctor[key] = false; // Reinicia los booleanos a false
+      novoDoctor[key] = false;
     } else {
-      novoDoctor[key] = ""; // Reinicia los demás campos a cadena vacía
+      novoDoctor[key] = "";
     }
   });
-  editando.value = false; // Reinicia el estado de edición
-  correoValido.value = true; // Reinicia la validez del correo
-  movilValido.value = true; // Reinicia la validez del móvil
+  editando.value = false;
+  correoValido.value = true;
+  movilValido.value = true;
 };
 
 const exportarDoctores = () => {
   generarPDF(
     "Listado de doctores",
     ["ID", "Apellidos", "Nombre", "Móvil", "Especialidad"],
-    doctores.value.map(d => [
+    doctores.value.map((d) => [
       d._id,
       d.apeldoc,
       d.nomedoc,
       d.movildoc,
-      d.espedoc
+      d.espedoc,
     ]),
-    "listado_doctores.pdf"
+    "listado_doctores.pdf",
   );
 };
 </script>
-
-<style scoped>
-.xestion-doctores {
-  width: 100%;
-  /* opcional para que no crezca demasiado en pantallas muy grandes */
-  background: white;
-  padding: 1rem;
-  overflow: visible;
-  border-radius: 2px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-}
-
-form {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.fila {
-  display: flex;
-  gap: 0.7rem;
-  width: 100%;
-}
-
-.fila-centrada {
-  justify-content: center;
-}
-
-.campo {
-  display: flex;
-  align-items: center;
-  /* label e input en la misma línea */
-  gap: 0.1rem;
-  border-radius: 12px;
-}
-
-.campo-id {
-  flex: 2;
-  /* ocupa menos espacio */
-  border-radius: 12px;
-}
-
-.campo-colegiado {
-  display: flex;
-  /* ocupa menos espacio */
-  border-radius: 12px;
-}
-
-.campo-colegiado label {
-  min-width: auto;
-  margin-right: 2px;
-}
-
-.campo-nome {
-  flex: 1;
-  /* ocupa más espacio */
-  border-radius: 12px;
-}
-.fila-botones {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-}
-
-.campo-apellido {
-  flex: 2;
-  /* ocupa más espacio */
-  border-radius: 12px;
-}
-
-.campo-especialidad {
-  flex: 2;
-  /* ocupa más espacio */
-  border-radius: 12px;
-}
-
-.campo-correo {
-  flex: 2;
-  /* ocupa más espacio */
-  border-radius: 12px;
-}
-
-.campo-movil {
-  flex: 1;
-  /* ocupa más espacio */
-  border-radius: 12px;
-}
-
-.campo select {
-  flex: 1;
-  padding: 0.6rem;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  width: 60%;
-}
-
-.campo label {
-  min-width: 60px;
-  margin-right: 0.2rem;
-  /* ancho fijo para alinear */
-  font-weight: 400;
-  font: bold;
-}
-
-.campo input {
-  flex: 1;
-  /* ocupa todo el espacio restante */
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  box-sizing: border-box;
-}
-
-.btn-guardar {
-  background-color: #f0f3f7;
-  color: black;
-  border: 3px solid #1bb191;
-  padding: 0.4rem 1.5rem;
-  border-radius: 12px;
-  cursor: pointer;
-  margin: 0; /* Eliminamos el margin: 0 auto */
-  display: inline-block;
-}
-
-.btn-guardar:disabled {
-  background-color: #e0e0e0;
-  color: #999;
-  border-color: #ccc;
-  cursor: not-allowed;
-  opacity: 0.7;
-}
-
-.btn-guardar:disabled:hover {
-  background-color: #e0e0e0;
-}
-
-.btn-guardar:hover {
-  background-color: #c8eacf;
-  border-radius: 12px;
-}
-
-.button {
-  background: none;
-  border: 2px solid #ddd;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-.inline-control {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  padding-right: 5rem;
-}
-
-table {
-  width: 100%;
-  border-collapse: separate;
-  margin-top: 1rem;
-  font-size: 0.8rem;
-  border: 1px solid #ddd;
-}
-
-th,
-td {
-  border: 1px solid #ddd;
-  padding: 0.7rem;
-  text-align: left;
-}
-
-th {
-  text-align: center;
-  background-color: #f8f9fa;
-}
-
-h4 {
-  margin-bottom: 1rem;
-  font-weight: 600;
-  background-color: #1ec9a4;
-  color: white;
-}
-
-.is-invalid {
-  border-color: #f28b82 !important;
-  background-color: #ffe6e6;
-}
-
-.invalid-texto {
-  display: block;
-  font-size: 10px;
-  color: red;
-  padding-top: 0.5%;
-}
-
-@media (max-width: 768px) {
-  .xestion-pacientes {
-    padding: 1rem;
-    /* reducir el padding en pantallas pequeñas */
-  }
-
-  .fila {
-    flex-direction: column;
-    /* apila los campos verticalmente en móviles */
-    gap: 0.4rem;
-    /* opcional: un pequeño espacio entre ellos */
-  }
-}
-</style>

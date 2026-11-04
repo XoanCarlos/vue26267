@@ -1,40 +1,21 @@
 <template>
-  <footer class="footer-content footer">
-    <ul class="link-aviso">
-     <router-link to="/avisolegal" 
-     style="color: white;" >Aviso Legal</router-link>
+  <footer
+    class="fixed bottom-0 left-1/2 -translate-x-1/2 w-[95vw] md:w-[80vw] max-w-[95vw] md:max-w-[80vw] h-[40px] z-50 bg-[#1ca285] text-white text-xs md:text-sm flex items-center justify-center gap-6 md:gap-20 px-4 md:px-12 box-border shadow-inner"
+  >
+    <ul class="list-none p-0 m-0">
+      <li>
+        <router-link
+          to="/avisolegal"
+          class="text-white hover:text-[#ffe66d] transition-colors underline-offset-2 hover:underline font-medium"
+        >
+          Aviso Legal
+        </router-link>
+      </li>
     </ul>
-     <p>© {{ new Date().getFullYear() }} Sanidad Teis — Desenvolvido en Vue 3</p>
+    <p class="m-0 whitespace-nowrap">
+      © {{ new Date().getFullYear() }} Sanidad Teis — Desenvolvido en Vue 3
+    </p>
   </footer>
 </template>
 
 <script setup></script>
-
-<style scoped>
-.footer {
-  background: #1ca285;
-  color: white;
-  text-align: center;
-  padding: 0.2rem 3rem;
-  margin-top: 3rem;
-  font-size: 0.9rem;
-  
-  /* ── ESTAS DOS LÍNEAS ARREGLAN EL ANCHO ── */
-  width: 100%;
-  box-sizing: border-box; 
-}
-
-.link-aviso {
-  display: block;
-  margin-top: 6px;
-  color: #f9d342;
-  cursor: pointer;
-}
-
-.footer-content {
-  display: flex;
-  justify-content: center; /* centra horizontalmente */
-  align-items: center;      /* alinea verticalmente na mesma liña */
-  gap: 5rem;                /* espazo entre o texto e o enlace */
-}
-</style>

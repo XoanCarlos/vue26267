@@ -1,38 +1,40 @@
 <template>
-  <div class="xestion-citas">
-    <h4 class="fila-centrada">📅 Xestión de Citas 🩺</h4>
+  <div class="w-full bg-white p-4 rounded shadow-md box-border text-gray-800">
+    <h4 class="text-lg font-semibold bg-[#1ec9a4] text-white py-2 px-4 rounded mb-4 text-center">
+      📅 Xestión de Citas 🩺
+    </h4>
 
     <!-- Formulario para crear ou modificar unha cita -->
-    <form @submit.prevent="guardarCita">
-
+    <form @submit.prevent="guardarCita" class="w-full flex flex-col gap-3.5 mb-6">
       <!-- Primeira fila: ID, data e limpar -->
-      <div class="fila">
-        <div class="campo campo-id">
-          
+      <div class="flex flex-col md:flex-row gap-2.5 w-full items-stretch md:items-center">
+        <div class="flex items-center gap-1 flex-1">
+          <label class="w-20 shrink-0 text-sm font-semibold text-gray-700">ID Cita:</label>
           <input
             v-model="novaCita._id"
             type="text"
             placeholder="ID cita"
             disabled
             aria-label="ID da cita"
+            class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl bg-gray-100 text-gray-500 cursor-not-allowed box-border"
           />
         </div>
 
-        <div class="campo campo-fecha">
-          <label style="margin-left: 5px;">Fecha: </label>
+        <div class="flex items-center gap-2 flex-1">
+          <label class="w-16 shrink-0 text-sm font-semibold text-gray-700">Fecha:</label>
           <input
             v-model="novaCita.fecha"
             type="date"
-       
             required
             aria-label="Data da cita"
+            class="flex-1 px-3 py-2 text-sm text-center border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
           />
         </div>
 
         <button
           type="button"
           @click="limpiaFormcita"
-          class="btn-limpar"
+          class="w-10 h-10 flex items-center justify-center text-lg border border-gray-300 rounded-xl bg-gray-50 hover:bg-gray-100 cursor-pointer transition-colors shrink-0 self-center md:self-auto"
           title="Limpar formulario"
           aria-label="Limpar formulario"
         >
@@ -41,18 +43,21 @@
       </div>
 
       <!-- Segunda fila: paciente e doctor -->
-      <div class="fila">
-        <div class="campo campo-paciente">
+      <div class="flex flex-col md:flex-row gap-2.5 w-full items-stretch md:items-center">
+        <div class="flex items-center gap-1 flex-1">
+          <label class="w-20 shrink-0 text-sm font-semibold text-gray-700">Paciente:</label>
           <input
             v-model="novaCita.pacienteId"
             type="text"
             placeholder="ID do paciente"
             readonly
             aria-label="ID do paciente"
+            class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl bg-gray-50 focus:outline-none text-center box-border"
           />
         </div>
 
-        <div class="campo campo-doctor">
+        <div class="flex items-center gap-2 flex-1">
+          <label class="w-16 shrink-0 text-sm font-semibold text-gray-700">Doctor:</label>
           <input
             :value="
               doctorSeleccionado
@@ -62,37 +67,40 @@
             placeholder="ID Doctor"
             readonly
             aria-label="Doctor seleccionado"
+            class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl bg-gray-50 focus:outline-none text-center box-border"
           />
         </div>
       </div>
 
       <!-- Terceira fila: hora, motivo e estado -->
-      <div class="fila">
-        <label style="margin-left: 10px;">Hora: </label>
-        <div class="campo campo-hora">
+      <div class="flex flex-col md:flex-row gap-2.5 w-full items-stretch md:items-center">
+        <div class="flex items-center gap-1 flex-1 md:flex-initial md:w-56">
+          <label class="w-20 shrink-0 text-sm font-semibold text-gray-700">Hora:</label>
           <input
             v-model="novaCita.hora"
             type="time"
-            style="justify-content: center; "
             required
             aria-label="Hora da cita"
+            class="flex-1 px-3 py-2 text-sm text-center border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
           />
         </div>
 
-        <div class="campo campo-motivo">
+        <div class="flex-1 md:flex-2">
           <input
             v-model="novaCita.motivo"
             type="text"
             placeholder="Motivo da cita"
             required
+            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
           />
         </div>
 
-        <div class="campo campo-estado">
+        <div class="flex-1 md:flex-initial md:w-48">
           <select
             v-model="novaCita.estado"
             required
             aria-label="Estado da cita"
+            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
           >
             <option value="pendente">Pendente</option>
             <option value="confirmada">Confirmada</option>
@@ -103,39 +111,40 @@
       </div>
 
       <!-- Cuarta fila: observacións -->
-      <div class="fila">
-        <div class="campo campo-observacions">
-          <textarea
-            v-model="novaCita.observacions"
-            placeholder="Observacións adicionais"
-            aria-label="Observacións adicionais"
-          ></textarea>
-        </div>
+      <div class="w-full">
+        <textarea
+          v-model="novaCita.observacions"
+          placeholder="Observacións adicionais"
+          aria-label="Observacións adicionais"
+          class="w-full px-3 py-2 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent min-h-[75px] resize-y box-border transition-all"
+        ></textarea>
       </div>
 
       <!-- Gardar ou modificar a cita -->
-      <button
-        type="submit"
-        class="btn-guardar"
-        :disabled="
-          novaCita.pacienteId === '' ||
-          novaCita.doctorId === '' ||
-          novaCita.fecha === '' ||
-          novaCita.hora === '' ||
-          novaCita.motivo.trim() === ''
-        "
-      >
-        {{ editando ? "Modificar" : "Gardar" }}
-      </button>
+      <div class="flex justify-center items-center w-full my-1">
+        <button
+          type="submit"
+          class="px-7 py-2 rounded-xl font-medium border-2 border-[#1bb191] bg-[#f0f3f7] hover:bg-[#c8eacf] transition-colors cursor-pointer disabled:bg-gray-200 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:opacity-70"
+          :disabled="
+            novaCita.pacienteId === '' ||
+            novaCita.doctorId === '' ||
+            novaCita.fecha === '' ||
+            novaCita.hora === '' ||
+            novaCita.motivo.trim() === ''
+          "
+        >
+          {{ editando ? "Modificar" : "Gardar" }}
+        </button>
+      </div>
     </form>
 
     <!-- Listaxe de citas -->
-    <h4 class="titulo-listaxe" >
-      📋 Listaxe de Citas
+    <h4 class="relative text-lg font-semibold bg-[#1ec9a4] text-white py-2 px-4 rounded mb-4 flex items-center justify-center">
+      <span>📋 Listaxe de Citas</span>
       <button
         type="button"
         @click="recargarCitas"
-        class="btn-recargar"
+        class="absolute right-2 w-8 h-8 flex items-center justify-center text-lg bg-white/20 hover:bg-white/30 rounded cursor-pointer transition-colors"
         title="Recargar citas"
         aria-label="Recargar citas"
       >
@@ -143,63 +152,64 @@
       </button>
     </h4>
 
-    <table v-if="citas.length > 0">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Paciente</th>
-          <th>Doctor</th>
-          <th>Data</th>
-          <th>Hora</th>
-          <th>Motivo</th>
-          <th>Estado</th>
-          <th>Accións</th>
-        </tr>
-      </thead>
+    <div v-if="citas.length > 0" class="overflow-x-auto w-full">
+      <table class="w-full min-w-[750px] border-collapse border border-gray-200 text-xs md:text-sm">
+        <thead>
+          <tr class="bg-gray-50 text-gray-700">
+            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">ID</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">Paciente</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">Doctor</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">Data</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">Hora</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">Motivo</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">Estado</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">Accións</th>
+          </tr>
+        </thead>
 
-      <tbody>
-        <tr v-for="(cita, index) in citas" :key="cita._id">
-          <td>{{ index + 1 }}</td>
+        <tbody>
+          <tr
+            v-for="(cita, index) in citas"
+            :key="cita._id"
+            class="hover:bg-gray-50 transition-colors"
+          >
+            <td class="border border-gray-200 p-2.5 text-center">{{ index + 1 }}</td>
+            <td class="border border-gray-200 p-2.5 text-left">
+              {{ cita.pacienteId?.nomepac }} {{ cita.pacienteId?.apelpac }}
+            </td>
+            <td class="border border-gray-200 p-2.5 text-left">
+              {{ cita.doctorId?.nomedoc }} {{ cita.doctorId?.apeldoc }}
+            </td>
+            <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap">{{ cita.fecha }}</td>
+            <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap">{{ cita.hora }}</td>
+            <td class="border border-gray-200 p-2.5 text-left">{{ cita.motivo }}</td>
+            <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap capitalize">{{ cita.estado }}</td>
+            <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap">
+              <button
+                type="button"
+                title="Editar"
+                aria-label="Editar cita"
+                class="mr-1.5 px-2 py-1 border border-gray-300 rounded bg-white hover:bg-[#e8f8f3] cursor-pointer transition-colors text-sm"
+                @click="editarCita(index)"
+              >
+                ✏️
+              </button>
+              <button
+                type="button"
+                title="Eliminar"
+                aria-label="Eliminar cita"
+                class="px-2 py-1 border border-gray-300 rounded bg-white hover:bg-red-50 cursor-pointer transition-colors text-sm"
+                @click="eliminarCita(index)"
+              >
+                🗑️
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-          <td>
-            {{ cita.pacienteId?.nomepac }}
-            {{ cita.pacienteId?.apelpac }}
-          </td>
-
-          <td>
-            {{ cita.doctorId?.nomedoc }}
-            {{ cita.doctorId?.apeldoc }}
-          </td>
-
-          <td>{{ cita.fecha }}</td>
-          <td>{{ cita.hora }}</td>
-          <td>{{ cita.motivo }}</td>
-          <td>{{ cita.estado }}</td>
-
-          <td class="acciones">
-            <button
-              type="button"
-              title="Editar"
-              aria-label="Editar cita"
-              @click="editarCita(index)"
-            >
-              ✏️
-            </button>
-
-            <button
-              type="button"
-              title="Eliminar"
-              aria-label="Eliminar cita"
-              @click="eliminarCita(index)"
-            >
-              🗑️
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-    <p v-else>
+    <p v-else class="text-gray-500 text-center py-4">
       Non hai citas cargadas ou falla a conexión coa BBDD.
     </p>
   </div>
@@ -212,7 +222,7 @@ import {
   // getCitas,
   saveCita,
   modifyCita,
-  deleteCita
+  deleteCita,
 } from "../api/citas.js";
 
 import { getDoctores } from "../api/doctores.js";
@@ -235,34 +245,28 @@ const novaCita = reactive({
   hora: "",
   motivo: "",
   estado: "pendente",
-  observacions: ""
+  observacions: "",
 });
 
-// Cargar datos ao iniciar o compoñente
 onMounted(async () => {
   await cargarDatos();
 });
 
-// Cargar doctores.
-// A carga das citas queda pendente de activar getCitas.
 async function cargarDatos() {
   try {
     doctores.value = await getDoctores();
-
     // citas.value = await getCitas();
   } catch (error) {
     console.error("Erro ao cargar os datos:", error);
   }
 }
 
-// Seleccionar un doctor
 function seleccionarDoctor(doctor) {
   doctorSeleccionado.value = doctor;
   novaCita.doctorId = doctor._id;
   mostrarSelectorDoctor.value = false;
 }
 
-// Gardar ou modificar unha cita
 async function guardarCita() {
   try {
     if (editando.value) {
@@ -280,7 +284,6 @@ async function guardarCita() {
   }
 }
 
-// Cargar unha cita no formulario
 function editarCita(index) {
   const cita = citas.value[index];
 
@@ -288,7 +291,7 @@ function editarCita(index) {
   const doctorId = cita.doctorId?._id ?? cita.doctorId;
 
   doctorSeleccionado.value =
-    doctores.value.find(d => d._id === doctorId) ??
+    doctores.value.find((d) => d._id === doctorId) ??
     (typeof cita.doctorId === "object" ? cita.doctorId : null);
 
   Object.assign(novaCita, {
@@ -299,13 +302,12 @@ function editarCita(index) {
     hora: cita.hora,
     motivo: cita.motivo,
     estado: cita.estado,
-    observacions: cita.observacions ?? ""
+    observacions: cita.observacions ?? "",
   });
 
   editando.value = true;
 }
 
-// Eliminar unha cita
 async function eliminarCita(index) {
   const cita = citas.value[index];
 
@@ -318,12 +320,10 @@ async function eliminarCita(index) {
   }
 }
 
-// Recargar a listaxe
 async function recargarCitas() {
   await cargarDatos();
 }
 
-// Limpar o formulario
 function limpiaFormcita() {
   Object.assign(novaCita, {
     _id: "",
@@ -333,7 +333,7 @@ function limpiaFormcita() {
     hora: "",
     motivo: "",
     estado: "pendente",
-    observacions: ""
+    observacions: "",
   });
 
   doctorSeleccionado.value = null;
@@ -341,269 +341,3 @@ function limpiaFormcita() {
   editando.value = false;
 }
 </script>
-
-<style scoped>
-.xestion-citas {
-  width: 100%;
-  background: white;
-  padding: 1rem;
-  overflow: visible;
-  border-radius: 2px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-}
-
-/* Formulario */
-form {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-  margin-bottom: 1.5rem;
-}
-
-.fila-centrada {
-  justify-content: center;
-}
-
-.fila {
-  display: flex;
-  gap: 0.7rem;
-  width: 100%;
-  align-items: center;
-}
-
-.campo {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  min-width: 0;
-  box-sizing: border-box;
-}
-
-/* Distribución dos campos */
-.campo-id {
-  flex: 0 1 150px;
-  align-items: center;
-}
-
-.campo-paciente,
-.campo-doctor {
-  flex: 1 1 150px;
-  text-align: center;
-}
-
-.campo-fecha {
-  flex: 0 0 250px;
-  max-width: 300px;
-
-}
-
-.campo-fecha input {
-  min-width: 0;
-  width: 80%;
-  align-items: center;
-  text-align: center;
-}
-
-.campo-hora {
-  flex: 0 1 150px;
-  text-align: center;
-}
-
-.campo-motivo {
-  flex: 2 1 250px;
-}
-
-.campo-estado {
-  flex: 1 1 170px;
-}
-
-.campo-observacions {
-  flex: 1;
-  width: 100%;
-}
-
-.campo input,
-.campo select,
-.campo textarea {
-  flex: 1;
-  min-width: 0;
-  width: 100%;
-  padding: 0.65rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-sizing: border-box;
-  font: inherit;
-  background-color: white;
-}
-
-.campo textarea {
-  resize: vertical;
-  min-height: 75px;
-}
-
-.campo input:focus,
-.campo select:focus,
-.campo textarea:focus {
-  outline: none;
-  border-color: #1ec9a4;
-  box-shadow: 0 0 0 2px rgba(30, 201, 164, 0.15);
-}
-
-/* Botón de limpar */
-.btn-limpar {
-  flex: 0 0 40px;
-  width: 40px;
-  height: 40px;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-/* Botón de gardar */
-.btn-guardar {
-  background-color: #f0f3f7;
-  color: black;
-  border: 2px solid #1bb191;
-  padding: 0.6rem 1.6rem;
-  border-radius: 12px;
-  cursor: pointer;
-  margin: 0 auto;
-  display: block;
-  transition: background-color 0.2s;
-}
-
-.btn-guardar:hover:not(:disabled) {
-  background-color: #c8eacf;
-}
-
-.btn-guardar:disabled {
-  background-color: #e0e0e0;
-  color: #999;
-  border-color: #ccc;
-  cursor: not-allowed;
-  opacity: 0.7;
-}
-
-/* Cabeceras */
-h4 {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-  padding: 0.5rem;
-  font-weight: 600;
-  background-color: #1ec9a4;
-  color: white;
-  border-radius: 4px;
-}
-
-.titulo-listaxe {
-  position: relative;
-  margin-top: 1.5rem;
-  justify-content: center;
-  align-items: center;
-}
-
-.titulo-listaxe .btn-recargar {
-  position: absolute;
-  right: 0.5rem;
-  width: 30px;
-  height:30px;
-  height:30px;
-}
-/* Táboa */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
-  font-size: 0.85rem;
-  border: 1px solid #ddd;
-}
-
-th,
-td {
-  border: 1px solid #ddd;
-  padding: 0.65rem;
-  text-align: left;
-}
-
-th {
-  text-align: center;
-  background-color: #f8f9fa;
-  white-space: nowrap;
-}
-
-td {
-  overflow-wrap: anywhere;
-}
-
-td button {
-  cursor: pointer;
-  border: 1px solid #ddd;
-  background: white;
-  border-radius: 5px;
-  padding: 0.25rem 0.4rem;
-}
-
-td button:hover {
-  background-color: #e8f8f3;
-}
-
-.acciones {
-  text-align: center;
-  white-space: nowrap;
-}
-
-/* Adaptación a pantallas pequenas */
-@media (max-width: 900px) {
-  .fila {
-    flex-wrap: wrap;
-  }
-
-  .campo-id,
-  .campo-paciente,
-  .campo-doctor,
-  .campo-fecha,
-  .campo-hora,
-  .campo-motivo,
-  .campo-estado {
-    flex: 1 1 200px;
-    max-width: none;
-  }
-}
-
-@media (max-width: 600px) {
-  .xestion-citas {
-    padding: 0.75rem;
-  }
-
-  .fila {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.6rem;
-  }
-
-  .campo {
-    width: 100%;
-  }
-
-  .campo-fecha input {
-    width: 100%;
-  }
-
-  .btn-limpar {
-    align-self: flex-end;
-  }
-
-  table {
-    min-width: 850px;
-  }
-
-  .xestion-citas {
-    overflow-x: auto;
-  }
-}
-</style>
-```

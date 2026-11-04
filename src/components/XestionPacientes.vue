@@ -1,203 +1,281 @@
 <template>
-  <div class="xestion-pacientes">
-    <h4>👥 Xestión de Pacientes</h4>
-    <form @submit.prevent="guardarPaciente">
-      <div class="fila">
-        <div class="campo campo-dni">
-          <label>DNI/CIF:</label>
+  <div class="w-full bg-white p-4 rounded shadow-md box-border text-gray-800">
+    <h4 class="text-lg font-semibold bg-[#1ec9a4] text-white py-2 px-4 rounded mb-4 text-center">
+      👥 Xestión de Pacientes
+    </h4>
+
+    <form @submit.prevent="guardarPaciente" class="w-full flex flex-col gap-3.5 mb-6">
+      <!-- Fila 1 -->
+      <div class="flex flex-col md:flex-row gap-2.5 w-full items-stretch md:items-center">
+        <div class="flex items-center gap-1 md:flex-1">
+          <label class="w-28 shrink-0 text-sm font-semibold text-gray-700">DNI/CIF:</label>
           <input
             v-model="novoPaciente.dnipac"
             type="text"
             required
-            style="text-align: center"
-            :class="{ 'is-invalid': !dniValido }"
             @blur="validarDni"
+            :class="[
+              'flex-1 px-3 py-2 text-sm text-center border rounded-xl focus:outline-none box-border transition-all',
+              !dniValido
+                ? 'border-red-400 bg-red-50 ring-2 ring-red-200'
+                : 'border-gray-300 focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent'
+            ]"
           />
         </div>
-        <button type="button" @click="buscarPaciente" style="font-size: 20px;" >🔎</button>
-        <button type="button" @click="limpiaFormpac" style="font-size: 20px;">🧹</button>
-        <div v-if="!dniValido" class="invalid-texto d-block">
+
+        <button
+          type="button"
+          @click="buscarPaciente"
+          class="w-9 h-9 flex items-center justify-center text-lg border border-gray-300 rounded-xl bg-gray-50 hover:bg-gray-100 cursor-pointer transition-colors shrink-0 self-center md:self-auto"
+          title="Buscar paciente"
+        >
+          🔎
+        </button>
+
+        <button
+          type="button"
+          @click="limpiaFormpac"
+          class="w-9 h-9 flex items-center justify-center text-lg border border-gray-300 rounded-xl bg-gray-50 hover:bg-gray-100 cursor-pointer transition-colors shrink-0 self-center md:self-auto"
+          title="Limpar formulario"
+        >
+          🧹
+        </button>
+
+        <div v-if="!dniValido" class="text-xs text-red-500 font-medium md:self-center">
           DNI o NIE inválido.
         </div>
-        <div class="campo campo-nome">
-          <label>Nome:</label>
+
+        <div class="flex items-center gap-1 md:flex-4">
+          <label for="nome" class="min-w-[60px] text-sm font-semibold text-gray-700">Nome:</label>
           <input
             id="nome"
             v-model="novoPaciente.nomepac"
             type="text"
             required
             @blur="capitalizarTexto('nomepac')"
+            class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
           />
         </div>
-        <div class="campo campo-apellido">
-          <label>Apellidos:</label>
+
+        <div class="flex items-center gap-1 md:flex-4">
+          <label for="apellido" class="min-w-[60px] text-sm font-semibold text-gray-700">Apellidos:</label>
           <input
             id="apellido"
             v-model="novoPaciente.apelpac"
             type="text"
             required
             @blur="capitalizarTexto('apelpac')"
+            class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
           />
         </div>
       </div>
-      <div class="fila">
-        <div class="campo campo-fecha">
-          <label>Fecha Nacimiento:</label>
+
+      <!-- Fila 2 -->
+      <div class="flex flex-col md:flex-row gap-2.5 w-full items-stretch md:items-center">
+        <div class="flex items-center gap-1 md:flex-1">
+          <label class="w-28 shrink-0 text-sm font-semibold text-gray-700">Fecha Nac.:</label>
           <input
             v-model="novoPaciente.nacipac"
             type="date"
             placeholder="dd/mm/yyyy"
             required
+            class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
           />
         </div>
-        <div class="campo campo-correo">
-          <label>Correo:</label>
+
+        <div class="flex items-center gap-1 md:flex-2">
+          <label class="min-w-[60px] text-sm font-semibold text-gray-700">Correo:</label>
           <input
             v-model="novoPaciente.mailpac"
             type="email"
-            :class="{ 'is-invalid': !correoValido }"
             @blur="validarcorreo"
+            :class="[
+              'flex-1 px-3 py-2 text-sm border rounded-xl focus:outline-none box-border transition-all',
+              !correoValido
+                ? 'border-red-400 bg-red-50 ring-2 ring-red-200'
+                : 'border-gray-300 focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent'
+            ]"
           />
         </div>
-        <div class="campo campo-movil">
-          <label>Móvil:</label>
+
+        <div class="flex items-center gap-1 md:flex-1">
+          <label class="min-w-[60px] text-sm font-semibold text-gray-700">Móvil:</label>
           <input
             v-model="novoPaciente.movilpac"
             type="text"
-            style="text-align: center"
-            :class="{ 'is-invalid': !movilValido }"
             required
             @blur="validarMovil"
+            :class="[
+              'flex-1 px-3 py-2 text-sm text-center border rounded-xl focus:outline-none box-border transition-all',
+              !movilValido
+                ? 'border-red-400 bg-red-50 ring-2 ring-red-200'
+                : 'border-gray-300 focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent'
+            ]"
           />
         </div>
       </div>
-      <div class="fila fila-centrada">
-        <div class="campo campo-direccion">
-          <label>Direccion:</label>
-          <input v-model="novoPaciente.dirpac" type="text" />
+
+      <!-- Fila 3 -->
+      <div class="flex flex-col md:flex-row gap-2.5 w-full items-stretch md:items-center">
+        <div class="flex items-center gap-1 md:flex-4">
+          <label class="w-28 shrink-0 text-sm font-semibold text-gray-700">Dirección:</label>
+          <input
+            v-model="novoPaciente.dirpac"
+            type="text"
+            class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
+          />
         </div>
-        <div class="campo campo-provincia">
-          <label>Provincia</label>
+
+        <div class="flex items-center gap-1 md:flex-3">
+          <label for="provincia" class="min-w-[60px] text-sm font-semibold text-gray-700">Provincia:</label>
           <select
             id="provincia"
             v-model="novoPaciente.propac"
             @change="cargarMunicipios"
+            class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
           >
             <option value="">Selecciona una provincia</option>
-
-            <option
-              v-for="provincia in provincias"
-              :key="provincia.id"
-              :value="provincia.nm"
-            >
+            <option v-for="provincia in provincias" :key="provincia.id" :value="provincia.nm">
               {{ provincia.nm }}
             </option>
           </select>
         </div>
-        <div class="campo campo-municipio">
-          <label>Municipio</label>
-          <select id="municipio" v-model="novoPaciente.munipac">
-            <option value="">Selecciona un municipio</option>
 
-            <option
-              v-for="municipio in municipios"
-              :key="municipio.id"
-              :value="municipio.nm"
-            >
+        <div class="flex items-center gap-1 md:flex-3">
+          <label for="municipio" class="min-w-[60px] text-sm font-semibold text-gray-700">Municipio:</label>
+          <select
+            id="municipio"
+            v-model="novoPaciente.munipac"
+            class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
+          >
+            <option value="">Selecciona un municipio</option>
+            <option v-for="municipio in municipios" :key="municipio.id" :value="municipio.nm">
               {{ municipio.nm }}
             </option>
           </select>
         </div>
       </div>
 
-      <div class="campo-condicions">
-        <label>
-          <input v-model="novoPaciente.lopdpac" type="checkbox" />Aceptar a
-          <!-- Como usasr vue-router desde el componente usando $router -->
-          <a
-            :href="$router.resolve({ name: 'PoliticaPrivacidad' }).href"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            política de privacidad e confidencialidade.
-          </a>
+      <!-- Checkbox LOPD -->
+      <div class="flex items-center justify-center my-1 text-sm text-gray-700">
+        <label class="flex items-center gap-2 cursor-pointer select-none">
+          <input
+            v-model="novoPaciente.lopdpac"
+            type="checkbox"
+            class="w-4 h-4 rounded accent-[#1ca285] cursor-pointer"
+          />
+          <span>
+            Aceptar a
+            <a
+              :href="$router.resolve({ name: 'PoliticaPrivacidad' }).href"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-[#1ca285] hover:underline font-medium"
+            >
+              política de privacidad e confidencialidade.
+            </a>
+          </span>
         </label>
       </div>
-      <div class="fila-botones">
-      <button
-        type="submit"
-        class="btn-guardar"
-        :disabled="
-          novoPaciente.dnipac === '' ||
-          novoPaciente.nomepac === '' ||
-          novoPaciente.apelpac === '' ||
-          !novoPaciente.lopdpac
-        "
-      >
-        Gardar  
-      </button>
-         <button
-        type="submit"
-        class="btn-guardar"
-        @click="eliminarPaciente(novoPaciente.dnipac)"
-        :disabled="
-          novoPaciente.dnipac === '' ||
-          novoPaciente.nomepac === '' ||
-          novoPaciente.apelpac === '' ||
-          !novoPaciente.lopdpac
-        "
-      >
-        Eliminar
-      </button>   <button type="button" 
-        title="Imprimir Listado Pacientes"
-        style="width: 36x; height: 36px; padding: 2px; margin-left: 5px;" 
-      @click="exportarPacientes" 
-        :disabled="pacientes.length === 0">
-        <img src="../assets/img/impresora.png" style="width: 28px; height: 28px;">
-      </button>
-    </div>
+
+      <!-- Fila de Botóns -->
+      <div class="flex justify-center items-center gap-2.5 w-full my-1">
+        <button
+          type="submit"
+          class="px-6 py-1.5 rounded-xl font-medium border-2 border-[#1bb191] bg-[#f0f3f7] hover:bg-[#c8eacf] transition-colors cursor-pointer disabled:bg-gray-200 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:opacity-70"
+          :disabled="
+            novoPaciente.dnipac === '' ||
+            novoPaciente.nomepac === '' ||
+            novoPaciente.apelpac === '' ||
+            !novoPaciente.lopdpac
+          "
+        >
+          Gardar
+        </button>
+
+        <button
+          type="button"
+          class="px-6 py-1.5 rounded-xl font-medium border-2 border-[#1bb191] bg-[#f0f3f7] hover:bg-red-100 transition-colors cursor-pointer disabled:bg-gray-200 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:opacity-70"
+          @click="eliminarPaciente(novoPaciente.dnipac)"
+          :disabled="
+            novoPaciente.dnipac === '' ||
+            novoPaciente.nomepac === '' ||
+            novoPaciente.apelpac === '' ||
+            !novoPaciente.lopdpac
+          "
+        >
+          Eliminar
+        </button>
+
+        <button
+          type="button"
+          title="Imprimir Listado Pacientes"
+          class="w-9 h-9 p-1 flex items-center justify-center border border-gray-300 rounded-xl bg-gray-50 hover:bg-gray-100 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          @click="exportarPacientes"
+          :disabled="pacientes.length === 0"
+        >
+          <img
+            src="../assets/img/impresora.png"
+            class="w-6 h-6 object-contain"
+            alt="Imprimir"
+          />
+        </button>
+      </div>
     </form>
-    <h4>📋 Listaxe de Pacientes
-      
+
+    <h4 class="text-lg font-semibold bg-[#1ec9a4] text-white py-2 px-4 rounded mb-4 text-center">
+      📋 Listaxe de Pacientes
     </h4>
-    <table v-if="pacientes.length > 0">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>DNI/CIF</th>
-          <th>Apelidos</th>
-          <th>Nome</th>
-          <th>Correo</th>
-          <th>Provincia</th>
-          <th>Accións</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(u, index) in pacientes" :key="index">
-          <td style="text-align: center">{{ index + 1 }}</td>
-          <td style="text-align: center">{{ u.dnipac }}</td>
-          <td>{{ u.apelpac }}</td>
-          <td>{{ u.nomepac }}</td>
-          <td>{{ u.mailpac }}</td>
-          <td>{{ u.propac }}</td>
-          <td style="text-align: center">
-            <button
-              style="margin-right: 5px"
-              title="Editar"
-              @click="editarPaciente(index)"
-            >
-              ✏️
-            </button>
-            <button title="Eliminar" @click="eliminarPaciente(index)">
-              🗑️
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    
-    <p v-else>Non hai pacientes cargados.</p>
-   
+
+    <div v-if="pacientes.length > 0" class="overflow-x-auto w-full">
+      <table class="w-full border-collapse border border-gray-200 text-xs md:text-sm">
+        <thead>
+          <tr class="bg-gray-50 text-gray-700">
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">ID</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">DNI/CIF</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">Apelidos</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">Nome</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">Correo</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">Provincia</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">Accións</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="(u, index) in pacientes"
+            :key="index"
+            class="hover:bg-gray-50 transition-colors"
+          >
+            <td class="border border-gray-200 p-2.5 text-center">{{ index + 1 }}</td>
+            <td class="border border-gray-200 p-2.5 text-center font-mono">{{ u.dnipac }}</td>
+            <td class="border border-gray-200 p-2.5 text-left">{{ u.apelpac }}</td>
+            <td class="border border-gray-200 p-2.5 text-left">{{ u.nomepac }}</td>
+            <td class="border border-gray-200 p-2.5 text-left">{{ u.mailpac }}</td>
+            <td class="border border-gray-200 p-2.5 text-center">{{ u.propac }}</td>
+            <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap">
+              <button
+                class="mr-1.5 px-2 py-1 border border-gray-300 rounded bg-white hover:bg-[#e8f8f3] cursor-pointer transition-colors text-sm"
+                title="Editar"
+                @click="editarPaciente(index)"
+              >
+                ✏️
+              </button>
+              <button
+                class="px-2 py-1 border border-gray-300 rounded bg-white hover:bg-red-50 cursor-pointer transition-colors text-sm"
+                title="Eliminar"
+                @click="eliminarPaciente(index)"
+              >
+                🗑️
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p v-else class="text-gray-500 text-center py-4">
+      Non hai pacientes cargados.
+    </p>
   </div>
 </template>
 
@@ -210,14 +288,14 @@ import {
   savePaciente,
   deletePaciente,
   modifyPaciente,
-  getPacienteByDni, // Importa la función para buscar paciente por DNI
+  getPacienteByDni,
 } from "../api/pacientes.js";
 
 import {
-    alertaExito,
-    alertaError,
-    alertaConfirmacion
-} from '../utils/alertas.js'
+  alertaExito,
+  alertaError,
+  alertaConfirmacion,
+} from "../utils/alertas.js";
 
 import { generarPDF } from "../utils/pdf.js";
 
@@ -225,9 +303,8 @@ import { generarPDF } from "../utils/pdf.js";
 const provincias = ref([]);
 const municipios = ref([]);
 
-const pacientes = ref([]); //almacena la lista de pacientes e os seus cambios
-const editando = ref(false); // Indica si estamos editando un paciente existente
-
+const pacientes = ref([]);
+const editando = ref(false);
 
 const novoPaciente = reactive({
   dnipac: "",
@@ -239,11 +316,8 @@ const novoPaciente = reactive({
   dirpac: "",
   propac: "",
   munipac: "",
-  lopdpac: false, // Nuevo campo para la aceptación de la LOPD
+  lopdpac: false,
 });
-
-// usamos async porque estamos haciendo
-// operacione asíncronas con await
 
 onMounted(async () => {
   provincias.value = await obtenerProvincias();
@@ -251,87 +325,89 @@ onMounted(async () => {
 });
 
 /// Zona de métodos ou funcións bbdd
-
 async function cargarMunicipios() {
-  // Si no hay provincia seleccionada, vaciamos los municipios
   if (novoPaciente.propac === "") {
     municipios.value = [];
     return;
   }
 
   const provincia = provincias.value.find((p) => p.nm === novoPaciente.propac);
-
-  // Obtenemos los municipios de la provincia seleccionada
-  municipios.value = await obtenerMunicipios(provincia.id);
+  if (provincia) {
+    municipios.value = await obtenerMunicipios(provincia.id);
+  }
 }
 
 async function guardarPaciente() {
-
   try {
     if (editando.value) {
-      // Modificar paciente existente
-     const respuesta = await alertaConfirmacion("Esta seguro modificar paciente?")
-     if (respuesta.isConfirmed) {
-      const pacienteModificado = await modifyPaciente(
-        novoPaciente.dnipac, novoPaciente );
+      const respuesta = await alertaConfirmacion("Esta seguro modificar paciente?");
+      if (respuesta.isConfirmed) {
+        const pacienteModificado = await modifyPaciente(
+          novoPaciente.dnipac,
+          novoPaciente,
+        );
 
-       const index = pacientes.value.findIndex(
-        (p) => p.dnipac === novoPaciente.dnipac);
-      if (index !== -1) {
-        pacientes.value[index] = pacienteModificado;
+        const index = pacientes.value.findIndex(
+          (p) => p.dnipac === novoPaciente.dnipac,
+        );
+        if (index !== -1) {
+          pacientes.value[index] = pacienteModificado;
+        }
+        alertaExito("El paciente modificado correctamente");
+      } else {
+        return;
       }
-      alertaExito('El paciente modificado correctamente')
-     } else {
-        return; // Salir de la función si el usuario cancela
-     }
-    } else {   // Guardar nuevo paciente
-      const respuesta = await alertaConfirmacion("Esta seguro crear paciente?")
-      if (respuesta.isConfirmed) {      
-          await savePaciente(novoPaciente)   
-          alertaExito('El paciente se ha guardado correctamente')   
-       } else {
-        return; // Salir de la función si el usuario cancela
+    } else {
+      const respuesta = await alertaConfirmacion("Esta seguro crear paciente?");
+      if (respuesta.isConfirmed) {
+        await savePaciente(novoPaciente);
+        alertaExito("El paciente se ha guardado correctamente");
+      } else {
+        return;
       }
-    editando.value = false;
-    getPacientes(); // Actualiza la lista de pacientes después de guardar
+      editando.value = false;
+      getPacientes();
     }
   } catch (error) {
-    alertaError('Error al guardar el paciente. Contacte con el administrador', error)
+    alertaError(
+      "Error al guardar el paciente. Contacte con el administrador",
+      error,
+    );
   }
-  pacientes.value = await getPacientes(); // Actualiza la lista de pacientes después de guardar
+  pacientes.value = await getPacientes();
 }
 
-async function eliminarPaciente(index) {
+async function eliminarPaciente(indexOrDni) {
   try {
     const confirmacion = await alertaConfirmacion(
-      "¿Estás seguro eliminar el paciente?");
-    if (confirmacion.isConfirmed) {
-      await deletePaciente(pacientes.value[index].dnipac);
-      pacientes.value.splice(index, 1); // Elimina el paciente de la lista local
-      getPacientes(); // Actualiza la lista de pacientes después de eliminar
-      alertaExito('El paciente se ha eliminado correctamente')
-    } else {
-      return; // Salir de la función si el usuario cancela
+      "¿Estás seguro eliminar el paciente?",
+    );
+    if (!confirmacion.isConfirmed) {
+      return;
     }
-    await deletePaciente(pacientes.value[index].dnipac);
-    pacientes.value.splice(index, 1); // Elimina el paciente de la lista local
-    console.log("Paciente eliminado correctamente");
-    getPacientes(); // Actualiza la lista de pacientes después de eliminar
-    alertaExito('El paciente se ha eliminado correctamente')
+
+    const dni = typeof indexOrDni === "number" ? pacientes.value[indexOrDni]?.dnipac : indexOrDni;
+    if (!dni) return;
+
+    await deletePaciente(dni);
+
+    if (typeof indexOrDni === "number") {
+      pacientes.value.splice(indexOrDni, 1);
+    }
+    limpiaFormpac();
+    pacientes.value = await getPacientes();
+    alertaExito("El paciente se ha eliminado correctamente");
   } catch (error) {
     console.error("Error ao eliminar paciente:", error);
   }
-  pacientes.value = await getPacientes(); // Actualiza la lista de pacientes después de eliminar
 }
 
 function editarPaciente(index) {
   const paciente = pacientes.value[index];
-
   Object.assign(novoPaciente, paciente);
   editando.value = true;
   cargarMunicipios();
 }
-
 
 async function buscarPaciente() {
   try {
@@ -345,10 +421,9 @@ async function buscarPaciente() {
     const paciente = await getPacienteByDni(dni);
 
     Object.assign(novoPaciente, paciente);
-    await cargarMunicipios(); // Cargar los municipios de la provincia del paciente
-    editando.value = true; // Cambiar el estado a edición
+    await cargarMunicipios();
+    editando.value = true;
     console.log("Paciente encontrado:", paciente);
-
   } catch (error) {
     if (error.response?.status === 404) {
       console.log("Paciente no encontrado");
@@ -358,28 +433,23 @@ async function buscarPaciente() {
   }
 }
 
-//  ============== FUNCIONES AUXILIARES =====================
-
-// limpiar formulario
-
+// ============== FUNCIONES AUXILIARES =====================
 const limpiaFormpac = () => {
   Object.keys(novoPaciente).forEach((key) => {
     if (typeof novoPaciente[key] === "boolean") {
-      novoPaciente[key] = false; // Reinicia los booleanos a false
+      novoPaciente[key] = false;
     } else {
-      novoPaciente[key] = ""; // Reinicia los demás campos a cadena vacía
+      novoPaciente[key] = "";
     }
   });
-  editando.value = false; // Reinicia el estado de edición
-  dniValido.value = true; // Reinicia la validez del DNI/NIE
-  correoValido.value = true; // Reinicia la validez del correo
-  movilValido.value = true; // Reinicia la validez del móvil
+  editando.value = false;
+  dniValido.value = true;
+  correoValido.value = true;
+  movilValido.value = true;
 };
 
-// Estado de validez del DNI/NIE si la estructura de datos es más compleja se usa reactive
-const dniValido = ref(true); // Por defecto es válido y no muestra error al iniciar
+const dniValido = ref(true);
 
-// Función para validar DNI y NIE
 const validarDniNie = (valor) => {
   const letras = "TRWAGMYFPDXBNJZSQVHLCKE";
   const dniRegex = /^[0-9]{8}[A-Z]$/;
@@ -390,25 +460,22 @@ const validarDniNie = (valor) => {
   if (dniRegex.test(valor)) {
     const numero = parseInt(valor.slice(0, 8), 10);
     const letra = valor.charAt(8);
-    return letra === letras[numero % 23]; //sale con true si es válido
+    return letra === letras[numero % 23];
   } else if (nieRegex.test(valor)) {
     const nie = valor.replace("X", "0").replace("Y", "1").replace("Z", "2");
     const numero = parseInt(nie.slice(0, 8), 10);
     const letra = valor.charAt(8);
-    return letra === letras[numero % 23]; //sale con true si es válido
+    return letra === letras[numero % 23];
   }
   novoPaciente.dnipac = "";
   return false;
 };
 
-// Validar al salir del campo
 const validarDni = () => {
   novoPaciente.dnipac = novoPaciente.dnipac.trim().toUpperCase();
   dniValido.value = validarDniNie(novoPaciente.dnipac);
-  // Actualiza el estado de validez
 };
 
-// Función única: capitaliza y asigna en el mismo paso
 const capitalizarTexto = (campo) => {
   const texto = novoPaciente[campo] ?? "";
   novoPaciente[campo] = texto
@@ -421,13 +488,10 @@ const capitalizarTexto = (campo) => {
     .join(" ");
 };
 
-// validar mail
-
 const correoValido = ref(true);
 
 const validarcorreo = () => {
   const correo = novoPaciente.mailpac.trim();
-
   const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   if (!regex.test(correo)) {
@@ -438,15 +502,13 @@ const validarcorreo = () => {
   }
 };
 
-// validar movil
-
 const movilValido = ref(true);
 const movilRegex = /^[67]\d{8}$/;
 const validarMovil = () => {
-const movil = novoPaciente.movilpac.trim();
+  const movil = novoPaciente.movilpac.trim();
 
   if (movil === "") {
-    movilValido.value = true; // Vacío = válido (opcional)
+    movilValido.value = true;
     return true;
   }
 
@@ -459,229 +521,13 @@ const movil = novoPaciente.movilpac.trim();
     return false;
   }
 };
+
 const exportarPacientes = () => {
-generarPDF(
-"Listado de pacientes",
-["DNI", "Apellidos", "Nombre", "Móvil"],
-pacientes.value.map(p => [
-p.dnipac,
-p.apelpac,
-p.nomepac,
-p.movilpac
-]),
-"listado_pacientes.pdf"
-);
+  generarPDF(
+    "Listado de pacientes",
+    ["DNI", "Apellidos", "Nombre", "Móvil"],
+    pacientes.value.map((p) => [p.dnipac, p.apelpac, p.nomepac, p.movilpac]),
+    "listado_pacientes.pdf",
+  );
 };
 </script>
-
-<style scoped>
-.xestion-pacientes {
-  width: 100%;
-  /* opcional para que no crezca demasiado en pantallas muy grandes */
-  background: white;
-  padding: 1rem;
-  overflow: visible;
-  border-radius: 2px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-}
-
-form {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.fila {
-  display: flex;
-  gap: 1rem;
-  width: 100%;
-}
-
-.fila-centrada {
-  justify-content: center;
-}
-
-.campo {
-  display: flex;
-  align-items: center;
-  /* label e input en la misma línea */
-  gap: 0.3rem;
-  border-radius: 12px;
-}
-
-.campo-dni {
-  flex: 1;
-  /* ocupa menos espacio */
-  border-radius: 12px;
-}
-
-.campo-nome {
-  flex: 4;
-  /* ocupa más espacio */
-  border-radius: 12px;
-}
-.fila-botones {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-}
-
-.campo-apellido {
-  flex: 4;
-  /* ocupa más espacio */
-  border-radius: 12px;
-}
-
-.campo-direccion {
-  flex: 4;
-  /* ocupa más espacio */
-  border-radius: 12px;
-}
-
-.campo-provincia {
-  flex: 1;
-  /* ocupa más espacio */
-  border-radius: 12px;
-}
-
-.campo-correo {
-  flex: 2;
-  /* ocupa más espacio */
-  border-radius: 12px;
-}
-
-.campo select {
-  flex: 1;
-  padding: 0.6rem;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  width: 60%;
-}
-
-.campo-provincia {
-  flex: 3;
-  /* ocupa menos espacio */
-  border-radius: 12px;
-}
-
-.campo-municipio {
-  flex: 3;
-  /* ocupa menos espacio */
-  border-radius: 12px;
-}
-
-.campo label {
-  min-width: 80px;
-  /* ancho fijo para alinear */
-  font-weight: 500;
-  font: bold;
-}
-
-.campo input {
-  flex: 1;
-  /* ocupa todo el espacio restante */
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  box-sizing: border-box;
-}
-
-.btn-guardar {
-  background-color: #f0f3f7;
-  color: black;
-  border: 3px solid #1bb191;
-  padding: 0.4rem 1.5rem;
-  border-radius: 12px;
-  cursor: pointer;
-  margin: 0; /* Eliminamos el margin: 0 auto */
-  display: inline-block;
-}
-
-.btn-guardar:disabled {
-  background-color: #e0e0e0;
-  color: #999;
-  border-color: #ccc;
-  cursor: not-allowed;
-  opacity: 0.7;
-}
-
-.btn-guardar:disabled:hover {
-  background-color: #e0e0e0;
-}
-.btn-guardar:hover {
-  background-color: #c8eacf;
-  border-radius: 12px;
-}
-
-.button {
-  background: none;
-  border: 2px solid #ddd;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-.inline-control {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  padding-right: 5rem;
-}
-
-table {
-  width: 100%;
-  border-collapse: separate;
-  margin-top: 1rem;
-  font-size: 0.8rem;
-  border: 1px solid #ddd;
-}
-
-th,
-td {
-  border: 1px solid #ddd;
-  padding: 0.7rem;
-  text-align: left;
-}
-
-th {
-  text-align: center;
-  background-color: #f8f9fa;
-}
-
-h4 {
-  margin-bottom: 1rem;
-  font-weight: 600;
-  background-color: #1ec9a4;
-  color: white;
-}
-
-.is-invalid {
-  border-color: #f28b82 !important;
-  background-color: #ffe6e6;
-}
-
-.invalid-texto {
-  display: block;
-  font-size: 10px;
-  color: red;
-  padding-top: 0.5%;
-}
-
-@media (max-width: 768px) {
-  .xestion-pacientes {
-    padding: 1rem;
-    /* reducir el padding en pantallas pequeñas */
-  }
-
-  .fila {
-    flex-direction: column;
-    /* apila los campos verticalmente en móviles */
-    gap: 0.5rem;
-    /* opcional: un pequeño espacio entre ellos */
-  }
-}
-</style>
