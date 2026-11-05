@@ -16,46 +16,20 @@
             placeholder="ID cita"
             disabled
             aria-label="ID da cita"
-            class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl bg-gray-100 text-gray-500 cursor-not-allowed box-border"
+            class="flex-1 px-3 py-2 text-sm border border-gray-300 text-center  rounded-xl bg-gray-100 text-gray-500 cursor-not-allowed box-border"
           />
         </div>
-
-        <div class="flex items-center gap-2 flex-1">
-          <label class="w-16 shrink-0 text-sm font-semibold text-gray-700">Fecha:</label>
-          <input
-            v-model="novaCita.fecha"
-            type="date"
-            required
-            aria-label="Data da cita"
-            class="flex-1 px-3 py-2 text-sm text-center border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
-          />
-        </div>
-
-        <button
-          type="button"
-          @click="limpiaFormcita"
-          class="w-10 h-10 flex items-center justify-center text-lg border border-gray-300 rounded-xl bg-gray-50 hover:bg-gray-100 cursor-pointer transition-colors shrink-0 self-center md:self-auto"
-          title="Limpar formulario"
-          aria-label="Limpar formulario"
-        >
-          🧹
-        </button>
-      </div>
-
-      <!-- Segunda fila: paciente e doctor -->
-      <div class="flex flex-col md:flex-row gap-2.5 w-full items-stretch md:items-center">
         <div class="flex items-center gap-1 flex-1">
           <label class="w-20 shrink-0 text-sm font-semibold text-gray-700">Paciente:</label>
           <input
             v-model="novaCita.pacienteId"
             type="text"
-            placeholder="ID do paciente"
+            placeholder="DNI do paciente"
             readonly
-            aria-label="ID do paciente"
+            aria-label="DNI do paciente"
             class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl bg-gray-50 focus:outline-none text-center box-border"
           />
         </div>
-
         <div class="flex items-center gap-2 flex-1">
           <label class="w-16 shrink-0 text-sm font-semibold text-gray-700">Doctor:</label>
           <input
@@ -70,12 +44,32 @@
             class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl bg-gray-50 focus:outline-none text-center box-border"
           />
         </div>
+
+        <button
+          type="button"
+          @click="limpiaFormcita"
+          class="w-10 h-10 flex items-center justify-center text-lg border border-green-500 rounded-xl bg-green-50 hover:bg-green-200 cursor-pointer transition-colors shrink-0 self-center md:self-auto"
+          title="Limpar formulario"
+          aria-label="Limpar formulario"
+        >
+          🧹
+        </button>
       </div>
 
-      <!-- Terceira fila: hora, motivo e estado -->
+         <!-- Terceira fila: hora, motivo e estado -->
       <div class="flex flex-col md:flex-row gap-2.5 w-full items-stretch md:items-center">
-        <div class="flex items-center gap-1 flex-1 md:flex-initial md:w-56">
-          <label class="w-20 shrink-0 text-sm font-semibold text-gray-700">Hora:</label>
+          <div class="flex items-center gap-2 flex-1">
+          <label class="ml-1 mr-4 shrink-0 px-2 text-sm font-semibold text-gray-700">Fecha:</label>
+          <input
+            v-model="novaCita.fecha"
+            type="date"
+            required
+            aria-label="Data da cita"
+            class="flex-1 px-3 py-2 text-sm text-center border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
+          />
+        </div>
+        <div class="flex items-center gap-1 flex-1 md:flex-initial md:w-50">
+          <label class="mr-4 ml-2 shrink-0 text-sm font-semibold text-gray-700">Hora:</label>
           <input
             v-model="novaCita.hora"
             type="time"
@@ -91,11 +85,11 @@
             type="text"
             placeholder="Motivo da cita"
             required
-            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
+            class="w-full ml-4 px-4 py-2 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
           />
         </div>
 
-        <div class="flex-1 md:flex-initial md:w-48">
+        <div class="flex-1 ml-4 md:flex-initial md:w-48">
           <select
             v-model="novaCita.estado"
             required
@@ -114,8 +108,8 @@
       <div class="w-full">
         <textarea
           v-model="novaCita.observacions"
-          placeholder="Observacións adicionais"
-          aria-label="Observacións adicionais"
+          placeholder="Diagnóstico - Tratamiento"
+          aria-label="Diagnóstico - Tratamiento"
           class="w-full px-3 py-2 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent min-h-[75px] resize-y box-border transition-all"
         ></textarea>
       </div>

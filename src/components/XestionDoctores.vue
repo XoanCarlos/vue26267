@@ -8,12 +8,12 @@
       <!-- Fila 1 -->
       <div class="flex flex-col md:flex-row gap-2.5 w-full items-stretch md:items-center">
         <div class="flex items-center gap-1 md:flex-1">
-          <label class="w-20 shrink-0 text-sm font-semibold text-gray-700">ID :</label>
+          <label class="w-20 shrink-0 text-sm font-semibold text-gray-700">Código :</label>
           <input
             v-model="novoDoctor._id"
             type="text"
             disabled
-            class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl bg-gray-100 text-gray-500 cursor-not-allowed box-border"
+            class="flex-1 px-3 py-2 text-[11px] border border-gray-300 rounded-xl bg-gray-100 text-gray-500 cursor-not-allowed box-border"
           />
         </div>
 
@@ -133,7 +133,8 @@
             novoDoctor.nomedoc === '' ||
             novoDoctor.apeldoc === '' ||
             novoDoctor.movildoc === '' ||
-            novoDoctor.espedoc === ''
+            novoDoctor.espedoc === ''  ||
+            novoDoctor.coledoc === ''
           "
         >
           Gardar
