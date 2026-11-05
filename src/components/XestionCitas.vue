@@ -211,6 +211,7 @@
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
+import { usepacienteStore } from "../store/pacienteStore.js";
 
 import {
   // getCitas,
@@ -226,6 +227,8 @@ import { alertaExito, alertaInfo } from "../utils/alertas.js";
 const citas = ref([]);
 const doctores = ref([]);
 const editando = ref(false);
+
+const pacienteStore = usepacienteStore(); 
 
 const doctorSeleccionado = ref(null);
 const mostrarSelectorDoctor = ref(false);
@@ -244,6 +247,8 @@ const novaCita = reactive({
 
 onMounted(async () => {
   await cargarDatos();
+  console.log("Paciente seleccionado ao montar:", pacienteStore.dnipac);
+  novaCita.pacienteId = pacienteStore.dnipac;
 });
 
 async function cargarDatos() {

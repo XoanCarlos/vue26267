@@ -283,6 +283,7 @@
 /// Zona de importaciones
 import { ref, reactive, onMounted } from "vue";
 import { obtenerMunicipios, obtenerProvincias } from "../api/municipios.js";
+import { usepacienteStore } from "../store/pacienteStore.js";
 import {
   getPacientes,
   savePaciente,
@@ -323,6 +324,12 @@ onMounted(async () => {
   provincias.value = await obtenerProvincias();
   pacientes.value = await getPacientes();
 });
+
+function seleccionarPaciente(paciente) {
+  const pacienteStore = usepacienteStore();
+  pacienteStore.seleccionarPaciente(paciente);
+
+}
 
 /// Zona de métodos ou funcións bbdd
 async function cargarMunicipios() {
@@ -367,6 +374,7 @@ async function guardarPaciente() {
       }
       editando.value = false;
       getPacientes();
+      pacienteStore.seleccionarPaciente(novoPaciente);
     }
   } catch (error) {
     alertaError(
@@ -406,6 +414,11 @@ function editarPaciente(index) {
   const paciente = pacientes.value[index];
   Object.assign(novoPaciente, paciente);
   editando.value = true;
+  // usamos el store 
+  seleccionarPaciente(paciente);
+
+
+
   cargarMunicipios();
 }
 
@@ -421,6 +434,9 @@ async function buscarPaciente() {
     const paciente = await getPacienteByDni(dni);
 
     Object.assign(novoPaciente, paciente);
+    // usamos el store
+    seleccionarPaciente(paciente);
+
     await cargarMunicipios();
     editando.value = true;
     console.log("Paciente encontrado:", paciente);
