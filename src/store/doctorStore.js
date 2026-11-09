@@ -1,18 +1,19 @@
 import { defineStore } from 'pinia';
 
-export const useDoctorStore = defineStore('doctor', {
+export const usedoctorStore = defineStore('doctor', {
   state: () => ({
     id: null,
     nombre: null,
     apellido: null,
     especialidad: null,
     }),
+
     actions: {
         seleccionarDoctor(doctor) {
-            this.id = doctor.id,
-            this.nombre = doctor.nombre,
-            this.apellido = doctor.apellido,
-            this.especialidad = doctor.especialidad
+            this.id = doctor._id,
+            this.nombre = doctor.nomedoc,
+            this.apellido = doctor.apeldoc,
+            this.especialidad = doctor.espedoc
         },
         limpiarDoctor() {
             this.id = null,

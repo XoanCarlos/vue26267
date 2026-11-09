@@ -33,11 +33,7 @@
         <div class="flex items-center gap-2 flex-1">
           <label class="w-16 shrink-0 text-sm font-semibold text-gray-700">Doctor:</label>
           <input
-            :value="
-              doctorSeleccionado
-                ? `${doctorSeleccionado.nomedoc} ${doctorSeleccionado.apeldoc}`
-                : ''
-            "
+            v-model = "novaCita.doctorId"
             placeholder="ID Doctor"
             readonly
             aria-label="Doctor seleccionado"
@@ -134,7 +130,7 @@
 
     <!-- Listaxe de citas -->
     <h4 class="relative text-lg font-semibold bg-[#1ec9a4] text-white py-2 px-4 rounded mb-4 flex items-center justify-center">
-      <span>📋 Listaxe de Citas</span>
+      <span>📋 Listaxe de Citas   Paciente: {{ nomePac }} </span>
       <button
         type="button"
         @click="recargarCitas"
@@ -212,6 +208,7 @@
 <script setup>
 import { ref, reactive, onMounted } from "vue";
 import { usepacienteStore } from "../store/pacienteStore.js";
+import { usedoctorStore } from "../store/doctorStore.js"
 
 import {
   // getCitas,
@@ -228,7 +225,8 @@ const citas = ref([]);
 const doctores = ref([]);
 const editando = ref(false);
 
-const pacienteStore = usepacienteStore(); 
+const pacienteStore = usepacienteStore()
+const doctorStore = usedoctorStore()
 
 const doctorSeleccionado = ref(null);
 const mostrarSelectorDoctor = ref(false);
@@ -245,10 +243,14 @@ const novaCita = reactive({
   observacions: "",
 });
 
+const nomePac = ref('')
+
 onMounted(async () => {
-  await cargarDatos();
-  console.log("Paciente seleccionado ao montar:", pacienteStore.dnipac);
-  novaCita.pacienteId = pacienteStore.dnipac;
+  await cargarDatos()
+  novaCita.pacienteId = pacienteStore.dnipac
+  nomePac.value = pacienteStore.apelpac
+  console.log(doctorStore.id)
+  novaCita.doctorId = doctorStore.apellido + " === " + doctorStore.id
 });
 
 async function cargarDatos() {
@@ -256,15 +258,15 @@ async function cargarDatos() {
     doctores.value = await getDoctores();
     // citas.value = await getCitas();
   } catch (error) {
-    console.error("Erro ao cargar os datos:", error);
+    console.error("Erro ao cargar os datos:", error)
   }
 }
 
 function seleccionarDoctor(doctor) {
   doctorSeleccionado.value = doctor;
-  novaCita.doctorId = doctor._id;
+  novaCita.apel = doctor._id;
   mostrarSelectorDoctor.value = false;
-}
+} 
 
 async function guardarCita() {
   try {
@@ -335,7 +337,10 @@ function limpiaFormcita() {
     observacions: "",
   });
 
-  doctorSeleccionado.value = null;
+  pacienteStore.limpiarPaciente()
+  doctorStore.limpiarDoctor()
+
+  //doctorSeleccionado.value = null;
   mostrarSelectorDoctor.value = false;
   editando.value = false;
 }

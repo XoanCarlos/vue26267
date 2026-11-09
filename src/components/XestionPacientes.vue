@@ -374,7 +374,9 @@ async function guardarPaciente() {
       }
       editando.value = false;
       getPacientes();
-      pacienteStore.seleccionarPaciente(novoPaciente);
+      seleccionarPaciente(novoPaciente);
+      // o directamente
+      // usepacienteStore.seleccionarPaciente(novoPaciente)
     }
   } catch (error) {
     alertaError(
@@ -416,23 +418,17 @@ function editarPaciente(index) {
   editando.value = true;
   // usamos el store 
   seleccionarPaciente(paciente);
-
-
-
   cargarMunicipios();
 }
 
 async function buscarPaciente() {
   try {
     const dni = novoPaciente.dnipac.trim();
-
     if (!dni) {
       console.log("Introduce un DNI");
       return;
     }
-
     const paciente = await getPacienteByDni(dni);
-
     Object.assign(novoPaciente, paciente);
     // usamos el store
     seleccionarPaciente(paciente);

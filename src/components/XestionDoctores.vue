@@ -231,6 +231,7 @@
 // Importación de funciones y hooks de Vue
 import { ref, reactive, onMounted } from "vue";
 import { obtenerEspecialidades } from "../api/especialidades.js";
+import { usedoctorStore } from "../store/doctorStore.js";
 import {
   getDoctores,
   saveDoctor,
@@ -245,6 +246,7 @@ import { generarPDF } from "../utils/pdf.js";
 const doctores = ref([]);
 const especialidades = ref([]);
 const editando = ref(false);
+const doctorStore = usedoctorStore(); 
 
 const novoDoctor = reactive({
   nomedoc: "",
@@ -275,19 +277,28 @@ async function guardarDoctor() {
       await saveDoctor(novoDoctor);
       alertaExito("Datos doctor guardados");
     }
-
     editando.value = false;
   } catch (error) {
     console.error("Error ao gardar doctor:", error);
   }
-  limpiaFormdoc();
+
+  //limpiaFormdoc();
   doctores.value = await getDoctores();
+  seleccionarDoctor(novoDoctor)
+}
+
+//instanciomos el store
+function seleccionarDoctor(doctor) {
+  const doctorStore = usedoctorStore();
+  doctorStore.seleccionarDoctor(doctor);
+
 }
 
 function editarDoctor(index) {
   const doctor = doctores.value[index];
   Object.assign(novoDoctor, doctor);
   editando.value = true;
+  seleccionarDoctor(doctor)
 }
 
 async function eliminarDoctor(index) {
@@ -379,6 +390,7 @@ const limpiaFormdoc = () => {
   editando.value = false;
   correoValido.value = true;
   movilValido.value = true;
+  usedoctorStore.limpiaFormdoc()
 };
 
 const exportarDoctores = () => {
