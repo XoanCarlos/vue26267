@@ -5,7 +5,9 @@ import "dotenv/config";
 import mongoose from "mongoose";
 
 import pacientesRutas from './rutas/pacientes.rutas.js';
-import doctoresRutas from './rutas/doctores.rutas.js'; //importa el modelo de doctor y las funciones de la api de doctores 
+import doctoresRutas from './rutas/doctores.rutas.js'; 
+import citasRutas from './rutas/citas.rutas.js';
+//importa el modelo de doctor y las funciones de la api de doctores 
 //importa el modelo de paciente y las funciones de la api de pacientes
 
 
@@ -15,6 +17,8 @@ app.use(cors());
 app.use(express.json()); //para que pueda leer json
 app.use('/api/pacientes', pacientesRutas); //usa el modelo de paciente y funciones
 app.use('/api/doctores', doctoresRutas); //usa el modelo de doctor y funciones
+app.use('/api/citas', citasRutas);
+
 //USA EL PUERTO definido en la variables de entorno y si no coge el 3000
 const PORT = process.env.PORT || 3000;
 

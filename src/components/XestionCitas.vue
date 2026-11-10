@@ -22,7 +22,7 @@
         <div class="flex items-center gap-1 flex-1">
           <label class="w-20 shrink-0 text-sm font-semibold text-gray-700">Paciente:</label>
           <input
-            v-model="novaCita.pacienteId"
+            v-model="novaCita.pacienteDNI"
             type="text"
             placeholder="DNI do paciente"
             readonly
@@ -32,6 +32,17 @@
         </div>
         <div class="flex items-center gap-2 flex-1">
           <label class="w-16 shrink-0 text-sm font-semibold text-gray-700">Doctor:</label>
+          <input
+            :value = "nomeDoc"
+            placeholder="Nombre Doctor"
+            readonly
+            aria-label="Doctor seleccionado"
+            class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl bg-gray-50 focus:outline-none text-center box-border"
+          />
+    
+        </div>
+        <div class="flex items-center gap-2 flex-1">
+          <label class="w-16 shrink-0 text-xs font-semibold text-gray-700">ID Doctor:</label>
           <input
             v-model = "novaCita.doctorId"
             placeholder="ID Doctor"
@@ -116,12 +127,12 @@
           type="submit"
           class="px-7 py-2 rounded-xl font-medium border-2 border-[#1bb191] bg-[#f0f3f7] hover:bg-[#c8eacf] transition-colors cursor-pointer disabled:bg-gray-200 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:opacity-70"
           :disabled="
-            novaCita.pacienteId === '' ||
+            novaCita.pacienteDNI === '' ||
             novaCita.doctorId === '' ||
             novaCita.fecha === '' ||
             novaCita.hora === '' ||
             novaCita.motivo.trim() === ''
-          "
+            "
         >
           {{ editando ? "Modificar" : "Gardar" }}
         </button>
@@ -130,7 +141,7 @@
 
     <!-- Listaxe de citas -->
     <h4 class="relative text-lg font-semibold bg-[#1ec9a4] text-white py-2 px-4 rounded mb-4 flex items-center justify-center">
-      <span>📋 Listaxe de Citas   Paciente: {{ nomePac }} </span>
+      <span >📋 Listaxe de Citas Paciente </span><span class="text-red-500 ml-4"> {{ nomePac }} </span>
       <button
         type="button"
         @click="recargarCitas"
@@ -147,7 +158,7 @@
         <thead>
           <tr class="bg-gray-50 text-gray-700">
             <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">ID</th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold">Paciente</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">Especialidad</th>
             <th class="border border-gray-200 p-2.5 text-center font-semibold">Doctor</th>
             <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">Data</th>
             <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">Hora</th>
@@ -165,10 +176,10 @@
           >
             <td class="border border-gray-200 p-2.5 text-center">{{ index + 1 }}</td>
             <td class="border border-gray-200 p-2.5 text-left">
-              {{ cita.pacienteId?.nomepac }} {{ cita.pacienteId?.apelpac }}
+             
             </td>
             <td class="border border-gray-200 p-2.5 text-left">
-              {{ cita.doctorId?.nomedoc }} {{ cita.doctorId?.apeldoc }}
+             
             </td>
             <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap">{{ cita.fecha }}</td>
             <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap">{{ cita.hora }}</td>
@@ -211,14 +222,14 @@ import { usepacienteStore } from "../store/pacienteStore.js";
 import { usedoctorStore } from "../store/doctorStore.js"
 
 import {
-  // getCitas,
+  getCitasPaciente,
   saveCita,
   modifyCita,
   deleteCita,
 } from "../api/citas.js";
 
-import { getDoctores } from "../api/doctores.js";
 import { alertaExito, alertaInfo } from "../utils/alertas.js";
+
 
 // Variables reactivas
 const citas = ref([]);
@@ -233,8 +244,7 @@ const mostrarSelectorDoctor = ref(false);
 
 // Datos do formulario
 const novaCita = reactive({
-  _id: "",
-  pacienteId: "",
+  pacienteDNI: "",
   doctorId: "",
   fecha: "",
   hora: "",
@@ -244,29 +254,26 @@ const novaCita = reactive({
 });
 
 const nomePac = ref('')
+const nomeDoc = ref('')
 
 onMounted(async () => {
-  await cargarDatos()
-  novaCita.pacienteId = pacienteStore.dnipac
+  novaCita.pacienteDNI = pacienteStore.dnipac
+  console.log(novaCita.pacienteDNI)
   nomePac.value = pacienteStore.apelpac
-  console.log(doctorStore.id)
-  novaCita.doctorId = doctorStore.apellido + " === " + doctorStore.id
+  nomeDoc.value = doctorStore.apellido
+  novaCita.doctorId = doctorStore.id
+  await cargarDatos()
 });
 
 async function cargarDatos() {
   try {
-    doctores.value = await getDoctores();
-    // citas.value = await getCitas();
+    citas.value = await getCitasPaciente(novaCita.pacienteDNI);
+    console.log(citas.value)
   } catch (error) {
     console.error("Erro ao cargar os datos:", error)
   }
 }
 
-function seleccionarDoctor(doctor) {
-  doctorSeleccionado.value = doctor;
-  novaCita.apel = doctor._id;
-  mostrarSelectorDoctor.value = false;
-} 
 
 async function guardarCita() {
   try {
@@ -277,8 +284,6 @@ async function guardarCita() {
       await saveCita({ ...novaCita });
       alertaExito("Cita gardada");
     }
-
-    limpiaFormcita();
     await cargarDatos();
   } catch (error) {
     console.error("Erro ao gardar a cita:", error);
@@ -288,7 +293,7 @@ async function guardarCita() {
 function editarCita(index) {
   const cita = citas.value[index];
 
-  const pacienteId = cita.pacienteId?._id ?? cita.pacienteId;
+  const pacienteDNI = cita.pacienteDNI?._id ?? cita.pacienteDNI;
   const doctorId = cita.doctorId?._id ?? cita.doctorId;
 
   doctorSeleccionado.value =
@@ -297,7 +302,7 @@ function editarCita(index) {
 
   Object.assign(novaCita, {
     _id: cita._id,
-    pacienteId,
+    pacienteDNI,
     doctorId,
     fecha: cita.fecha,
     hora: cita.hora,
@@ -328,7 +333,7 @@ async function recargarCitas() {
 function limpiaFormcita() {
   Object.assign(novaCita, {
     _id: "",
-    pacienteId: "",
+    pacienteDNI: "",
     doctorId: "",
     fecha: "",
     hora: "",

@@ -1,11 +1,12 @@
-
 import axios from "axios";
 
 const API_URL = "http://localhost:3000/api/citas";
+const API_URL_2 = "http://localhost:3000/api/doctores"
 
-export async function getCitas() {
-  const respuesta = await axios.get(API_URL);
-  return respuesta.data;
+
+export async function getCitasPaciente(dnipac) {
+  const respuesta = await axios.get(`${API_URL}/${dnipac}`)
+  return respuesta.data
 }
 
 export async function saveCita(cita) {
