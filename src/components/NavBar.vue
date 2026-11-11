@@ -35,6 +35,16 @@
       </li>
       <li>
         <RouterLink
+          to="/servicios-medicos"
+          class="text-white no-underline font-medium whitespace-nowrap hover:text-[#ffe66d] transition-colors py-1 inline-block"
+          active-class="border-b-2 border-[#ffe66d]"
+          @click="isOpen = false"
+        >
+          Servicios Médicos
+        </RouterLink>
+      </li>
+      <li>
+        <RouterLink
           to="/xestion-pacientes"
           class="text-white no-underline font-medium whitespace-nowrap hover:text-[#ffe66d] transition-colors py-1 inline-block"
           active-class="border-b-2 border-[#ffe66d]"

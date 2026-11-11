@@ -345,6 +345,7 @@ function limpiaFormcita() {
   pacienteStore.limpiarPaciente()
   doctorStore.limpiarDoctor()
   nomeDoc.value = ''
+  nomePac.value = ''
   //doctorSeleccionado.value = null;
   mostrarSelectorDoctor.value = false;
   editando.value = false;
