@@ -52,15 +52,7 @@
           />
         </div>
 
-        <button
-          type="button"
-          @click="limpiaFormcita"
-          class="w-10 h-10 flex items-center justify-center text-lg border border-green-500 rounded-xl bg-green-50 hover:bg-green-200 cursor-pointer transition-colors shrink-0 self-center md:self-auto"
-          title="Limpar formulario"
-          aria-label="Limpar formulario"
-        >
-          🧹
-        </button>
+ 
       </div>
 
          <!-- Terceira fila: hora, motivo e estado -->
@@ -109,6 +101,15 @@
             <option value="cancelada">Cancelada</option>
           </select>
         </div>
+               <button
+          type="button"
+          @click="limpiaFormcita"
+          class="w-12 h-10 flex items-center justify-center text-lg border border-green-500 rounded-xl bg-green-50 hover:bg-green-200 cursor-pointer transition-colors shrink-0 self-center md:self-auto"
+          title="Limpar formulario"
+          aria-label="Limpar formulario"
+        >
+          🧹
+        </button>
       </div>
 
       <!-- Cuarta fila: observacións -->
@@ -158,8 +159,8 @@
         <thead>
           <tr class="bg-gray-50 text-gray-700">
             <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">ID</th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold">Especialidad</th>
             <th class="border border-gray-200 p-2.5 text-center font-semibold">Doctor</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">Especialidad</th>
             <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">Data</th>
             <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">Hora</th>
             <th class="border border-gray-200 p-2.5 text-center font-semibold">Motivo</th>
@@ -176,10 +177,10 @@
           >
             <td class="border border-gray-200 p-2.5 text-center">{{ index + 1 }}</td>
             <td class="border border-gray-200 p-2.5 text-left">
-             
+             {{ cita.apeldoc }}
             </td>
             <td class="border border-gray-200 p-2.5 text-left">
-             
+             {{ cita.espedoc }}
             </td>
             <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap">{{ cita.fecha }}</td>
             <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap">{{ cita.hora }}</td>
@@ -239,8 +240,8 @@ const editando = ref(false);
 const pacienteStore = usepacienteStore()
 const doctorStore = usedoctorStore()
 
-const doctorSeleccionado = ref(null);
-const mostrarSelectorDoctor = ref(false);
+const doctorSeleccionado = ref(null)
+const mostrarSelectorDoctor = ref(false)
 
 // Datos do formulario
 const novaCita = reactive({
@@ -273,7 +274,6 @@ async function cargarDatos() {
     console.error("Erro ao cargar os datos:", error)
   }
 }
-
 
 async function guardarCita() {
   try {
@@ -310,7 +310,7 @@ function editarCita(index) {
     estado: cita.estado,
     observacions: cita.observacions ?? "",
   });
-
+  nomeDoc.value = cita.apeldoc;
   editando.value = true;
 }
 
@@ -344,7 +344,7 @@ function limpiaFormcita() {
 
   pacienteStore.limpiarPaciente()
   doctorStore.limpiarDoctor()
-
+  nomeDoc.value = ''
   //doctorSeleccionado.value = null;
   mostrarSelectorDoctor.value = false;
   editando.value = false;
