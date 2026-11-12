@@ -438,7 +438,7 @@ async function buscarPaciente() {
     console.log("Paciente encontrado:", paciente);
   } catch (error) {
     if (error.response?.status === 404) {
-      console.log("Paciente no encontrado");
+      alertaError("Paciente no Encontrado")
     } else {
       console.error("Error al buscar paciente:", error);
     }
@@ -446,6 +446,7 @@ async function buscarPaciente() {
 }
 
 // ============== FUNCIONES AUXILIARES =====================
+
 const limpiaFormpac = () => {
   Object.keys(novoPaciente).forEach((key) => {
     if (typeof novoPaciente[key] === "boolean") {
@@ -480,12 +481,46 @@ const validarDniNie = (valor) => {
     return letra === letras[numero % 23];
   }
   novoPaciente.dnipac = "";
+
   return false;
 };
 
-const validarDni = () => {
+async function validarDni() {
   novoPaciente.dnipac = novoPaciente.dnipac.trim().toUpperCase();
   dniValido.value = validarDniNie(novoPaciente.dnipac);
+  console.log("el dni es válido", dniValido.value) 
+  if (dniValido.value === true)
+    {
+      
+      // Segunda comprobación: buscar paciente en MongoDB
+  try {
+    const paciente = await getPacienteByDni(novoPaciente.dnipac);
+
+    // Si existe, cargamos sus datos
+    Object.assign(novoPaciente, paciente);
+
+    seleccionarPaciente(paciente);
+
+    await cargarMunicipios();
+
+    editando.value = true;
+
+    alertaExito("Atención: Paciente Existe en Base de Datos");
+  
+    } catch (error) {
+
+    if (error.response?.status === 404) {
+      console.log("Paciente no encontrado. Puede registrarse.");
+      editando.value = false;
+    } else {
+      console.error("Error al comprobar el paciente:", error);
+    }
+  }
+} else{
+  limpiaFormpac()
+  dniValido.value = false
+
+}
 };
 
 const capitalizarTexto = (campo) => {
