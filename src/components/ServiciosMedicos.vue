@@ -26,7 +26,7 @@
 
         <!-- Información -->
         <div class="p-5">
-          // eslint-disable-next-line vue/html-indent
+       
           <h3 class="text-xl font-bold text-gray-800 mb-3">
             {{ servicio.nombre }}
           </h3>
