@@ -1,8 +1,10 @@
 <template>
   <div class="w-full bg-white p-6 rounded shadow-md text-left">
     <h2 class="text-2xl font-bold text-gray-800 mb-3 pb-2 border-b border-gray-200">
-    <p class="text-gray-500 mb-6 text-center">Benvido ao sistema de Xestión Sanitaria de Sanidad Teis.</p>
-</h2>
+      <p class="text-gray-500 mb-6 text-center">
+        Benvido ao sistema de Xestión Sanitaria de Sanidad Teis.
+      </p>
+    </h2>
     <!-- Contenedor flex para centrar el video -->
     <div class="flex justify-center items-center w-full my-4">
       <video

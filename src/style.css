@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@theme {
+:root {
   --color-brand-primary: #1ca285;
   --color-brand-accent: #1ec9a4;
   --color-brand-border: #1bb191;

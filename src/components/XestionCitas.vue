@@ -5,7 +5,10 @@
     </h4>
 
     <!-- Formulario para crear ou modificar unha cita -->
-    <form @submit.prevent="guardarCita" class="w-full flex flex-col gap-3.5 mb-6">
+    <form
+      class="w-full flex flex-col gap-3.5 mb-6"
+      @submit.prevent="guardarCita"
+    >
       <!-- Primeira fila: ID, data e limpar -->
       <div class="flex flex-col md:flex-row gap-2.5 w-full items-stretch md:items-center">
         <div class="flex items-center gap-1 flex-1">
@@ -17,7 +20,7 @@
             disabled
             aria-label="ID da cita"
             class="flex-1 px-3 py-2 text-sm border border-gray-300 text-center  rounded-xl bg-gray-100 text-gray-500 cursor-not-allowed box-border"
-          />
+          >
         </div>
         <div class="flex items-center gap-1 flex-1">
           <label class="w-20 shrink-0 text-sm font-semibold text-gray-700">Paciente:</label>
@@ -28,36 +31,33 @@
             readonly
             aria-label="DNI do paciente"
             class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl bg-gray-50 focus:outline-none text-center box-border"
-          />
+          >
         </div>
         <div class="flex items-center gap-2 flex-1">
           <label class="w-16 shrink-0 text-sm font-semibold text-gray-700">Doctor:</label>
           <input
-            :value = "nomeDoc"
+            :value="nomeDoc"
             placeholder="Nombre Doctor"
             readonly
             aria-label="Doctor seleccionado"
             class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl bg-gray-50 focus:outline-none text-center box-border"
-          />
-    
+          >
         </div>
         <div class="flex items-center gap-2 flex-1">
           <label class="w-16 shrink-0 text-xs font-semibold text-gray-700">ID Doctor:</label>
           <input
-            v-model = "novaCita.doctorId"
+            v-model="novaCita.doctorId"
             placeholder="ID Doctor"
             readonly
             aria-label="Doctor seleccionado"
             class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl bg-gray-50 focus:outline-none text-center box-border"
-          />
+          >
         </div>
-
- 
       </div>
 
-         <!-- Terceira fila: hora, motivo e estado -->
+      <!-- Terceira fila: hora, motivo e estado -->
       <div class="flex flex-col md:flex-row gap-2.5 w-full items-stretch md:items-center">
-          <div class="flex items-center gap-2 flex-1">
+        <div class="flex items-center gap-2 flex-1">
           <label class="ml-1 mr-4 shrink-0 px-2 text-sm font-semibold text-gray-700">Fecha:</label>
           <input
             v-model="novaCita.fecha"
@@ -65,7 +65,7 @@
             required
             aria-label="Data da cita"
             class="flex-1 px-3 py-2 text-sm text-center border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
-          />
+          >
         </div>
         <div class="flex items-center gap-1 flex-1 md:flex-initial md:w-50">
           <label class="mr-4 ml-2 shrink-0 text-sm font-semibold text-gray-700">Hora:</label>
@@ -75,7 +75,7 @@
             required
             aria-label="Hora da cita"
             class="flex-1 px-3 py-2 text-sm text-center border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
-          />
+          >
         </div>
 
         <div class="flex-1 md:flex-2">
@@ -85,7 +85,7 @@
             placeholder="Motivo da cita"
             required
             class="w-full ml-4 px-4 py-2 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
-          />
+          >
         </div>
 
         <div class="flex-1 ml-4 md:flex-initial md:w-48">
@@ -95,18 +95,26 @@
             aria-label="Estado da cita"
             class="w-full px-3 py-2 text-sm border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
           >
-            <option value="pendente">Pendente</option>
-            <option value="confirmada">Confirmada</option>
-            <option value="realizada">Realizada</option>
-            <option value="cancelada">Cancelada</option>
+            <option value="pendente">
+              Pendente
+            </option>
+            <option value="confirmada">
+              Confirmada
+            </option>
+            <option value="realizada">
+              Realizada
+            </option>
+            <option value="cancelada">
+              Cancelada
+            </option>
           </select>
         </div>
-               <button
+        <button
           type="button"
-          @click="limpiaFormcita"
           class="w-12 h-10 flex items-center justify-center text-lg border border-green-500 rounded-xl bg-green-50 hover:bg-green-200 cursor-pointer transition-colors shrink-0 self-center md:self-auto"
           title="Limpar formulario"
           aria-label="Limpar formulario"
+          @click="limpiaFormcita"
         >
           🧹
         </button>
@@ -119,7 +127,7 @@
           placeholder="Diagnóstico - Tratamiento"
           aria-label="Diagnóstico - Tratamiento"
           class="w-full px-3 py-2 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent min-h-[75px] resize-y box-border transition-all"
-        ></textarea>
+        />
       </div>
 
       <!-- Gardar ou modificar a cita -->
@@ -129,11 +137,11 @@
           class="px-7 py-2 rounded-xl font-medium border-2 border-[#1bb191] bg-[#f0f3f7] hover:bg-[#c8eacf] transition-colors cursor-pointer disabled:bg-gray-200 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:opacity-70"
           :disabled="
             novaCita.pacienteDNI === '' ||
-            novaCita.doctorId === '' ||
-            novaCita.fecha === '' ||
-            novaCita.hora === '' ||
-            novaCita.motivo.trim() === ''
-            "
+              novaCita.doctorId === '' ||
+              novaCita.fecha === '' ||
+              novaCita.hora === '' ||
+              novaCita.motivo.trim() === ''
+          "
         >
           {{ editando ? "Modificar" : "Gardar" }}
         </button>
@@ -142,30 +150,49 @@
 
     <!-- Listaxe de citas -->
     <h4 class="relative text-lg font-semibold bg-[#1ec9a4] text-white py-2 px-4 rounded mb-4 flex items-center justify-center">
-      <span >📋 Listaxe de Citas Paciente </span><span class="text-red-500 ml-4"> {{ nomePac }} </span>
+      <span>📋 Listaxe de Citas Paciente </span><span class="text-red-500 ml-4"> {{ nomePac }} </span>
       <button
         type="button"
-        @click="recargarCitas"
         class="absolute right-2 w-8 h-8 flex items-center justify-center text-lg bg-white/20 hover:bg-white/30 rounded cursor-pointer transition-colors"
         title="Recargar citas"
         aria-label="Recargar citas"
+        @click="recargarCitas"
       >
         ⟳
       </button>
     </h4>
 
-    <div v-if="citas.length > 0" class="overflow-x-auto w-full">
+    <div
+      v-if="citas.length > 0"
+      class="overflow-x-auto w-full"
+    >
       <table class="w-full min-w-[750px] border-collapse border border-gray-200 text-xs md:text-sm">
         <thead>
           <tr class="bg-gray-50 text-gray-700">
-            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">ID</th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold">Doctor</th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold">Especialidad</th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">Data</th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">Hora</th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold">Motivo</th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">Estado</th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">Accións</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">
+              ID
+            </th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">
+              Doctor
+            </th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">
+              Especialidad
+            </th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">
+              Data
+            </th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">
+              Hora
+            </th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">
+              Motivo
+            </th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">
+              Estado
+            </th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">
+              Accións
+            </th>
           </tr>
         </thead>
 
@@ -175,17 +202,27 @@
             :key="cita._id"
             class="hover:bg-gray-50 transition-colors"
           >
-            <td class="border border-gray-200 p-2.5 text-center">{{ index + 1 }}</td>
-            <td class="border border-gray-200 p-2.5 text-left">
-             {{ cita.apeldoc }}
+            <td class="border border-gray-200 p-2.5 text-center">
+              {{ index + 1 }}
             </td>
             <td class="border border-gray-200 p-2.5 text-left">
-             {{ cita.espedoc }}
+              {{ cita.apeldoc }}
             </td>
-            <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap">{{ cita.fecha }}</td>
-            <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap">{{ cita.hora }}</td>
-            <td class="border border-gray-200 p-2.5 text-left">{{ cita.motivo }}</td>
-            <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap capitalize">{{ cita.estado }}</td>
+            <td class="border border-gray-200 p-2.5 text-left">
+              {{ cita.espedoc }}
+            </td>
+            <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap">
+              {{ cita.fecha }}
+            </td>
+            <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap">
+              {{ cita.hora }}
+            </td>
+            <td class="border border-gray-200 p-2.5 text-left">
+              {{ cita.motivo }}
+            </td>
+            <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap capitalize">
+              {{ cita.estado }}
+            </td>
             <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap">
               <button
                 type="button"
@@ -211,7 +248,10 @@
       </table>
     </div>
 
-    <p v-else class="text-gray-500 text-center py-4">
+    <p
+      v-else
+      class="text-gray-500 text-center py-4"
+    >
       Non hai citas cargadas ou falla a conexión coa BBDD.
     </p>
   </div>

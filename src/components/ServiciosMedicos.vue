@@ -7,7 +7,6 @@
 
     <!-- Tarjetas -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-
       <div
         v-for="(servicio, index) in servicios"
         :key="servicio.nombre"
@@ -15,7 +14,6 @@
                hover:shadow-2xl hover:-translate-y-2
                transition-all duration-300"
       >
-
         <!-- Imagen -->
         <div class="overflow-hidden">
           <img
@@ -23,12 +21,12 @@
             :alt="servicio.nombre"
             class="w-full h-52 object-cover efecto-pixel"
             :style="{ animationDelay: `${index * 0.25}s` }"
-          />
+          >
         </div>
 
         <!-- Información -->
         <div class="p-5">
-
+          // eslint-disable-next-line vue/html-indent
           <h3 class="text-xl font-bold text-gray-800 mb-3">
             {{ servicio.nombre }}
           </h3>
@@ -44,13 +42,9 @@
           >
             Más información
           </button>
-
         </div>
-
       </div>
-
     </div>
-
   </div>
 </template>
 <script setup>

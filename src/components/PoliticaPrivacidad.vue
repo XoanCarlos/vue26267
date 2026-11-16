@@ -18,7 +18,9 @@
       su atención sanitaria y los servicios proporcionados por Sanidade Teis.
     </p>
 
-    <h5 class="text-lg font-semibold text-gray-900 pt-2">¿Qué datos se recopilan?</h5>
+    <h5 class="text-lg font-semibold text-gray-900 pt-2">
+      ¿Qué datos se recopilan?
+    </h5>
 
     <p class="leading-relaxed">
       Para la gestión del paciente pueden solicitarse datos identificativos y de
@@ -26,7 +28,9 @@
       correo electrónico y datos de domicilio.
     </p>
 
-    <h5 class="text-lg font-semibold text-gray-900 pt-2">Confidencialidad</h5>
+    <h5 class="text-lg font-semibold text-gray-900 pt-2">
+      Confidencialidad
+    </h5>
 
     <p class="leading-relaxed">
       La información facilitada por el paciente será tratada de manera
@@ -34,14 +38,18 @@
       con la gestión y atención sanitaria.
     </p>
 
-    <h5 class="text-lg font-semibold text-gray-900 pt-2">Protección de la información</h5>
+    <h5 class="text-lg font-semibold text-gray-900 pt-2">
+      Protección de la información
+    </h5>
 
     <p class="leading-relaxed">
       Se aplicarán las medidas necesarias para proteger los datos frente a
       accesos, modificaciones o usos no autorizados.
     </p>
 
-    <h5 class="text-lg font-semibold text-gray-900 pt-2">Derechos del paciente</h5>
+    <h5 class="text-lg font-semibold text-gray-900 pt-2">
+      Derechos del paciente
+    </h5>
 
     <p class="leading-relaxed">
       El paciente puede ejercer sus derechos de acceso, rectificación,
@@ -49,7 +57,9 @@
       en materia de protección de datos.
     </p>
 
-    <h5 class="text-lg font-semibold text-gray-900 pt-2">Aceptación</h5>
+    <h5 class="text-lg font-semibold text-gray-900 pt-2">
+      Aceptación
+    </h5>
 
     <p class="leading-relaxed">
       Al marcar la casilla de aceptación, el paciente declara haber leído y

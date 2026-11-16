@@ -4,7 +4,10 @@
       👥 Xestión de Pacientes
     </h4>
 
-    <form @submit.prevent="guardarPaciente" class="w-full flex flex-col gap-3.5 mb-6">
+    <form
+      class="w-full flex flex-col gap-3.5 mb-6"
+      @submit.prevent="guardarPaciente"
+    >
       <!-- Fila 1 -->
       <div class="flex flex-col md:flex-row gap-2.5 w-full items-stretch md:items-center">
         <div class="flex items-center gap-1 md:flex-1">
@@ -13,60 +16,69 @@
             v-model="novoPaciente.dnipac"
             type="text"
             required
-            @blur="validarDni"
             :class="[
               'flex-1 px-3 py-2 text-sm text-center border rounded-xl focus:outline-none box-border transition-all',
               !dniValido
                 ? 'border-red-400 bg-red-50 ring-2 ring-red-200'
                 : 'border-gray-300 focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent'
             ]"
-          />
+            @blur="validarDni"
+          >
         </div>
 
         <button
           type="button"
-          @click="buscarPaciente"
           class="w-9 h-9 flex items-center justify-center text-lg border border-gray-300 rounded-xl bg-gray-50 hover:bg-gray-100 cursor-pointer transition-colors shrink-0 self-center md:self-auto"
           title="Buscar paciente"
+          @click="buscarPaciente"
         >
           🔎
         </button>
 
         <button
           type="button"
-          @click="limpiaFormpac"
           class="w-9 h-9 flex items-center justify-center text-lg border border-gray-300 rounded-xl bg-gray-50 hover:bg-gray-100 cursor-pointer transition-colors shrink-0 self-center md:self-auto"
           title="Limpar formulario"
+          @click="limpiaFormpac"
         >
           🧹
         </button>
 
-        <div v-if="!dniValido" class="text-xs text-red-500 font-medium md:self-center">
+        <div
+          v-if="!dniValido"
+          class="text-xs text-red-500 font-medium md:self-center"
+        >
           DNI o NIE inválido.
         </div>
 
         <div class="flex items-center gap-1 md:flex-4">
-          <label for="nome" class="min-w-[60px] text-sm font-semibold text-gray-700">Nome:</label>
+          <label
+            for="nome"
+            class="min-w-[60px] text-sm font-semibold text-gray-700"
+          >Nome:</label>
           <input
             id="nome"
             v-model="novoPaciente.nomepac"
             type="text"
             required
-            @blur="capitalizarTexto('nomepac')"
             class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
-          />
+            @blur="capitalizarTexto('nomepac')"
+          >
         </div>
 
         <div class="flex items-center gap-1 md:flex-4">
-          <label for="apellido" class="min-w-[60px] text-sm font-semibold text-gray-700">Apellidos:</label>
+          <label
+            for="apellido"
+            class="min-w-[60px] text-sm font-semibold text-gray-700"
+          >Apellidos:</label>
           <input
             id="apellido"
             v-model="novoPaciente.apelpac"
             type="text"
             required
-            @blur="capitalizarTexto('apelpac')"
             class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
-          />
+            @blur="capitalizarTexto('apelpac')"
+          >
         </div>
       </div>
 
@@ -80,7 +92,7 @@
             placeholder="dd/mm/yyyy"
             required
             class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
-          />
+          >
         </div>
 
         <div class="flex items-center gap-1 md:flex-2">
@@ -88,14 +100,14 @@
           <input
             v-model="novoPaciente.mailpac"
             type="email"
-            @blur="validarcorreo"
             :class="[
               'flex-1 px-3 py-2 text-sm border rounded-xl focus:outline-none box-border transition-all',
               !correoValido
                 ? 'border-red-400 bg-red-50 ring-2 ring-red-200'
                 : 'border-gray-300 focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent'
             ]"
-          />
+            @blur="validarcorreo"
+          >
         </div>
 
         <div class="flex items-center gap-1 md:flex-1">
@@ -104,14 +116,14 @@
             v-model="novoPaciente.movilpac"
             type="text"
             required
-            @blur="validarMovil"
             :class="[
               'flex-1 px-3 py-2 text-sm text-center border rounded-xl focus:outline-none box-border transition-all',
               !movilValido
                 ? 'border-red-400 bg-red-50 ring-2 ring-red-200'
                 : 'border-gray-300 focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent'
             ]"
-          />
+            @blur="validarMovil"
+          >
         </div>
       </div>
 
@@ -123,33 +135,51 @@
             v-model="novoPaciente.dirpac"
             type="text"
             class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
-          />
+          >
         </div>
 
         <div class="flex items-center gap-1 md:flex-3">
-          <label for="provincia" class="min-w-[60px] text-sm font-semibold text-gray-700">Provincia:</label>
+          <label
+            for="provincia"
+            class="min-w-[60px] text-sm font-semibold text-gray-700"
+          >Provincia:</label>
           <select
             id="provincia"
             v-model="novoPaciente.propac"
-            @change="cargarMunicipios"
             class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
+            @change="cargarMunicipios"
           >
-            <option value="">Selecciona una provincia</option>
-            <option v-for="provincia in provincias" :key="provincia.id" :value="provincia.nm">
+            <option value="">
+              Selecciona una provincia
+            </option>
+            <option
+              v-for="provincia in provincias"
+              :key="provincia.id"
+              :value="provincia.nm"
+            >
               {{ provincia.nm }}
             </option>
           </select>
         </div>
 
         <div class="flex items-center gap-1 md:flex-3">
-          <label for="municipio" class="min-w-[60px] text-sm font-semibold text-gray-700">Municipio:</label>
+          <label
+            for="municipio"
+            class="min-w-[60px] text-sm font-semibold text-gray-700"
+          >Municipio:</label>
           <select
             id="municipio"
             v-model="novoPaciente.munipac"
             class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
           >
-            <option value="">Selecciona un municipio</option>
-            <option v-for="municipio in municipios" :key="municipio.id" :value="municipio.nm">
+            <option value="">
+              Selecciona un municipio
+            </option>
+            <option
+              v-for="municipio in municipios"
+              :key="municipio.id"
+              :value="municipio.nm"
+            >
               {{ municipio.nm }}
             </option>
           </select>
@@ -163,7 +193,7 @@
             v-model="novoPaciente.lopdpac"
             type="checkbox"
             class="w-4 h-4 rounded accent-[#1ca285] cursor-pointer"
-          />
+          >
           <span>
             Aceptar a
             <a
@@ -185,9 +215,9 @@
           class="px-6 py-1.5 rounded-xl font-medium border-2 border-[#1bb191] bg-[#f0f3f7] hover:bg-[#c8eacf] transition-colors cursor-pointer disabled:bg-gray-200 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:opacity-70"
           :disabled="
             novoPaciente.dnipac === '' ||
-            novoPaciente.nomepac === '' ||
-            novoPaciente.apelpac === '' ||
-            !novoPaciente.lopdpac
+              novoPaciente.nomepac === '' ||
+              novoPaciente.apelpac === '' ||
+              !novoPaciente.lopdpac
           "
         >
           Gardar
@@ -196,13 +226,13 @@
         <button
           type="button"
           class="px-6 py-1.5 rounded-xl font-medium border-2 border-[#1bb191] bg-[#f0f3f7] hover:bg-red-100 transition-colors cursor-pointer disabled:bg-gray-200 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:opacity-70"
-          @click="eliminarPaciente(novoPaciente.dnipac)"
           :disabled="
             novoPaciente.dnipac === '' ||
-            novoPaciente.nomepac === '' ||
-            novoPaciente.apelpac === '' ||
-            !novoPaciente.lopdpac
+              novoPaciente.nomepac === '' ||
+              novoPaciente.apelpac === '' ||
+              !novoPaciente.lopdpac
           "
+          @click="eliminarPaciente(novoPaciente.dnipac)"
         >
           Eliminar
         </button>
@@ -211,14 +241,14 @@
           type="button"
           title="Imprimir Listado Pacientes"
           class="w-9 h-9 p-1 flex items-center justify-center border border-gray-300 rounded-xl bg-gray-50 hover:bg-gray-100 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-          @click="exportarPacientes"
           :disabled="pacientes.length === 0"
+          @click="exportarPacientes"
         >
           <img
             src="../assets/img/impresora.png"
             class="w-6 h-6 object-contain"
             alt="Imprimir"
-          />
+          >
         </button>
       </div>
     </form>
@@ -227,17 +257,34 @@
       📋 Listaxe de Pacientes
     </h4>
 
-    <div v-if="pacientes.length > 0" class="overflow-x-auto w-full">
+    <div
+      v-if="pacientes.length > 0"
+      class="overflow-x-auto w-full"
+    >
       <table class="w-full border-collapse border border-gray-200 text-xs md:text-sm">
         <thead>
           <tr class="bg-gray-50 text-gray-700">
-            <th class="border border-gray-200 p-2.5 text-center font-semibold">ID</th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">DNI/CIF</th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold">Apelidos</th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold">Nome</th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold">Correo</th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold">Provincia</th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold">Accións</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">
+              ID
+            </th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">
+              DNI/CIF
+            </th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">
+              Apelidos
+            </th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">
+              Nome
+            </th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">
+              Correo
+            </th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">
+              Provincia
+            </th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">
+              Accións
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -246,12 +293,24 @@
             :key="index"
             class="hover:bg-gray-50 transition-colors"
           >
-            <td class="border border-gray-200 p-2.5 text-center">{{ index + 1 }}</td>
-            <td class="border border-gray-200 p-2.5 text-center font-mono">{{ u.dnipac }}</td>
-            <td class="border border-gray-200 p-2.5 text-left">{{ u.apelpac }}</td>
-            <td class="border border-gray-200 p-2.5 text-left">{{ u.nomepac }}</td>
-            <td class="border border-gray-200 p-2.5 text-left">{{ u.mailpac }}</td>
-            <td class="border border-gray-200 p-2.5 text-center">{{ u.propac }}</td>
+            <td class="border border-gray-200 p-2.5 text-center">
+              {{ index + 1 }}
+            </td>
+            <td class="border border-gray-200 p-2.5 text-center font-mono">
+              {{ u.dnipac }}
+            </td>
+            <td class="border border-gray-200 p-2.5 text-left">
+              {{ u.apelpac }}
+            </td>
+            <td class="border border-gray-200 p-2.5 text-left">
+              {{ u.nomepac }}
+            </td>
+            <td class="border border-gray-200 p-2.5 text-left">
+              {{ u.mailpac }}
+            </td>
+            <td class="border border-gray-200 p-2.5 text-center">
+              {{ u.propac }}
+            </td>
             <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap">
               <button
                 class="mr-1.5 px-2 py-1 border border-gray-300 rounded bg-white hover:bg-[#e8f8f3] cursor-pointer transition-colors text-sm"
@@ -273,7 +332,10 @@
       </table>
     </div>
 
-    <p v-else class="text-gray-500 text-center py-4">
+    <p
+      v-else
+      class="text-gray-500 text-center py-4"
+    >
       Non hai pacientes cargados.
     </p>
   </div>

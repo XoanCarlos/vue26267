@@ -4,7 +4,10 @@
       👨‍⚕️ Xestión de Doctores 👩‍⚕️
     </h4>
 
-    <form @submit.prevent="guardarDoctor" class="w-full flex flex-col gap-3.5 mb-6">
+    <form
+      class="w-full flex flex-col gap-3.5 mb-6"
+      @submit.prevent="guardarDoctor"
+    >
       <!-- Fila 1 -->
       <div class="flex flex-col md:flex-row gap-2.5 w-full items-stretch md:items-center">
         <div class="flex items-center gap-1 md:flex-1">
@@ -14,50 +17,66 @@
             type="text"
             disabled
             class="flex-1 px-3 py-2 text-[11px] border border-gray-300 rounded-xl bg-gray-100 text-gray-500 cursor-not-allowed box-border"
-          />
+          >
         </div>
 
         <button
           type="button"
-          @click="limpiaFormdoc"
           class="w-9 h-9 flex items-center justify-center text-lg border border-gray-300 rounded-xl bg-gray-50 hover:bg-gray-100 cursor-pointer transition-colors shrink-0 self-center md:self-auto"
           title="Limpar formulario"
+          @click="limpiaFormdoc"
         >
           🧹
         </button>
 
         <div class="flex items-center gap-1 md:flex-2">
-          <label for="nome" class="min-w-[60px] text-sm font-semibold text-gray-700">Nome:</label>
+          <label
+            for="nome"
+            class="min-w-[60px] text-sm font-semibold text-gray-700"
+          >Nome:</label>
           <input
             id="nome"
             v-model="novoDoctor.nomedoc"
             type="text"
             required
-            @blur="capitalizarTexto('nomedoc')"
             class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
-          />
+            @blur="capitalizarTexto('nomedoc')"
+          >
         </div>
 
         <div class="flex items-center gap-1 md:flex-2">
-          <label for="apellido" class="min-w-[60px] text-sm font-semibold text-gray-700">Apellidos:</label>
+          <label
+            for="apellido"
+            class="min-w-[60px] text-sm font-semibold text-gray-700"
+          >Apellidos:</label>
           <input
             id="apellido"
             v-model="novoDoctor.apeldoc"
             type="text"
             required
-            @blur="capitalizarTexto('apeldoc')"
             class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
-          />
+            @blur="capitalizarTexto('apeldoc')"
+          >
         </div>
 
         <div class="flex items-center gap-2 text-sm font-semibold text-gray-700 shrink-0">
           <span>Colegiado:</span>
           <label class="flex items-center gap-1 cursor-pointer font-normal">
-            <input type="radio" value="true" v-model="novoDoctor.coledoc" class="accent-[#1ca285] cursor-pointer" />
+            <input
+              v-model="novoDoctor.coledoc"
+              type="radio"
+              value="true"
+              class="accent-[#1ca285] cursor-pointer"
+            >
             Si
           </label>
           <label class="flex items-center gap-1 cursor-pointer font-normal">
-            <input type="radio" value="false" v-model="novoDoctor.coledoc" class="accent-[#1ca285] cursor-pointer" />
+            <input
+              v-model="novoDoctor.coledoc"
+              type="radio"
+              value="false"
+              class="accent-[#1ca285] cursor-pointer"
+            >
             No
           </label>
         </div>
@@ -77,7 +96,7 @@
                 : 'border-gray-300 focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent'
             ]"
             @blur="validarcorreo"
-          />
+          >
         </div>
 
         <div class="flex items-center gap-1 md:flex-1">
@@ -86,24 +105,29 @@
             v-model="novoDoctor.movildoc"
             type="text"
             required
-            @blur="validarMovil"
             :class="[
               'flex-1 px-3 py-2 text-sm text-center border rounded-xl focus:outline-none box-border transition-all',
               !movilValido
                 ? 'border-red-400 bg-red-50 ring-2 ring-red-200'
                 : 'border-gray-300 focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent'
             ]"
-          />
+            @blur="validarMovil"
+          >
         </div>
 
         <div class="flex items-center gap-1 md:flex-2">
-          <label for="especialidad" class="min-w-[60px] text-sm font-semibold text-gray-700">Especialidad:</label>
+          <label
+            for="especialidad"
+            class="min-w-[60px] text-sm font-semibold text-gray-700"
+          >Especialidad:</label>
           <select
             id="especialidad"
             v-model="novoDoctor.espedoc"
             class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
           >
-            <option value="">Selecciona una Especialidad</option>
+            <option value="">
+              Selecciona una Especialidad
+            </option>
             <option
               v-for="especialidad in especialidades"
               :key="especialidad.id"
@@ -116,9 +140,9 @@
 
         <button
           type="button"
-          @click="buscarDoctoresPorEspecialidad(novoDoctor.espedoc)"
           class="w-9 h-9 flex items-center justify-center text-lg border border-gray-300 rounded-xl bg-gray-50 hover:bg-gray-100 cursor-pointer transition-colors shrink-0 self-center md:self-auto"
           title="Buscar por especialidad"
+          @click="buscarDoctoresPorEspecialidad(novoDoctor.espedoc)"
         >
           🔍
         </button>
@@ -131,10 +155,10 @@
           class="px-6 py-1.5 rounded-xl font-medium border-2 border-[#1bb191] bg-[#f0f3f7] hover:bg-[#c8eacf] transition-colors cursor-pointer disabled:bg-gray-200 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:opacity-70"
           :disabled="
             novoDoctor.nomedoc === '' ||
-            novoDoctor.apeldoc === '' ||
-            novoDoctor.movildoc === '' ||
-            novoDoctor.espedoc === ''  ||
-            novoDoctor.coledoc === ''
+              novoDoctor.apeldoc === '' ||
+              novoDoctor.movildoc === '' ||
+              novoDoctor.espedoc === '' ||
+              novoDoctor.coledoc === ''
           "
         >
           Gardar
@@ -142,29 +166,29 @@
 
         <button
           type="button"
-          @click="exportarDoctores"
           :disabled="doctores.length === 0"
           class="w-9 h-9 p-1 flex items-center justify-center border border-gray-300 rounded-xl bg-gray-50 hover:bg-gray-100 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           title="Exportar a PDF"
+          @click="exportarDoctores"
         >
           <img
             src="../assets/img/impresora.png"
             class="w-6 h-6 object-contain"
             alt="Imprimir"
-          />
+          >
         </button>
 
         <button
           type="button"
-          @click="recargarDoctores()"
           class="w-9 h-9 p-1 flex items-center justify-center border border-gray-300 rounded-xl bg-gray-50 hover:bg-gray-100 cursor-pointer transition-colors"
           title="Recargar listado"
+          @click="recargarDoctores()"
         >
           <img
             src="../assets/img/recargar.png"
             class="w-6 h-6 object-contain"
             alt="Recargar"
-          />
+          >
         </button>
       </div>
     </form>
@@ -173,17 +197,34 @@
       📋 Listaxe de Doctores
     </h4>
 
-    <div v-if="doctores.length > 0" class="overflow-x-auto w-full">
+    <div
+      v-if="doctores.length > 0"
+      class="overflow-x-auto w-full"
+    >
       <table class="w-full border-collapse border border-gray-200 text-xs md:text-sm">
         <thead>
           <tr class="bg-gray-50 text-gray-700">
-            <th class="border border-gray-200 p-2.5 text-center font-semibold">ID</th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">Código</th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold">Apelidos</th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold">Nome</th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold">Movil</th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold">Especialidad</th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold">Accións</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">
+              ID
+            </th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">
+              Código
+            </th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">
+              Apelidos
+            </th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">
+              Nome
+            </th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">
+              Movil
+            </th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">
+              Especialidad
+            </th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">
+              Accións
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -192,14 +233,24 @@
             :key="index"
             class="hover:bg-gray-50 transition-colors"
           >
-            <td class="border border-gray-200 p-2.5 text-center">{{ index + 1 }}</td>
+            <td class="border border-gray-200 p-2.5 text-center">
+              {{ index + 1 }}
+            </td>
             <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap text-xs text-gray-500 font-mono">
               {{ u._id }}
             </td>
-            <td class="border border-gray-200 p-2.5 text-left">{{ u.apeldoc }}</td>
-            <td class="border border-gray-200 p-2.5 text-left">{{ u.nomedoc }}</td>
-            <td class="border border-gray-200 p-2.5 text-center">{{ u.movildoc }}</td>
-            <td class="border border-gray-200 p-2.5 text-center">{{ u.espedoc }}</td>
+            <td class="border border-gray-200 p-2.5 text-left">
+              {{ u.apeldoc }}
+            </td>
+            <td class="border border-gray-200 p-2.5 text-left">
+              {{ u.nomedoc }}
+            </td>
+            <td class="border border-gray-200 p-2.5 text-center">
+              {{ u.movildoc }}
+            </td>
+            <td class="border border-gray-200 p-2.5 text-center">
+              {{ u.espedoc }}
+            </td>
             <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap">
               <button
                 class="mr-1.5 px-2 py-1 border border-gray-300 rounded bg-white hover:bg-[#e8f8f3] cursor-pointer transition-colors text-sm"
@@ -221,7 +272,10 @@
       </table>
     </div>
 
-    <p v-else class="text-gray-500 text-center py-4">
+    <p
+      v-else
+      class="text-gray-500 text-center py-4"
+    >
       Non hai doctores cargados ou falla conexión BBDD.
     </p>
   </div>
@@ -246,7 +300,6 @@ import { generarPDF } from "../utils/pdf.js";
 const doctores = ref([]);
 const especialidades = ref([]);
 const editando = ref(false);
-const doctorStore = usedoctorStore(); 
 
 const novoDoctor = reactive({
   nomedoc: "",
