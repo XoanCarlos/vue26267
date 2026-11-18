@@ -212,7 +212,7 @@
               {{ cita.espedoc }}
             </td>
             <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap">
-              {{ cita.fecha }}
+              {{ formatearFecha(cita.fecha) }}
             </td>
             <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap">
               {{ cita.hora }}
@@ -389,5 +389,15 @@ function limpiaFormcita() {
   //doctorSeleccionado.value = null;
   mostrarSelectorDoctor.value = false;
   editando.value = false;
+}
+
+function formatearFecha(fecha) {
+  if (!fecha) return "";
+
+  return new Date(fecha).toLocaleDateString("es-ES", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
 }
 </script>
