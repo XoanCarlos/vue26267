@@ -91,7 +91,7 @@
             type="date"
             placeholder="dd/mm/yyyy"
             required
-            class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
+            class="flex-1 px-3 py-2 text-sm text-center border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
           >
         </div>
 

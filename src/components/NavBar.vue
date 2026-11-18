@@ -1,6 +1,5 @@
 <template>
-  <nav class="fixed top-0 left-1/2 -translate-x-1/2 w-[95vw] md:w-[80vw] max-w-[95vw] md:max-w-[80vw] h-[50px] z-50 bg-[#1ca285] text-white flex items-center px-4 md:px-12 relative box-border shadow-sm">
-    <div class="flex items-center font-bold text-base z-10 select-none">
+<nav class="fixed top-0 left-1/2 -translate-x-1/2 w-[95vw] md:w-[80vw] max-w-[95vw] md:max-w-[80vw] h-[50px] z-50 bg-[#1ca285] text-white flex items-center px-4 md:px-12 box-border shadow-sm">    <div class="flex items-center font-bold text-base z-10 select-none">
       <img
         :src="logo"
         alt="Sanidad Teis"
