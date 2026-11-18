@@ -9,7 +9,7 @@
       class="w-full flex flex-col gap-3.5 mb-6"
       @submit.prevent="guardarCita"
     >
-      <!-- Primeira fila: ID, data e limpar -->
+      <!-- Primeira fila: ID, DNI Paciente, Nome Doctor e ID Doctor -->
       <div class="flex flex-col md:flex-row gap-2.5 w-full items-stretch md:items-center">
         <div class="flex items-center gap-1 flex-1">
           <label class="w-20 shrink-0 text-sm font-semibold text-gray-700">ID Cita:</label>
@@ -19,7 +19,7 @@
             placeholder="ID cita"
             disabled
             aria-label="ID da cita"
-            class="flex-1 px-3 py-2 text-sm border border-gray-300 text-center  rounded-xl bg-gray-100 text-gray-500 cursor-not-allowed box-border"
+            class="flex-1 px-3 py-2 text-sm border border-gray-300 text-center rounded-xl bg-gray-100 text-gray-500 cursor-not-allowed box-border"
           >
         </div>
         <div class="flex items-center gap-1 flex-1">
@@ -55,7 +55,7 @@
         </div>
       </div>
 
-      <!-- Terceira fila: hora, motivo e estado -->
+      <!-- Terceira fila: Data, Hora, Motivo, Estado e Limpar -->
       <div class="flex flex-col md:flex-row gap-2.5 w-full items-stretch md:items-center">
         <div class="flex items-center gap-2 flex-1">
           <label class="ml-1 mr-4 shrink-0 px-2 text-sm font-semibold text-gray-700">Fecha:</label>
@@ -67,8 +67,8 @@
             class="flex-1 px-3 py-2 text-sm text-center border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
           >
         </div>
-        <div class="flex items-center gap-1 flex-1 md:flex-initial md:w-50">
-          <label class="mr-4 ml-2 shrink-0 text-sm font-semibold text-gray-700">Hora:</label>
+        <div class="flex items-center gap-1 flex-1 md:flex-initial md:w-40">
+          <label class="mr-2 ml-2 shrink-0 text-sm font-semibold text-gray-700">Hora:</label>
           <input
             v-model="novaCita.hora"
             type="time"
@@ -84,29 +84,35 @@
             type="text"
             placeholder="Motivo da cita"
             required
-            class="w-full ml-4 px-4 py-2 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
+            class="w-full ml-2 px-4 py-2 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
           >
         </div>
 
-        <div class="flex-1 ml-4 md:flex-initial md:w-48">
+        <!-- Novo campo: Prezo da consulta -->
+        <div class="flex items-center gap-2 flex-1 md:flex-initial md:w-36 ml-2">
+          <label class="text-sm font-semibold text-gray-700">Prezo:</label>
+          <input
+            v-model.number="novaCita.precio"
+            type="number"
+            step="0.01"
+            placeholder="0.00"
+            required
+            aria-label="Prezo da consulta"
+            class="w-full px-3 py-2 text-sm text-center border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
+          >
+        </div>
+
+        <div class="flex-1 ml-2 md:flex-initial md:w-40">
           <select
             v-model="novaCita.estado"
             required
             aria-label="Estado da cita"
             class="w-full px-3 py-2 text-sm border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
           >
-            <option value="pendente">
-              Pendente
-            </option>
-            <option value="confirmada">
-              Confirmada
-            </option>
-            <option value="realizada">
-              Realizada
-            </option>
-            <option value="cancelada">
-              Cancelada
-            </option>
+            <option value="pendente">Pendente</option>
+            <option value="confirmada">Confirmada</option>
+            <option value="realizada">Realizada</option>
+            <option value="cancelada">Cancelada</option>
           </select>
         </div>
         <button
@@ -120,47 +126,85 @@
         </button>
       </div>
 
-      <!-- Cuarta fila: observacións -->
-      <div class="w-full">
-        <textarea
-          v-model="novaCita.observacions"
-          placeholder="Diagnóstico - Tratamiento"
-          aria-label="Diagnóstico - Tratamiento"
-          class="w-full px-3 py-2 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent min-h-[75px] resize-y box-border transition-all"
-        />
+      <!-- Cuarta fila dividida: Diagnóstico e Tratamento -->
+      <div class="flex flex-col md:flex-row gap-2.5 w-full">
+        <div class="flex-1">
+          <textarea
+            v-model="novaCita.diagnostico"
+            placeholder="Diagnóstico"
+            aria-label="Diagnóstico"
+            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent min-h-[75px] resize-y box-border transition-all"
+          />
+        </div>
+        <div class="flex-1">
+          <textarea
+            v-model="novaCita.tratamento"
+            placeholder="Tratamento"
+            aria-label="Tratamento"
+            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent min-h-[75px] resize-y box-border transition-all"
+          />
+        </div>
       </div>
 
-      <!-- Gardar ou modificar a cita -->
-      <div class="flex justify-center items-center w-full my-1">
+      <!-- Botones de Acción: Gardar/Modificar e Imprimir al lado -->
+      <div class="flex justify-center items-center gap-3 w-full my-1">
         <button
           type="submit"
           class="px-7 py-2 rounded-xl font-medium border-2 border-[#1bb191] bg-[#f0f3f7] hover:bg-[#c8eacf] transition-colors cursor-pointer disabled:bg-gray-200 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:opacity-70"
           :disabled="
             novaCita.pacienteDNI === '' ||
-              novaCita.doctorId === '' ||
-              novaCita.fecha === '' ||
-              novaCita.hora === '' ||
-              novaCita.motivo.trim() === ''
+            novaCita.doctorId === '' ||
+            novaCita.fecha === '' ||
+            novaCita.hora === '' ||
+            novaCita.motivo.trim() === ''
           "
         >
           {{ editando ? "Modificar" : "Gardar" }}
         </button>
+
+        <!-- Botón de Imprimir (Printer) con jsPDF -->
+        <button
+          type="button"
+          class="p-2 rounded-xl border-2 border-blue-500 bg-blue-50 hover:bg-blue-100 text-blue-600 transition-colors cursor-pointer flex items-center justify-center shadow-sm"
+          title="Imprimir cita seleccionada"
+          aria-label="Imprimir cita seleccionada"
+          @click="imprimirCitaSeleccionada"
+          :disabled="!editando && !novaCita.fecha"
+        >
+          🖨️ Imprimir Cita
+        </button>
       </div>
     </form>
 
-    <!-- Listaxe de citas -->
-    <h4 class="relative text-lg font-semibold bg-[#1ec9a4] text-white py-2 px-4 rounded mb-4 flex items-center justify-center">
-      <span>📋 Listaxe de Citas Paciente </span><span class="text-red-500 ml-4"> {{ nomePac }} </span>
-      <button
-        type="button"
-        class="absolute right-2 w-8 h-8 flex items-center justify-center text-lg bg-white/20 hover:bg-white/30 rounded cursor-pointer transition-colors"
-        title="Recargar citas"
-        aria-label="Recargar citas"
-        @click="recargarCitas"
-      >
-        ⟳
-      </button>
-    </h4>
+    <!-- Listaxe de citas e Checkbox alineado á dereita -->
+    <div class="flex flex-col md:flex-row justify-between items-center bg-[#1ec9a4] text-white py-2 px-4 rounded mb-4 gap-2">
+      <h4 class="text-lg font-semibold flex items-center">
+        <span>📋 Listaxe de Citas </span>
+        <span class="text-red-200 ml-2"> {{ listarTodas ? "(Todas)" : nomePac }} </span>
+      </h4>
+
+      <div class="flex items-center gap-3 ml-auto">
+        <div class="flex items-center gap-2 bg-white/10 px-3 py-1 rounded-lg">
+          <label for="listarTodas" class="text-sm font-medium cursor-pointer">Listar Todas</label>
+          <input 
+            id="listarTodas" 
+            type="checkbox" 
+            v-model="listarTodas" 
+            class="w-4 h-4 cursor-pointer accent-[#1bb191]"
+          >
+        </div>
+
+        <button
+          type="button"
+          class="w-8 h-8 flex items-center justify-center text-lg bg-white/20 hover:bg-white/30 rounded cursor-pointer transition-colors"
+          title="Recargar citas"
+          aria-label="Recargar citas"
+          @click="cargarDatos"
+        >
+          ⟳
+        </button>
+      </div>
+    </div>
 
     <div
       v-if="citas.length > 0"
@@ -169,30 +213,16 @@
       <table class="w-full min-w-[750px] border-collapse border border-gray-200 text-xs md:text-sm">
         <thead>
           <tr class="bg-gray-50 text-gray-700">
-            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">
-              ID
-            </th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold">
-              Doctor
-            </th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold">
-              Especialidad
-            </th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">
-              Data
-            </th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">
-              Hora
-            </th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold">
-              Motivo
-            </th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">
-              Estado
-            </th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">
-              Accións
-            </th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">ID</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">Paciente (DNI)</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">Doctor</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">Especialidad</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">Data</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">Hora</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">Motivo</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">Prezo</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">Estado</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">Accións</th>
           </tr>
         </thead>
 
@@ -202,27 +232,15 @@
             :key="cita._id"
             class="hover:bg-gray-50 transition-colors"
           >
-            <td class="border border-gray-200 p-2.5 text-center">
-              {{ index + 1 }}
-            </td>
-            <td class="border border-gray-200 p-2.5 text-left">
-              {{ cita.apeldoc }}
-            </td>
-            <td class="border border-gray-200 p-2.5 text-left">
-              {{ cita.espedoc }}
-            </td>
-            <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap">
-              {{ formatearFecha(cita.fecha) }}
-            </td>
-            <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap">
-              {{ cita.hora }}
-            </td>
-            <td class="border border-gray-200 p-2.5 text-left">
-              {{ cita.motivo }}
-            </td>
-            <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap capitalize">
-              {{ cita.estado }}
-            </td>
+            <td class="border border-gray-200 p-2.5 text-center">{{ index + 1 }}</td>
+            <td class="border border-gray-200 p-2.5 text-center font-medium">{{ cita.pacienteDNI }}</td>
+            <td class="border border-gray-200 p-2.5 text-left">{{ cita.apeldoc }}</td>
+            <td class="border border-gray-200 p-2.5 text-left">{{ cita.espedoc }}</td>
+            <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap">{{ formatearFecha(cita.fecha) }}</td>
+            <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap">{{ cita.hora }}</td>
+            <td class="border border-gray-200 p-2.5 text-left">{{ cita.motivo }}</td>
+            <td class="border border-gray-200 p-2.5 text-center font-semibold">{{ cita.precio ? cita.precio.toFixed(2) + ' €' : '0.00 €' }}</td>
+            <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap capitalize">{{ cita.estado }}</td>
             <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap">
               <button
                 type="button"
@@ -258,62 +276,74 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, computed } from "vue";
 import { usepacienteStore } from "../store/pacienteStore.js";
 import { usedoctorStore } from "../store/doctorStore.js"
 
 import {
-  getCitasPaciente,
+  getCitas,
   saveCita,
   modifyCita,
   deleteCita,
 } from "../api/citas.js";
 
 import { alertaExito, alertaInfo } from "../utils/alertas.js";
+import { generarPDF } from "../utils/pdf.js"; // Ajusta a ruta segundo onde teñas a túa función PDF
 
-
-// Variables reactivas
-const citas = ref([]);
-const doctores = ref([]);
+const citasOriginales = ref([]);
 const editando = ref(false);
+const listarTodas = ref(false);
 
 const pacienteStore = usepacienteStore()
 const doctorStore = usedoctorStore()
 
-const doctorSeleccionado = ref(null)
-const mostrarSelectorDoctor = ref(false)
-
-// Datos do formulario
 const novaCita = reactive({
+  _id: "",
   pacienteDNI: "",
   doctorId: "",
   fecha: "",
   hora: "",
   motivo: "",
   estado: "pendente",
-  observacions: "",
+  diagnostico: "",
+  tratamento: "",
+  precio: 0,
 });
 
 const nomePac = ref('')
 const nomeDoc = ref('')
 
 onMounted(async () => {
-  novaCita.pacienteDNI = pacienteStore.dnipac
-  console.log(novaCita.pacienteDNI)
-  nomePac.value = pacienteStore.apelpac
-  nomeDoc.value = doctorStore.apellido
-  novaCita.doctorId = doctorStore.id
+  novaCita.pacienteDNI = pacienteStore.dnipac || ""
+  nomePac.value = pacienteStore.apelpac || ""
+  nomeDoc.value = doctorStore.apellido || ""
+  novaCita.doctorId = doctorStore.id || ""
   await cargarDatos()
 });
 
 async function cargarDatos() {
   try {
-    citas.value = await getCitasPaciente(novaCita.pacienteDNI);
-    console.log(citas.value)
+    citasOriginales.value = await getCitas(); 
   } catch (error) {
-    console.error("Erro ao cargar os datos:", error)
+    console.error("Erro ao cargar os datos:", error);
   }
 }
+
+const citas = computed(() => {
+  if (listarTodas.value) {
+    return citasOriginales.value;
+  }
+  
+  const dniBusqueda = novaCita.pacienteDNI.trim();
+  if (!dniBusqueda) {
+    return [];
+  }
+
+  return citasOriginales.value.filter(cita => {
+    const dniCita = cita.pacienteDNI?._id ?? cita.pacienteDNI;
+    return dniCita === dniBusqueda;
+  });
+});
 
 async function guardarCita() {
   try {
@@ -336,10 +366,6 @@ function editarCita(index) {
   const pacienteDNI = cita.pacienteDNI?._id ?? cita.pacienteDNI;
   const doctorId = cita.doctorId?._id ?? cita.doctorId;
 
-  doctorSeleccionado.value =
-    doctores.value.find((d) => d._id === doctorId) ??
-    (typeof cita.doctorId === "object" ? cita.doctorId : null);
-
   Object.assign(novaCita, {
     _id: cita._id,
     pacienteDNI,
@@ -348,9 +374,11 @@ function editarCita(index) {
     hora: cita.hora,
     motivo: cita.motivo,
     estado: cita.estado,
-    observacions: cita.observacions ?? "",
+    diagnostico: cita.diagnostico ?? "",
+    tratamento: cita.tratamento ?? "",
+    precio: cita.precio ?? 0,
   });
-  nomeDoc.value = cita.apeldoc;
+  nomeDoc.value = cita.apeldoc || "";
   editando.value = true;
 }
 
@@ -366,34 +394,45 @@ async function eliminarCita(index) {
   }
 }
 
-async function recargarCitas() {
-  await cargarDatos();
-}
-
 function limpiaFormcita() {
   Object.assign(novaCita, {
     _id: "",
-    pacienteDNI: "",
-    doctorId: "",
+    pacienteDNI: pacienteStore.dnipac || "",
+    doctorId: doctorStore.id || "",
     fecha: "",
     hora: "",
     motivo: "",
     estado: "pendente",
-    observacions: "",
+    diagnostico: "",
+    tratamento: "",
+    precio: 0,
   });
 
-  pacienteStore.limpiarPaciente()
-  doctorStore.limpiarDoctor()
-  nomeDoc.value = ''
-  nomePac.value = ''
-  //doctorSeleccionado.value = null;
-  mostrarSelectorDoctor.value = false;
   editando.value = false;
+  cargarDatos();
+}
+
+// Función que xera o PDF utilizando a túa función auxiliar
+function imprimirCitaSeleccionada() {
+  const titulo = "Detalle da Cita Médica";
+  const cabeceras = ["Paciente (DNI)", "Médico", "Especialidade", "Data", "Hora", "Prezo"];
+  
+  const filas = [
+    [
+      novaCita.pacienteDNI,
+      nomeDoc.value || "Descoñecido",
+      citas.value.find(c => c._id === novaCita._id)?.espedoc || "Xeral",
+      formatearFecha(novaCita.fecha),
+      novaCita.hora,
+      `${Number(novaCita.precio || 0).toFixed(2)} €`
+    ]
+  ];
+
+  generarPDF(titulo, cabeceras, filas, `cita_${novaCita.pacienteDNI || 'detalles'}.pdf`);
 }
 
 function formatearFecha(fecha) {
   if (!fecha) return "";
-
   return new Date(fecha).toLocaleDateString("es-ES", {
     day: "2-digit",
     month: "2-digit",

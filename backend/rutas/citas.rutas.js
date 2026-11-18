@@ -2,8 +2,20 @@ import express from "express";
 import Cita from "../modelos/Cita.js";
 
 const router = express.Router();
+
+// Obtener TODAS las citas (para la opción "Listar Todas")
+router.get("/", async (req, res) => {
+  try {
+    const citas = await Cita.find();
+    res.json(citas);
+  } catch (error) {
+    res.status(500).json({
+      mensaje: "Error al obtener todas las citas",
+    });
+  }
+});
     
-// Obtener citas por paciente
+// Obtener citas por paciente (por DNI)
 router.get("/:dni", async (req, res) => {
   try {
     const citas = await Cita.find({
@@ -13,7 +25,7 @@ router.get("/:dni", async (req, res) => {
     res.json(citas);
   } catch (error) {
     res.status(500).json({
-      mensaje: ("Error al obtener doctores", error),
+      mensaje: "Error al obtener citas por paciente",
     });
   }
 });
@@ -21,18 +33,23 @@ router.get("/:dni", async (req, res) => {
 // Crear cita
 router.post("/", async (req, res) => {
   try {
-    // Verificar si ya existe un cita con el mismo ID para no permitir duplicados
-    const citaExiste = await Cita.findOne({
-      _id: req.body._id,
-    });
-
-    if (citaExiste) {
-      return res.status(409).json({
-        mensaje: "Ya existe un cita con ese ID",  //salida de error 409 conflicto
+    // Verificar se se achega un ID válido para comprobar duplicados
+    if (req.body._id && req.body._id.trim() !== "") {
+      const citaExiste = await Cita.findOne({
+        _id: req.body._id,
       });
+
+      if (citaExiste) {
+        return res.status(409).json({
+          mensaje: "Ya existe un cita con ese ID",  //salida de error 409 conflicto
+        });
+      }
+    } else {
+      // Se non hai ID (creación nova), eliminámolo para que MongoDB xere o ObjectId
+      delete req.body._id;
     }
 
-    // si no existe, se crea un nuevo cita   
+    // Se non existe, créase unha nova cita   
     const cita = new Cita(req.body);
 
     const nuevaCita = await cita.save();
@@ -67,13 +84,12 @@ router.put("/:id", async (req, res) => {
     res.json(cita);
   } catch (error) {
     res.status(500).json({
-      mensaje: ("Error al modificar el cita", error),
+      mensaje: "Error al modificar la cita",
     });
   }
 });
 
 // Eliminar cita
-
 router.delete("/:id", async (req, res) => {
   try {
     const cita = await Cita.findOneAndDelete({
@@ -90,7 +106,7 @@ router.delete("/:id", async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({
-      mensaje: ("Error al eliminar el cita", error),
+      mensaje: "Error al eliminar la cita",
     });
   }
 });

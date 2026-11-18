@@ -42,3 +42,19 @@ export async function deleteCita(id) {
   const respuesta = await axios.delete(`${API_URL}/${id}`);
   return respuesta.data;
 }
+
+export async function getCitas() {
+  const respuesta = await axios.get(API_URL); // GET a http://localhost:3000/api/citas
+  const citas = respuesta.data;
+  const doctores = await getDoctores();
+
+  return citas.map(cita => {
+    const doctor = doctores.find(doc => doc._id === cita.doctorId);
+    return {
+      ...cita,
+      nomedoc: doctor?.nomedoc || "",
+      apeldoc: doctor?.apeldoc || "",
+      espedoc: doctor?.espedoc || ""
+    };
+  });
+}
