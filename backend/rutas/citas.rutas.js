@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import express from "express";
 import Cita from "../modelos/Cita.js";
 
@@ -8,6 +9,7 @@ router.get("/", async (req, res) => {
   try {
     const citas = await Cita.find();
     res.json(citas);
+  // eslint-disable-next-line no-unused-vars
   } catch (error) {
     res.status(500).json({
       mensaje: "Error al obtener todas las citas",
@@ -25,7 +27,7 @@ router.get("/:dni", async (req, res) => {
     res.json(citas);
   } catch (error) {
     res.status(500).json({
-      mensaje: "Error al obtener citas por paciente",
+      mensaje: "Error al obtener citas por paciente", error: error.message
     });
   }
 });

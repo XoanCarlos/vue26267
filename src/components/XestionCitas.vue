@@ -90,9 +90,9 @@
 
         <!-- Novo campo: Prezo da consulta -->
         <div class="flex items-center gap-2 flex-1 md:flex-initial md:w-36 ml-2">
-          <label class="text-sm font-semibold text-gray-700">Prezo:</label>
+          <label class="text-sm font-semibold text-gray-700">Tarifa:</label>
           <input
-            v-model.number="novaCita.precio"
+            v-model.number="novaCita.tarifa"
             type="number"
             step="0.01"
             placeholder="0.00"
@@ -109,10 +109,18 @@
             aria-label="Estado da cita"
             class="w-full px-3 py-2 text-sm border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
           >
-            <option value="pendente">Pendente</option>
-            <option value="confirmada">Confirmada</option>
-            <option value="realizada">Realizada</option>
-            <option value="cancelada">Cancelada</option>
+            <option value="pendente">
+              Pendente
+            </option>
+            <option value="confirmada">
+              Confirmada
+            </option>
+            <option value="realizada">
+              Realizada
+            </option>
+            <option value="cancelada">
+              Cancelada
+            </option>
           </select>
         </div>
         <button
@@ -153,10 +161,10 @@
           class="px-7 py-2 rounded-xl font-medium border-2 border-[#1bb191] bg-[#f0f3f7] hover:bg-[#c8eacf] transition-colors cursor-pointer disabled:bg-gray-200 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:opacity-70"
           :disabled="
             novaCita.pacienteDNI === '' ||
-            novaCita.doctorId === '' ||
-            novaCita.fecha === '' ||
-            novaCita.hora === '' ||
-            novaCita.motivo.trim() === ''
+              novaCita.doctorId === '' ||
+              novaCita.fecha === '' ||
+              novaCita.hora === '' ||
+              novaCita.motivo.trim() === ''
           "
         >
           {{ editando ? "Modificar" : "Gardar" }}
@@ -168,8 +176,8 @@
           class="p-2 rounded-xl border-2 border-blue-500 bg-blue-50 hover:bg-blue-100 text-blue-600 transition-colors cursor-pointer flex items-center justify-center shadow-sm"
           title="Imprimir cita seleccionada"
           aria-label="Imprimir cita seleccionada"
-          @click="imprimirCitaSeleccionada"
           :disabled="!editando && !novaCita.fecha"
+          @click="imprimirCitaSeleccionada"
         >
           🖨️ Imprimir Cita
         </button>
@@ -185,11 +193,14 @@
 
       <div class="flex items-center gap-3 ml-auto">
         <div class="flex items-center gap-2 bg-white/10 px-3 py-1 rounded-lg">
-          <label for="listarTodas" class="text-sm font-medium cursor-pointer">Listar Todas</label>
+          <label
+            for="listarTodas"
+            class="text-sm font-medium cursor-pointer"
+          >Listar Todas</label>
           <input 
             id="listarTodas" 
-            type="checkbox" 
             v-model="listarTodas" 
+            type="checkbox" 
             class="w-4 h-4 cursor-pointer accent-[#1bb191]"
           >
         </div>
@@ -213,16 +224,36 @@
       <table class="w-full min-w-[750px] border-collapse border border-gray-200 text-xs md:text-sm">
         <thead>
           <tr class="bg-gray-50 text-gray-700">
-            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">ID</th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold">Paciente (DNI)</th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold">Doctor</th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold">Especialidad</th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">Data</th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">Hora</th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold">Motivo</th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">Prezo</th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">Estado</th>
-            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">Accións</th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">
+              ID
+            </th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">
+              Paciente (DNI)
+            </th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">
+              Doctor
+            </th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">
+              Especialidad
+            </th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">
+              Data
+            </th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">
+              Hora
+            </th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold">
+              Motivo
+            </th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">
+              Prezo
+            </th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">
+              Estado
+            </th>
+            <th class="border border-gray-200 p-2.5 text-center font-semibold whitespace-nowrap">
+              Accións
+            </th>
           </tr>
         </thead>
 
@@ -232,15 +263,33 @@
             :key="cita._id"
             class="hover:bg-gray-50 transition-colors"
           >
-            <td class="border border-gray-200 p-2.5 text-center">{{ index + 1 }}</td>
-            <td class="border border-gray-200 p-2.5 text-center font-medium">{{ cita.pacienteDNI }}</td>
-            <td class="border border-gray-200 p-2.5 text-left">{{ cita.apeldoc }}</td>
-            <td class="border border-gray-200 p-2.5 text-left">{{ cita.espedoc }}</td>
-            <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap">{{ formatearFecha(cita.fecha) }}</td>
-            <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap">{{ cita.hora }}</td>
-            <td class="border border-gray-200 p-2.5 text-left">{{ cita.motivo }}</td>
-            <td class="border border-gray-200 p-2.5 text-center font-semibold">{{ cita.precio ? cita.precio.toFixed(2) + ' €' : '0.00 €' }}</td>
-            <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap capitalize">{{ cita.estado }}</td>
+            <td class="border border-gray-200 p-2.5 text-center">
+              {{ index + 1 }}
+            </td>
+            <td class="border border-gray-200 p-2.5 text-center font-medium">
+              {{ cita.pacienteDNI }}
+            </td>
+            <td class="border border-gray-200 p-2.5 text-left">
+              {{ cita.apeldoc }}
+            </td>
+            <td class="border border-gray-200 p-2.5 text-left">
+              {{ cita.espedoc }}
+            </td>
+            <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap">
+              {{ formatearFecha(cita.fecha) }}
+            </td>
+            <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap">
+              {{ cita.hora }}
+            </td>
+            <td class="border border-gray-200 p-2.5 text-left">
+              {{ cita.motivo }}
+            </td>
+            <td class="border border-gray-200 p-2.5 text-center font-semibold">
+              {{ cita.tarifa ? cita.tarifa.toFixed(2) + ' €' : '0.00 €' }}
+            </td>
+            <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap capitalize">
+              {{ cita.estado }}
+            </td>
             <td class="border border-gray-200 p-2.5 text-center whitespace-nowrap">
               <button
                 type="button"
@@ -307,7 +356,7 @@ const novaCita = reactive({
   estado: "pendente",
   diagnostico: "",
   tratamento: "",
-  precio: 0,
+  tarifa: 0,
 });
 
 const nomePac = ref('')
@@ -376,7 +425,7 @@ function editarCita(index) {
     estado: cita.estado,
     diagnostico: cita.diagnostico ?? "",
     tratamento: cita.tratamento ?? "",
-    precio: cita.precio ?? 0,
+    tarifa: cita.tarifa ?? 0,
   });
   nomeDoc.value = cita.apeldoc || "";
   editando.value = true;
@@ -405,7 +454,7 @@ function limpiaFormcita() {
     estado: "pendente",
     diagnostico: "",
     tratamento: "",
-    precio: 0,
+    tarifa: 0,
   });
 
   editando.value = false;
@@ -424,7 +473,7 @@ function imprimirCitaSeleccionada() {
       citas.value.find(c => c._id === novaCita._id)?.espedoc || "Xeral",
       formatearFecha(novaCita.fecha),
       novaCita.hora,
-      `${Number(novaCita.precio || 0).toFixed(2)} €`
+      `${Number(novaCita.tarifa || 0).toFixed(2)} €`
     ]
   ];
 

@@ -9,7 +9,7 @@ const citaSchema = new mongoose.Schema({
   estado: { type: String, required: true },
   diagnostico: { type: String, default: "" },
   tratamento: { type: String, default: "" },
-  precio: { type: Number, default: 0 }
+  tarifa: { type: Number, default: 0 }
 });
 
 // Asegúrate de que esté exportado por defecto así:
