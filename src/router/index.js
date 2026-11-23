@@ -9,9 +9,8 @@ import XestionDoctores from "../components/XestionDoctores.vue"
 import XestionCitas from "../components/XestionCitas.vue"
 import ServiciosMedicos from "../components/ServiciosMedicos.vue"
 import VistaAcceso from "../components/VistaAcceso.vue"
+import VistaRegistro from "../components/VistaRegistro.vue"
 import NotFound from "../components/NotFound.vue"
-
-
 
 const routes =[
     { path: '/', name: IniCio, component: IniCio },
@@ -23,6 +22,7 @@ const routes =[
     { path: '/xestion-citas', name: 'XestionCitas', component: XestionCitas },
     { path: '/servicios-medicos', name: 'ServiciosMedicos', component: ServiciosMedicos },
     { path: '/vista-acceso', name:'VistaAcceso', component: VistaAcceso },
+    { path: '/vista-registro', name:'VistaRegistro', component: VistaRegistro },
     { path: '/:pathMatch(.*)*', name:NotFound, component: NotFound }
 ]
 

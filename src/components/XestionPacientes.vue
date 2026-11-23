@@ -212,7 +212,7 @@
       <div class="flex justify-center items-center gap-2.5 w-full my-1">
         <button
           type="submit"
-          class="px-6 py-1.5 rounded-xl font-medium border-2 border-[#1bb191] bg-[#f0f3f7] hover:bg-[#c8eacf] transition-colors cursor-pointer disabled:bg-gray-200 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:opacity-70"
+          class="w-30 px-6 py-1.5 rounded-xl font-medium border-2 border-[#1bb191] bg-[#f0f3f7] hover:bg-[#c8eacf] transition-colors cursor-pointer disabled:bg-gray-200 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:opacity-70"
           :disabled="
             novoPaciente.dnipac === '' ||
               novoPaciente.nomepac === '' ||
@@ -225,7 +225,7 @@
 
         <button
           type="button"
-          class="px-6 py-1.5 rounded-xl font-medium border-2 border-[#1bb191] bg-[#f0f3f7] hover:bg-red-100 transition-colors cursor-pointer disabled:bg-gray-200 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:opacity-70"
+          class="w-30 px-6 py-1.5 rounded-xl font-medium border-2 border-[#1bb191] bg-[#f0f3f7] hover:bg-red-100 transition-colors cursor-pointer disabled:bg-gray-200 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:opacity-70"
           :disabled="
             novoPaciente.dnipac === '' ||
               novoPaciente.nomepac === '' ||
@@ -419,6 +419,8 @@ async function guardarPaciente() {
         const index = pacientes.value.findIndex(
           (p) => p.dnipac === novoPaciente.dnipac,
         );
+
+
         if (index !== -1) {
           pacientes.value[index] = pacienteModificado;
         }
@@ -429,6 +431,14 @@ async function guardarPaciente() {
     } else {
       const respuesta = await alertaConfirmacion("Esta seguro crear paciente?");
       if (respuesta.isConfirmed) {
+
+        const movil = pacientes.value.findIndex(
+          (p) => p.movilpac === novoPaciente.movilpac,
+        );
+        if (movil !== -1) {
+          alertaError("El número de móvil ya está registrado");
+          return;
+        }
         await savePaciente(novoPaciente);
         alertaExito("El paciente se ha guardado correctamente");
       } else {
@@ -475,6 +485,8 @@ async function eliminarPaciente(indexOrDni) {
 }
 
 function editarPaciente(index) {
+  // Evitar reutilizar el identificador de otro paciente
+  delete novoPaciente._id;
   const paciente = pacientes.value[index];
   Object.assign(novoPaciente, paciente);
   editando.value = true;
@@ -494,7 +506,6 @@ async function buscarPaciente() {
     Object.assign(novoPaciente, paciente);
     // usamos el store
     seleccionarPaciente(paciente);
-
     await cargarMunicipios();
     editando.value = true;
     console.log("Paciente encontrado:", paciente);

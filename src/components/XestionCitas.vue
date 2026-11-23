@@ -158,7 +158,7 @@
       <div class="flex justify-center items-center gap-3 w-full my-1">
         <button
           type="submit"
-          class="px-7 py-2 rounded-xl font-medium border-2 border-[#1bb191] bg-[#f0f3f7] hover:bg-[#c8eacf] transition-colors cursor-pointer disabled:bg-gray-200 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:opacity-70"
+          class="w-30 px-7 py-2 rounded-xl font-medium border-2 border-[#1bb191] bg-[#f0f3f7] hover:bg-[#c8eacf] transition-colors cursor-pointer disabled:bg-gray-200 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:opacity-70"
           :disabled="
             novaCita.pacienteDNI === '' ||
               novaCita.doctorId === '' ||
@@ -173,13 +173,13 @@
         <!-- Botón de Imprimir (Printer) con jsPDF -->
         <button
           type="button"
-          class="p-2 rounded-xl border-2 border-blue-500 bg-blue-50 hover:bg-blue-100 text-blue-600 transition-colors cursor-pointer flex items-center justify-center shadow-sm"
+          class="w-30 px-7 py-2 rounded-xl border-2 border-blue-500 bg-blue-50 hover:bg-blue-100 text-blue-600 transition-colors cursor-pointer flex items-center justify-center shadow-sm"
           title="Imprimir cita seleccionada"
           aria-label="Imprimir cita seleccionada"
           :disabled="!editando && !novaCita.fecha"
           @click="imprimirCitaSeleccionada"
         >
-          🖨️ Imprimir Cita
+          🖨️  Cita
         </button>
       </div>
     </form>
@@ -446,8 +446,8 @@ async function eliminarCita(index) {
 function limpiaFormcita() {
   Object.assign(novaCita, {
     _id: "",
-    pacienteDNI: pacienteStore.dnipac || "",
-    doctorId: doctorStore.id || "",
+    pacienteDNI: "",
+    doctorId: "",
     fecha: "",
     hora: "",
     motivo: "",
@@ -456,7 +456,12 @@ function limpiaFormcita() {
     tratamento: "",
     tarifa: 0,
   });
-
+  // Limpiar las variables independientes
+  doctorStore.apellido = "";
+  nomeDoc.value = "";
+  nomePac.value = "";
+  pacienteStore.dnipac = "";
+  pacienteStore.apelpac = "";
   editando.value = false;
   cargarDatos();
 }
