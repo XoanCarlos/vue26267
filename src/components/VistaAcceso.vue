@@ -1,8 +1,9 @@
 <template>
   <div class="w-full max-w-md mx-auto bg-white p-6 rounded-lg shadow-md box-border text-gray-800 my-10">
-    <h4 class="text-lg font-semibold bg-[#1ec9a4] text-white py-2 px-4 rounded mb-6 text-center shadow-sm">
+    <h2 class="text-xl font-bold text-center text-[#1ca285] mb-2">
       🔐 Acceso ao Sistema - Sanidad Teis 🩺
-    </h4>
+    </h2>
+    <br>
 
     <!-- Formulario de Acceso -->
     <form
@@ -11,21 +12,20 @@
     >
       <!-- Campo Usuario -->
       <div class="flex flex-col gap-1">
-        <label for="usuario" class="text-sm font-semibold text-gray-700">Usuario:</label>
         <input
           id="usuario"
           v-model="usuario"
           type="text"
-          placeholder="Introduce o teu usuario"
+          placeholder="Introduce o teu DNI"
           required
           aria-label="Usuario"
-          class="w-full px-3 py-2 text-sm border border-gray-300 rounded-xl bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
+          class="w-full text-center px-3 py-4 text-sm border border-gray-300 rounded-xl bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
         >
       </div>
 
       <!-- Campo Contrasinal co botón de mostrar/ocultar -->
       <div class="flex flex-col gap-1">
-        <label for="password" class="text-sm font-semibold text-gray-700">Contrasinal:</label>
+    
         <div class="relative flex items-center">
           <input
             id="password"
@@ -34,15 +34,15 @@
             placeholder="Introduce o contrasinal"
             required
             aria-label="Contrasinal"
-            class="w-full px-3 py-2 pr-16 text-sm border border-gray-300 rounded-xl bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
+            class="w-full px-3 py-4 pr-16 text-sm border border-gray-300 rounded-xl bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
           >
           <button
             type="button"
             @click="showPassword = !showPassword"
-            class="absolute right-2 px-2.5 py-1 text-xs font-medium border border-gray-300 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 cursor-pointer transition-colors"
+            class="absolute right-2 px-2.5 py-1 text-xs font-medium rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 cursor-pointer transition-colors"
             aria-label="Alternar visibilidade do contrasinal"
           >
-            {{ showPassword ? 'Ocultar' : 'Ver' }}
+            {{ showPassword ? "🙈" : "👁️"  }}
           </button>
         </div>
       </div>
@@ -56,6 +56,29 @@
         >
           Acceder
         </button>
+      </div>
+      <div> 
+         <p class="text-center text-sm text-gray-600 mt-6">
+        ¿Olvidas tu contraseña? 
+        <RouterLink
+          to="/#"
+          class="text-[#1ca285] font-semibold hover:underline"
+        >
+          Recuperar contraseña
+        </RouterLink>
+      </p>
+      </div>
+      <div>
+         <hr>      
+         <p class="text-center text-sm text-gray-600 mt-6">
+        ¿No tienes cuenta? 
+        <RouterLink
+          to="/vista-registro"
+          class="text-[#1ca285] font-semibold hover:underline"
+        >
+          Regístrate
+        </RouterLink>
+      </p>
       </div>
     </form>
   </div>

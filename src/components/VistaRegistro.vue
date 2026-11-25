@@ -7,9 +7,6 @@
         Crear cuenta
       </h2>
 
-      <p class="text-sm text-gray-500 text-center mb-6">
-        Introduce tus datos para registrarte
-      </p>
 
       <!-- Formulario -->
       <form @submit.prevent="registrar">
@@ -19,10 +16,26 @@
             v-model.trim="dni"
             type="text"
             placeholder="Introduzca su DNI"
-            maxlength="9"
+            :maxlength="errorDni ? 35 : 9"
             @blur="validarDniNie"
+            @focus="if (errorDni) { dni = ''; errorDni = false; }"
             required
-            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1ca285] focus:border-transparent text-center uppercase"
+            class="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 text-center uppercase transition-colors"
+            :class="errorDni ? 'border-red-400 text-red-500 focus:ring-red-400' : 'border-gray-300 focus:ring-[#1ca285] focus:border-transparent'"
+          />
+        </div>
+
+        <!-- Correo electrónico -->
+        <div class="mb-4">
+          <input
+            v-model.trim="email"
+            type="email"
+            placeholder="Introduzca su correo electrónico"
+            @blur="validarEmail"
+            @focus="if (errorEmail) { email = ''; errorEmail = false; }"
+            required
+            class="w-full px-4 py-3 border rounded-xl focus:outline-none focus:ring-2 text-center transition-colors"
+            :class="errorEmail ? 'border-red-400 text-red-500 focus:ring-red-400' : 'border-gray-300 focus:ring-[#1ca285] focus:border-transparent'"
           />
         </div>
 
@@ -99,7 +112,6 @@
       <!-- Enlace a acceso -->
       <p class="text-center text-sm text-gray-600 mt-6">
         ¿Ya tienes cuenta?
-
         <RouterLink
           to="/vista-acceso"
           class="text-[#1ca285] font-semibold hover:underline"
@@ -115,6 +127,7 @@
 import { ref } from "vue";
 
 const dni = ref("");
+const email = ref("");
 const password = ref("");
 const repetirPassword = ref("");
 
@@ -124,14 +137,18 @@ const mostrarRepetir = ref(false);
 const mensaje = ref("");
 const error = ref(false);
 const dniValido = ref(false);
+const errorDni = ref(false);
+const errorEmail = ref(false);
 
 function registrar() {
   mensaje.value = "";
   error.value = false;
 
   if (!validarDniNie()) {
-    mensaje.value = "El DNI o NIE no es válido.";
-    error.value = true;
+    return;
+  }
+
+  if (!validarEmail()) {
     return;
   }
 
@@ -147,39 +164,59 @@ function registrar() {
     return;
   }
 
-  console.log({
-    dni: dni.value,
-    password: password.value,
-  });
-
   mensaje.value = "Datos validados correctamente.";
 }
 
-const validarDniNie = (valor) => {
+const validarEmail = () => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email.value || !emailRegex.test(email.value)) {
+    errorEmail.value = true;
+    mensaje.value = "El correo electrónico no es válido.";
+    error.value = true;
+    return false;
+  } else {
+    errorEmail.value = false;
+    mensaje.value = "";
+    error.value = false;
+    return true;
+  }
+};
+
+const validarDniNie = () => {
+  const valor = dni.value.trim().toUpperCase();
+
+  if (!valor || valor === "EL DNI O NIE NO ES VÁLIDO.") {
+    dniValido.value = false;
+    errorDni.value = false;
+    return false;
+  }
 
   const letras = "TRWAGMYFPDXBNJZSQVHLCKE";
   const dniRegex = /^[0-9]{8}[A-Z]$/;
   const nieRegex = /^[XYZ][0-9]{7}[A-Z]$/;
 
-  valor = dni.value.trim().toUpperCase();
-  dni.value = valor;
-
-  dniValido.value = false;
-
+  let valido = false;
   if (dniRegex.test(valor)) {
     const numero = parseInt(valor.slice(0, 8), 10);
     const letra = valor.charAt(8);
-
-    dniValido.value = letra === letras[numero % 23];
-
+    valido = letra === letras[numero % 23];
   } else if (nieRegex.test(valor)) {
     const nie = valor.replace("X", "0").replace("Y", "1").replace("Z", "2");
     const numero = parseInt(nie.slice(0, 8), 10);
     const letra = valor.charAt(8);
-
-    dniValido.value = letra === letras[numero % 23];
+    valido = letra === letras[numero % 23];
   }
 
-  return dniValido.value;
+  dniValido.value = valido;
+
+  if (!valido) {
+    errorDni.value = true;
+    dni.value = "El DNI o NIE no es válido.";
+  } else {
+    errorDni.value = false;
+    dni.value = valor;
+  }
+
+  return valido;
 };
 </script>
