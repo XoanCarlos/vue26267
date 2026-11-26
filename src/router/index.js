@@ -1,3 +1,4 @@
+
 import { createRouter, createWebHistory } from "vue-router"
 
 import IniCio from '../components/IniCio.vue'
@@ -11,22 +12,24 @@ import ServiciosMedicos from "../components/ServiciosMedicos.vue"
 import VistaAcceso from "../components/VistaAcceso.vue"
 import VistaRegistro from "../components/VistaRegistro.vue"
 import NotFound from "../components/NotFound.vue"
+import EmPleo from "../components/EmPleo.vue"
 
-const routes =[
-    { path: '/', name: IniCio, component: IniCio },
-    { path: '/xestion-pacientes', name: XestionPacientes, component: XestionPacientes },
-    { path: '/sobrenos', name: SobreNos, component: SobreNos },
-    { path: '/avisolegal', name: AvisoLegal, component: AvisoLegal },
+const routes = [
+    { path: '/', name: 'Inicio', component: IniCio },
+    { path: '/xestion-pacientes', name: 'XestionPacientes', component: XestionPacientes },
+    { path: '/sobrenos', name: 'SobreNos', component: SobreNos },
+    { path: '/avisolegal', name: 'AvisoLegal', component: AvisoLegal },
     { path: '/politica-privacidad', name: 'PoliticaPrivacidad', component: PoliticaPrivacidad },
     { path: '/xestion-doctores', name: 'XestionDoctores', component: XestionDoctores },
     { path: '/xestion-citas', name: 'XestionCitas', component: XestionCitas },
     { path: '/servicios-medicos', name: 'ServiciosMedicos', component: ServiciosMedicos },
-    { path: '/vista-acceso', name:'VistaAcceso', component: VistaAcceso },
-    { path: '/vista-registro', name:'VistaRegistro', component: VistaRegistro },
-    { path: '/:pathMatch(.*)*', name:NotFound, component: NotFound }
+    { path: '/vista-acceso', name: 'VistaAcceso', component: VistaAcceso },
+    { path: '/vista-registro', name: 'VistaRegistro', component: VistaRegistro },
+    { path: '/empleo', name: 'EmPleo', component: EmPleo },
+    { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound }
 ]
 
-const router = createRouter ({
+const router = createRouter({
     history: createWebHistory(),
     routes
 })
