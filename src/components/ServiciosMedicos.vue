@@ -37,7 +37,7 @@
 
           <button
             class="mt-5 bg-[#1ec9a4] hover:bg-[#16a085]
-                   text-white font-semibold py-2 px-5
+                   text-white font-semibold py-1 px-5
                    rounded-lg transition-colors duration-300"
           >
             Más información

@@ -1,6 +1,6 @@
 <template>
   <div class="w-full bg-white p-4 rounded shadow-md box-border text-gray-800">
-    <h4 class="text-lg font-semibold bg-[#1ec9a4] text-white py-2 px-4 rounded mb-4 text-center">
+    <h4 class="text-lg font-semibold bg-[#1ec9a4] text-white py-1 px-4 rounded mb-4 text-center">
       👨‍⚕️ Xestión de Doctores 👩‍⚕️
     </h4>
 
@@ -16,7 +16,7 @@
             v-model="novoDoctor._id"
             type="text"
             disabled
-            class="flex-1 px-3 py-2 text-[11px] border border-gray-300 rounded-xl bg-gray-100 text-gray-500 cursor-not-allowed box-border"
+            class="flex-1 px-3 py-1 text-[11px] border border-gray-300 rounded-xl bg-gray-100 text-gray-500 cursor-not-allowed box-border"
           >
         </div>
 
@@ -39,7 +39,7 @@
             v-model="novoDoctor.nomedoc"
             type="text"
             required
-            class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
+            class="flex-1 px-3 py-1 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
             @blur="capitalizarTexto('nomedoc')"
           >
         </div>
@@ -54,7 +54,7 @@
             v-model="novoDoctor.apeldoc"
             type="text"
             required
-            class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
+            class="flex-1 px-3 py-1 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
             @blur="capitalizarTexto('apeldoc')"
           >
         </div>
@@ -90,7 +90,7 @@
             v-model="novoDoctor.maildoc"
             type="email"
             :class="[
-              'flex-1 px-3 py-2 text-sm border rounded-xl focus:outline-none box-border transition-all',
+              'flex-1 px-3 py-1 text-sm border rounded-xl focus:outline-none box-border transition-all',
               !correoValido
                 ? 'border-red-400 bg-red-50 ring-2 ring-red-200'
                 : 'border-gray-300 focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent'
@@ -106,7 +106,7 @@
             type="text"
             required
             :class="[
-              'flex-1 px-3 py-2 text-sm text-center border rounded-xl focus:outline-none box-border transition-all',
+              'flex-1 px-3 py-1 text-sm text-center border rounded-xl focus:outline-none box-border transition-all',
               !movilValido
                 ? 'border-red-400 bg-red-50 ring-2 ring-red-200'
                 : 'border-gray-300 focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent'
@@ -123,7 +123,7 @@
           <select
             id="especialidad"
             v-model="novoDoctor.espedoc"
-            class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
+            class="flex-1 px-3 py-1 text-sm border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
           >
             <option value="">
               Selecciona una Especialidad
@@ -152,7 +152,7 @@
       <div class="flex justify-center items-center gap-2.5 w-full my-1">
         <button
           type="submit"
-          class="px-6 py-1.5 rounded-xl font-medium border-2 border-[#1bb191] bg-[#f0f3f7] hover:bg-[#c8eacf] transition-colors cursor-pointer disabled:bg-gray-200 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:opacity-70"
+          class="px-6 py-1 rounded-xl font-medium border-2 border-[#1bb191] bg-[#f0f3f7] hover:bg-[#c8eacf] transition-colors cursor-pointer disabled:bg-gray-200 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:opacity-70"
           :disabled="
             novoDoctor.nomedoc === '' ||
               novoDoctor.apeldoc === '' ||
@@ -193,7 +193,7 @@
       </div>
     </form>
 
-    <h4 class="text-lg font-semibold bg-[#1ec9a4] text-white py-2 px-4 rounded mb-4 text-center">
+    <h4 class="text-lg font-semibold bg-[#1ec9a4] text-white py-1 px-4 rounded mb-4 text-center">
       📋 Listaxe de Doctores
     </h4>
 

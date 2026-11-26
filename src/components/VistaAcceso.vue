@@ -51,7 +51,7 @@
       <div class="flex justify-center items-center w-full mt-4">
         <button
           type="submit"
-          class="w-50 py-2.5 rounded-xl font-medium border-2 border-[#1bb191] bg-[#f0f3f7] hover:bg-[#c8eacf] transition-colors cursor-pointer text-gray-800 shadow-sm disabled:bg-gray-200 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:opacity-70"
+          class="w-50 py-1.5 rounded-xl font-medium border-2 border-[#1bb191] bg-[#f0f3f7] hover:bg-[#c8eacf] transition-colors cursor-pointer text-gray-800 shadow-sm disabled:bg-gray-200 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:opacity-70"
           :disabled="usuario.trim() === '' || password.trim() === ''"
         >
           Acceder

@@ -1,6 +1,6 @@
 <template>
   <div class="w-full bg-white p-4 rounded shadow-md box-border text-gray-800">
-    <h4 class="text-lg font-semibold bg-[#1ec9a4] text-white py-2 px-4 rounded mb-4 text-center">
+    <h4 class="text-lg font-semibold bg-[#1ec9a4] text-white py-1 px-4 rounded mb-4 text-center">
       📅 Xestión de Citas 🩺
     </h4>
 
@@ -19,7 +19,7 @@
             placeholder="ID cita"
             disabled
             aria-label="ID da cita"
-            class="flex-1 px-3 py-2 text-sm border border-gray-300 text-center rounded-xl bg-gray-100 text-gray-500 cursor-not-allowed box-border"
+            class="flex-1 px-3 py-1 text-sm border border-gray-300 text-center rounded-xl bg-gray-100 text-gray-500 cursor-not-allowed box-border"
           >
         </div>
         <div class="flex items-center gap-1 flex-1">
@@ -30,7 +30,7 @@
             placeholder="DNI do paciente"
             readonly
             aria-label="DNI do paciente"
-            class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl bg-gray-50 focus:outline-none text-center box-border"
+            class="flex-1 px-3 py-1 text-sm border border-gray-300 rounded-xl bg-gray-50 focus:outline-none text-center box-border"
           >
         </div>
         <div class="flex items-center gap-2 flex-1">
@@ -40,7 +40,7 @@
             placeholder="Nombre Doctor"
             readonly
             aria-label="Doctor seleccionado"
-            class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl bg-gray-50 focus:outline-none text-center box-border"
+            class="flex-1 px-3 py-1 text-sm border border-gray-300 rounded-xl bg-gray-50 focus:outline-none text-center box-border"
           >
         </div>
         <div class="flex items-center gap-2 flex-1">
@@ -50,7 +50,7 @@
             placeholder="ID Doctor"
             readonly
             aria-label="Doctor seleccionado"
-            class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-xl bg-gray-50 focus:outline-none text-center box-border"
+            class="flex-1 px-3 py-1 text-sm border border-gray-300 rounded-xl bg-gray-50 focus:outline-none text-center box-border"
           >
         </div>
       </div>
@@ -64,7 +64,7 @@
             type="date"
             required
             aria-label="Data da cita"
-            class="flex-1 px-3 py-2 text-sm text-center border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
+            class="flex-1 px-3 py-1 text-sm text-center border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
           >
         </div>
         <div class="flex items-center gap-1 flex-1 md:flex-initial md:w-40">
@@ -74,7 +74,7 @@
             type="time"
             required
             aria-label="Hora da cita"
-            class="flex-1 px-3 py-2 text-sm text-center border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
+            class="flex-1 px-3 py-1 text-sm text-center border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
           >
         </div>
 
@@ -84,7 +84,7 @@
             type="text"
             placeholder="Motivo da cita"
             required
-            class="w-full ml-2 px-4 py-2 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
+            class="w-full ml-2 px-4 py-1 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
           >
         </div>
 
@@ -98,7 +98,7 @@
             placeholder="0.00"
             required
             aria-label="Prezo da consulta"
-            class="w-full px-3 py-2 text-sm text-center border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
+            class="w-full px-3 py-1 text-sm text-center border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
           >
         </div>
 
@@ -107,7 +107,7 @@
             v-model="novaCita.estado"
             required
             aria-label="Estado da cita"
-            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
+            class="w-full px-3 py-1 text-sm border border-gray-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent box-border transition-all"
           >
             <option value="pendente">
               Pendente
@@ -141,7 +141,7 @@
             v-model="novaCita.diagnostico"
             placeholder="Diagnóstico"
             aria-label="Diagnóstico"
-            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent min-h-[75px] resize-y box-border transition-all"
+            class="w-full px-3 py-1 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent min-h-[75px] resize-y box-border transition-all"
           />
         </div>
         <div class="flex-1">
@@ -149,7 +149,7 @@
             v-model="novaCita.tratamento"
             placeholder="Tratamento"
             aria-label="Tratamento"
-            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent min-h-[75px] resize-y box-border transition-all"
+            class="w-full px-3 py-1 text-sm border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1ec9a4] focus:border-transparent min-h-[75px] resize-y box-border transition-all"
           />
         </div>
       </div>
@@ -158,7 +158,7 @@
       <div class="flex justify-center items-center gap-3 w-full my-1">
         <button
           type="submit"
-          class="w-30 px-7 py-2 rounded-xl font-medium border-2 border-[#1bb191] bg-[#f0f3f7] hover:bg-[#c8eacf] transition-colors cursor-pointer disabled:bg-gray-200 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:opacity-70"
+          class="w-30 px-7 py-1 rounded-xl font-medium border-2 border-[#1bb191] bg-[#f0f3f7] hover:bg-[#c8eacf] transition-colors cursor-pointer disabled:bg-gray-200 disabled:text-gray-400 disabled:border-gray-300 disabled:cursor-not-allowed disabled:opacity-70"
           :disabled="
             novaCita.pacienteDNI === '' ||
               novaCita.doctorId === '' ||
@@ -173,7 +173,7 @@
         <!-- Botón de Imprimir (Printer) con jsPDF -->
         <button
           type="button"
-          class="w-30 px-7 py-2 rounded-xl border-2 border-blue-500 bg-blue-50 hover:bg-blue-100 text-blue-600 transition-colors cursor-pointer flex items-center justify-center shadow-sm"
+          class="w-30 px-7 py-1 rounded-xl border-2 border-blue-500 bg-blue-50 hover:bg-blue-100 text-blue-600 transition-colors cursor-pointer flex items-center justify-center shadow-sm"
           title="Imprimir cita seleccionada"
           aria-label="Imprimir cita seleccionada"
           :disabled="!editando && !novaCita.fecha"
@@ -185,7 +185,7 @@
     </form>
 
     <!-- Listaxe de citas e Checkbox alineado á dereita -->
-    <div class="flex flex-col md:flex-row justify-between items-center bg-[#1ec9a4] text-white py-2 px-4 rounded mb-4 gap-2">
+    <div class="flex flex-col md:flex-row justify-between items-center bg-[#1ec9a4] text-white py-1 px-4 rounded mb-4 gap-2">
       <h4 class="text-lg font-semibold flex items-center">
         <span>📋 Listaxe de Citas </span>
         <span class="text-red-200 ml-2"> {{ listarTodas ? "(Todas)" : nomePac }} </span>
