@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import multer from "multer";
 import { fileURLToPath } from "url";
+import Candidato from "../modelos/Candidato.js";
 
 // Creamos el enrutador de Express (montado en /api/empleo desde server.js)
 const router = express.Router();
@@ -53,7 +54,21 @@ const upload = multer({
   },
 });
 
-// Ruta POST /api/empleo: recibe un formulario con "nombre", "apellidos" y el archivo "curriculum"
+// Ruta GET /api/empleo: obtiene todos los candidatos ordenados del más reciente al más antiguo
+router.get("/", async (req, res) => {
+  try {
+    const candidatos = await Candidato.find().sort({ createdAt: -1 });
+    res.json(candidatos);
+  } catch (error) {
+    console.error("ERROR AL OBTENER CANDIDATOS:", error);
+    res.status(500).json({
+      mensaje: "Error al obtener los candidatos",
+      error: error.message,
+    });
+  }
+});
+
+// Ruta POST /api/empleo: recibe un formulario con los datos del candidato y el archivo "curriculum"
 router.post("/", (req, res) => {
   // Invocamos manualmente el middleware upload.single("curriculum") dentro de la ruta
   // para poder capturar y responder en JSON los errores propios de Multer (tamaño, tipo, etc.).
@@ -94,19 +109,34 @@ router.post("/", (req, res) => {
       const nombreArchivo = `${nombreLimpio}_${apellidosLimpio}.pdf`;
       const rutaDestino = path.join(empleoDir, nombreArchivo);
 
-      // 5. Escribimos el contenido binario (Buffer en memoria) al disco de forma asíncrona
-      await fs.promises.writeFile(rutaDestino, req.file.buffer);
+      // 5. Validamos el documento de Mongoose antes de escribir el archivo en disco
+      const candidato = new Candidato({
+        nombre: req.body.nombre.trim(),
+        apellidos: req.body.apellidos.trim(),
+        email: req.body.email?.trim() || "",
+        telefono: req.body.telefono?.trim() || "",
+        puesto: req.body.puesto?.trim() || "",
+        observaciones: req.body.observaciones?.trim() || "",
+        archivo: nombreArchivo,
+      });
+      await candidato.validate();
 
-      // 6. Respondemos con 201 Created indicando el nombre del archivo guardado
+      // 6. Escribimos el contenido binario (Buffer en memoria) al disco y guardamos en MongoDB
+      await fs.promises.writeFile(rutaDestino, req.file.buffer);
+      const nuevoCandidato = await candidato.save();
+
+      // 7. Respondemos con 201 Created manteniendo "archivo" en el nivel raíz para compatibilidad con el frontend
       return res.status(201).json({
         mensaje: "Currículo recibido correctamente.",
         archivo: nombreArchivo,
+        candidato: nuevoCandidato,
       });
     } catch (error) {
-      // Error inesperado al escribir en disco o procesar la petición
+      // Error inesperado al validar, escribir en disco o guardar en MongoDB
       console.error("ERROR AL GUARDAR CURRÍCULO:", error);
       return res.status(500).json({
         mensaje: "Error al guardar el currículo en el servidor.",
+        error: error.message,
       });
     }
   });
